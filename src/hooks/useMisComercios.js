@@ -43,11 +43,13 @@ export const useMisComercios = () => {
     ...mays.map((m) => ({
       tipo: 'mayorista',
       id: m.id,
+      rubro_id: m.rubro_id,
       label: m.razon_social || `Mayorista #${m.id}`,
     })),
     ...mins.map((m) => ({
       tipo: 'minorista',
       id: m.id,
+      rubro_id: m.rubro_id,
       label: m.razon_social || `Minorista #${m.id}`,
     })),
   ];

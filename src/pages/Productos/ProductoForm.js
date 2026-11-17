@@ -75,6 +75,8 @@ function ProductoForm() {
       ...prev,
       oferente_tipo: unico.tipo,
       oferente_id: String(unico.id),
+      // El rubro arranca con el del comercio; se puede cambiar.
+      rubro_id: prev.rubro_id || (unico.rubro_id != null ? String(unico.rubro_id) : ''),
     }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [comercios, isEdit]);
@@ -118,10 +120,16 @@ function ProductoForm() {
   // El select de comercio codifica tipo e id juntos ("mayorista:3").
   const handleComercioChange = (e) => {
     const [tipo, comercioId] = e.target.value.split(':');
+    const comercio = comercios.find((c) => c.tipo === tipo && String(c.id) === comercioId);
     setFormData({
       ...formData,
       oferente_tipo: tipo || 'mayorista',
       oferente_id: comercioId || '',
+      // En un alta, el rubro sigue al del comercio si todavía no se eligió otro
+      rubro_id:
+        !isEdit && !formData.rubro_id && comercio?.rubro_id != null
+          ? String(comercio.rubro_id)
+          : formData.rubro_id,
     });
   };
 
@@ -268,7 +276,7 @@ function ProductoForm() {
                   onChange={handleChange}
                   required
                   className="form-input"
-                  placeholder="Aceite girasol 1.5L"
+                  placeholder="Ej.: Aceite de girasol 1,5 L"
                 />
               </div>
 
@@ -282,7 +290,7 @@ function ProductoForm() {
                   onChange={handleChange}
                   required
                   className="form-input"
-                  placeholder="ACE-001"
+                  placeholder="Ej.: ACE-001"
                 />
                 <small className="form-hint">
                   Código interno del producto en tu comercio.
@@ -310,18 +318,21 @@ function ProductoForm() {
             <div className="form-row">
               <div className="form-group">
                 <label htmlFor="precio">Precio *</label>
-                <input
-                  id="precio"
-                  name="precio"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  value={formData.precio}
-                  onChange={handleChange}
-                  required
-                  className="form-input"
-                  placeholder="4500.00"
-                />
+                <div className="campo-moneda">
+                  <span className="campo-moneda-signo" aria-hidden="true">$</span>
+                  <input
+                    id="precio"
+                    name="precio"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={formData.precio}
+                    onChange={handleChange}
+                    required
+                    className="form-input"
+                    placeholder="Ej.: 4500"
+                  />
+                </div>
               </div>
 
               <div className="form-group">
@@ -335,7 +346,7 @@ function ProductoForm() {
                   onChange={handleChange}
                   required
                   className="form-input"
-                  placeholder="100"
+                  placeholder="Ej.: 100"
                 />
               </div>
             </div>

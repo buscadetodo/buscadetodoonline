@@ -126,7 +126,7 @@ function CompradorForm() {
                   onChange={handleChange}
                   required
                   className="form-input"
-                  placeholder="Juan"
+                  placeholder="Ej.: Juan"
                 />
               </div>
 
@@ -140,7 +140,7 @@ function CompradorForm() {
                   onChange={handleChange}
                   required
                   className="form-input"
-                  placeholder="Pérez"
+                  placeholder="Ej.: Pérez"
                 />
               </div>
             </div>

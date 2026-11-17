@@ -217,7 +217,7 @@ function TransportistaForm() {
                   onChange={handleChange}
                   required
                   className="form-input"
-                  placeholder="ABC123"
+                  placeholder="Ej.: ABC123"
                   maxLength={PATENTE_MAX}
                   aria-describedby="patente-ayuda"
                 />
@@ -236,7 +236,7 @@ function TransportistaForm() {
                   onChange={handleChange}
                   required
                   className="form-input"
-                  placeholder="5000 kg"
+                  placeholder="Ej.: 5000 kg"
                 />
               </div>
 
@@ -262,34 +262,40 @@ function TransportistaForm() {
             <div className="form-row">
               <div className="form-group">
                 <label htmlFor="precio_base">Precio Base *</label>
-                <input
-                  id="precio_base"
-                  name="precio_base"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  value={formData.precio_base}
-                  onChange={handleChange}
-                  required
-                  className="form-input"
-                  placeholder="200.00"
-                />
+                <div className="campo-moneda">
+                  <span className="campo-moneda-signo" aria-hidden="true">$</span>
+                  <input
+                    id="precio_base"
+                    name="precio_base"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={formData.precio_base}
+                    onChange={handleChange}
+                    required
+                    className="form-input"
+                    placeholder="Ej.: 500"
+                  />
+                </div>
               </div>
 
               <div className="form-group">
                 <label htmlFor="precio_por_km">Precio por KM *</label>
-                <input
-                  id="precio_por_km"
-                  name="precio_por_km"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  value={formData.precio_por_km}
-                  onChange={handleChange}
-                  required
-                  className="form-input"
-                  placeholder="15.00"
-                />
+                <div className="campo-moneda">
+                  <span className="campo-moneda-signo" aria-hidden="true">$</span>
+                  <input
+                    id="precio_por_km"
+                    name="precio_por_km"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={formData.precio_por_km}
+                    onChange={handleChange}
+                    required
+                    className="form-input"
+                    placeholder="Ej.: 15"
+                  />
+                </div>
               </div>
             </div>
           </div>

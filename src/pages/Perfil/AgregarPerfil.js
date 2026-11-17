@@ -368,7 +368,7 @@ function AgregarPerfil() {
                 type="text"
                 value={datosEspecificos.razon_social}
                 onChange={(e) => setCampo('razon_social', e.target.value)}
-                placeholder="Ej: Distribuidora del Sur S.A."
+                placeholder="Ej.: Distribuidora del Sur S.A."
                 required
               />
             </div>
@@ -379,7 +379,7 @@ function AgregarPerfil() {
                 type="text"
                 value={datosEspecificos.cuit}
                 onChange={(e) => setCampo('cuit', normalizarCuit(e.target.value))}
-                placeholder="20123456789"
+                placeholder="Ej.: 20123456789"
                 inputMode="numeric"
                 maxLength={11}
                 required
@@ -398,13 +398,16 @@ function AgregarPerfil() {
             </div>
 
             <div className="ap-form-group">
-              <label>Pedido Mínimo ($)</label>
-              <input
-                type="number"
-                value={datosEspecificos.pedido_minimo}
-                onChange={(e) => setCampo('pedido_minimo', e.target.value)}
-                placeholder="0.00"
-              />
+              <label>Pedido Mínimo</label>
+              <div className="campo-moneda">
+                <span className="campo-moneda-signo" aria-hidden="true">$</span>
+                <input
+                  type="number"
+                  value={datosEspecificos.pedido_minimo}
+                  onChange={(e) => setCampo('pedido_minimo', e.target.value)}
+                  placeholder="Ej.: 10000"
+                />
+              </div>
             </div>
 
             <div className="ap-form-group">
@@ -527,7 +530,7 @@ function AgregarPerfil() {
                 type="text"
                 value={datosEspecificos.patente}
                 onChange={(e) => setCampo('patente', normalizarPatente(e.target.value))}
-                placeholder="ABC123"
+                placeholder="Ej.: ABC123"
                 maxLength={PATENTE_MAX}
                 aria-describedby="ap-patente-ayuda"
                 required
@@ -541,7 +544,7 @@ function AgregarPerfil() {
                 type="text"
                 value={datosEspecificos.capacidad_carga}
                 onChange={(e) => setCampo('capacidad_carga', e.target.value)}
-                placeholder="Ej: 5000 kg"
+                placeholder="Ej.: 5000 kg"
               />
             </div>
 
@@ -558,23 +561,29 @@ function AgregarPerfil() {
             </div>
 
             <div className="ap-form-group">
-              <label>Precio Base ($)</label>
-              <input
-                type="number"
-                value={datosEspecificos.precio_base}
-                onChange={(e) => setCampo('precio_base', e.target.value)}
-                placeholder="0.00"
-              />
+              <label>Precio Base</label>
+              <div className="campo-moneda">
+                <span className="campo-moneda-signo" aria-hidden="true">$</span>
+                <input
+                  type="number"
+                  value={datosEspecificos.precio_base}
+                  onChange={(e) => setCampo('precio_base', e.target.value)}
+                  placeholder="Ej.: 500"
+                />
+              </div>
             </div>
 
             <div className="ap-form-group">
-              <label>Precio por Km ($)</label>
-              <input
-                type="number"
-                value={datosEspecificos.precio_por_km}
-                onChange={(e) => setCampo('precio_por_km', e.target.value)}
-                placeholder="0.00"
-              />
+              <label>Precio por Km</label>
+              <div className="campo-moneda">
+                <span className="campo-moneda-signo" aria-hidden="true">$</span>
+                <input
+                  type="number"
+                  value={datosEspecificos.precio_por_km}
+                  onChange={(e) => setCampo('precio_por_km', e.target.value)}
+                  placeholder="Ej.: 15"
+                />
+              </div>
             </div>
           </div>
         </div>

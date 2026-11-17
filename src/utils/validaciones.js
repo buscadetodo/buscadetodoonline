@@ -31,7 +31,7 @@ export const esPatenteValida = (patente) => PATENTE_REGEX.test(normalizarPatente
 // verificador porque el backend tampoco lo hace (rechazaríamos CUIT que la
 // API acepta, como el de los ejemplos de la colección).
 export const CUIT_LARGO = 11;
-export const CUIT_AYUDA = '11 dígitos, sin guiones (ej.: 20123456789)';
+export const CUIT_AYUDA = '11 dígitos, sin guiones';
 
 export const normalizarCuit = (valor) =>
   String(valor || '')

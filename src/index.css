@@ -76,3 +76,32 @@ code {
 .p-2 { padding: 1rem; }
 .p-3 { padding: 1.5rem; }
 .p-4 { padding: 2rem; }
+
+/* Placeholders: más tenues que el texto cargado, para que un ejemplo no se
+   confunda con un dato ya completado (revisión UX/UI, bloque 4). */
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af;
+  opacity: 1;
+}
+
+/* Campo de dinero con "$" adentro, a la izquierda */
+.campo-moneda {
+  position: relative;
+  display: block;
+}
+
+.campo-moneda-signo {
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.campo-moneda > input {
+  width: 100%;
+  padding-left: 2rem !important;
+}

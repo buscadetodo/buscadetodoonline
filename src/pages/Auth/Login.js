@@ -190,7 +190,7 @@ function Login() {
                     setErrors({...errors, password: ''});
                     setLoginError('');
                   }}
-                  placeholder="••••••"
+                  placeholder="Tu contraseña"
                   autoComplete="current-password"
                 />
                 <span className="input-icon" aria-hidden="true"><Icon name="lock" /></span>

@@ -191,7 +191,7 @@ function RegisterUniversal() {
                     className="has-icon"
                     value={formData.nombre}
                     onChange={(e) => handleChange('nombre', e.target.value)}
-                    placeholder="Juan"
+                    placeholder="Ej.: Juan"
                     autoComplete="given-name"
                   />
                   <span className="input-icon" aria-hidden="true"><Icon name="user" /></span>
@@ -208,7 +208,7 @@ function RegisterUniversal() {
                     className="has-icon"
                     value={formData.apellido}
                     onChange={(e) => handleChange('apellido', e.target.value)}
-                    placeholder="Pérez"
+                    placeholder="Ej.: Pérez"
                     autoComplete="family-name"
                   />
                   <span className="input-icon" aria-hidden="true"><Icon name="user" /></span>
@@ -227,7 +227,7 @@ function RegisterUniversal() {
                   className="has-icon"
                   value={formData.dni}
                   onChange={(e) => handleChange('dni', e.target.value.replace(/\D/g, ''))}
-                  placeholder="12345678"
+                  placeholder="Sin puntos, ej.: 30111222"
                   maxLength="8"
                   autoComplete="off"
                 />
@@ -265,7 +265,7 @@ function RegisterUniversal() {
                     className="has-icon has-toggle"
                     value={formData.password}
                     onChange={(e) => handleChange('password', e.target.value)}
-                    placeholder="••••••"
+                    placeholder="6+ caracteres"
                     autoComplete="new-password"
                   />
                   <span className="input-icon" aria-hidden="true"><Icon name="lock" /></span>
@@ -300,7 +300,7 @@ function RegisterUniversal() {
                     className="has-icon has-toggle"
                     value={formData.confirmPassword}
                     onChange={(e) => handleChange('confirmPassword', e.target.value)}
-                    placeholder="••••••"
+                    placeholder="Repetila"
                     autoComplete="new-password"
                   />
                   <span className="input-icon" aria-hidden="true"><Icon name="lock" /></span>
