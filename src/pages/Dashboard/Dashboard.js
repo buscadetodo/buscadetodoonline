@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import usersService from '../../services/usersService';
+import authService from '../../services/authService';
 import usuarioPerfilesService from '../../services/usuarioPerfilesService';
 import Icon from '../../components/Icon/Icon';
 import './Dashboard.css';
@@ -11,7 +12,7 @@ function Dashboard() {
   useEffect(() => {
     const calcularProgreso = async () => {
       try {
-        const userId = localStorage.getItem('user_id');
+        const userId = authService.getCurrentUser()?.id;
         if (!userId) return;
 
         const raw = await usersService.getById(userId);

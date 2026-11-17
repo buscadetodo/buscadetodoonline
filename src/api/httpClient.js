@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { borrarSesion, guardarSesion, leerSesion } from './sesion';
 
 // URL base de la API desde variables de entorno
 // Usar la misma URL tanto en desarrollo como en producción
@@ -18,7 +19,7 @@ const httpClient = axios.create({
 // Interceptor de request: agregar token automáticamente
 httpClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('access_token');
+    const token = leerSesion('access_token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -42,7 +43,7 @@ httpClient.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const refreshToken = localStorage.getItem('refresh_token');
+        const refreshToken = leerSesion('refresh_token');
         
         if (refreshToken) {
           // Intentar refrescar el token
@@ -52,9 +53,8 @@ httpClient.interceptors.response.use(
 
           const { access_token, refresh_token } = response.data;
 
-          // Guardar nuevos tokens
-          localStorage.setItem('access_token', access_token);
-          localStorage.setItem('refresh_token', refresh_token);
+          // Guardar nuevos tokens donde ya estaban (respeta "Recordarme")
+          guardarSesion({ access_token, refresh_token });
 
           // Reintentar request original con nuevo token
           originalRequest.headers.Authorization = `Bearer ${access_token}`;
@@ -62,8 +62,7 @@ httpClient.interceptors.response.use(
         }
       } catch (refreshError) {
         // Si falla el refresh, limpiar tokens y redirigir al login
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
+        borrarSesion();
         window.location.href = '/login';
         return Promise.reject(refreshError);
       }

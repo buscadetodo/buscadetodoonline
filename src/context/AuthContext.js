@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import authService from '../services/authService';
 import mensajeDeError from '../api/mensajeDeError';
+import { leerSesion } from '../api/sesion';
 
 const AuthContext = createContext(null);
 
@@ -15,12 +16,12 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(authService.isAuthenticated());
   const [user, setUser] = useState(authService.getCurrentUser());
 
-  const login = useCallback(async (email, password) => {
+  const login = useCallback(async (email, password, recordar = false) => {
     try {
       setLoading(true);
       setError(null);
 
-      const result = await authService.login(email, password);
+      const result = await authService.login(email, password, recordar);
       setIsAuthenticated(true);
       setUser(authService.getCurrentUser());
 
@@ -49,7 +50,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
 
-      const refreshToken = localStorage.getItem('refresh_token');
+      const refreshToken = leerSesion('refresh_token');
       const result = await authService.refreshToken(refreshToken);
       setUser(authService.getCurrentUser());
 

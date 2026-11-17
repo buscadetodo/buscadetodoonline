@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import usersService from '../../services/usersService';
+import authService from '../../services/authService';
 import { usePerfilActivo } from '../../context/PerfilContext';
 import MisPerfiles from '../../components/MisPerfiles/MisPerfiles';
 import Icon from '../../components/Icon/Icon';
@@ -37,43 +38,11 @@ function Perfil() {
       setLoading(true);
       setError(null);
 
-      // Obtener el ID del usuario del token o localStorage
-      let storedUserId = localStorage.getItem('user_id');
-      
-      // Si no hay user_id en localStorage, intentar obtener la lista de usuarios
-      // y encontrar el que coincida con el email del token
-      if (!storedUserId) {
-        try {
-          // Intentar decodificar el token para obtener info del usuario
-          const token = localStorage.getItem('access_token');
-          if (token) {
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            
-            // Buscar user_id en diferentes campos comunes del JWT
-            storedUserId = payload.user_id || payload.sub || payload.id;
-            
-            // Si encontramos el ID, guardarlo
-            if (storedUserId) {
-              localStorage.setItem('user_id', storedUserId);
-            } else {
-              // Si no podemos obtener el ID del token, buscar en la lista de usuarios
-              const usersResponse = await usersService.getAll({ limit: 100 });
-              const usersList = usersResponse.data?.data || usersResponse.data || [];
-              
-              // Buscar el usuario actual por email (si está en el token)
-              if (payload.email && usersList.length > 0) {
-                const currentUser = usersList.find(u => u.email === payload.email);
-                if (currentUser) {
-                  storedUserId = currentUser.id;
-                  localStorage.setItem('user_id', storedUserId);
-                }
-              }
-            }
-          }
-        } catch (decodeError) {
-          console.error('Error al decodificar token:', decodeError);
-        }
-      }
+      // El id del usuario sale del token (campo `sub`). Antes había un plan B
+      // que buscaba al usuario en GET /users/, pero con R-003 ese listado es
+      // solo para administradores (403 para el resto) y el token siempre trae
+      // el id, así que se quitó.
+      const storedUserId = authService.getCurrentUser()?.id;
       
       if (!storedUserId) {
         setError('No se pudo identificar tu usuario. Por favor, cierra sesión e inicia sesión nuevamente.');
