@@ -4,7 +4,7 @@ Aplicación web React completamente dockerizada con entornos de desarrollo y pro
 
 ## 🚀 Características
 
-- ⚛️ React 18
+- ⚛️ React 19 (19.3.1) y React Router 6
 - 🐳 Docker para desarrollo y producción
 - 🔥 Hot reload en desarrollo
 - 🚀 Build optimizado con multi-stage
@@ -18,9 +18,12 @@ libremercado/
 ├── src/
 │   ├── api/                # Cliente HTTP (Axios)
 │   ├── components/         # Componentes reutilizables
+│   ├── config/             # Roles, features, datos del sitio y versión
+│   ├── context/            # Contextos de autenticación y perfil
 │   ├── hooks/              # Custom hooks
 │   ├── pages/              # Páginas de la aplicación
 │   ├── services/           # Servicios de API
+│   ├── utils/              # Formato y validaciones
 │   ├── App.js              # Componente principal
 │   └── index.js            # Punto de entrada
 ├── public/
@@ -88,37 +91,6 @@ docker-compose up -d --scale frontend-prod=3
 ```
 
 **Nota:** Para balanceo de carga entre instancias, necesitarás configurar un load balancer (nginx, traefik, etc.).
-
-## 🐳 Comandos Docker Útiles
-
-### Ver contenedores activos
-```bash
-docker-compose ps
-```
-
-### Ver logs
-```bash
-# Desarrollo
-docker-compose logs -f frontend-dev
-
-# Producción
-docker-compose logs -f frontend-prod
-```
-
-### Detener servicios
-```bash
-docker-compose down
-```
-
-### Reconstruir imágenes
-```bash
-docker-compose build --no-cache
-```
-
-### Limpiar todo
-```bash
-docker-compose down -v --rmi all
-```
 
 ## 🔨 Build Manual
 
