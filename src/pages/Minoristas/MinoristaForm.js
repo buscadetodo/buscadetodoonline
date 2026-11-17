@@ -169,7 +169,7 @@ function MinoristaForm() {
                   onChange={handleChange}
                   required
                   className="form-input"
-                  placeholder="Comercio Minorista SA"
+                  placeholder="Ej.: Almacén Don José"
                 />
               </div>
 
@@ -183,7 +183,7 @@ function MinoristaForm() {
                   onChange={handleChange}
                   required
                   className="form-input"
-                  placeholder="20123456789"
+                  placeholder="Ej.: 20123456789"
                   inputMode="numeric"
                   maxLength={11}
                   aria-describedby="cuit-ayuda"
@@ -306,18 +306,21 @@ function MinoristaForm() {
             <div className="form-row">
               <div className="form-group">
                 <label htmlFor="pedido_minimo">Pedido Mínimo *</label>
-                <input
-                  id="pedido_minimo"
-                  name="pedido_minimo"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  value={formData.pedido_minimo}
-                  onChange={handleChange}
-                  required
-                  className="form-input"
-                  placeholder="500.00"
-                />
+                <div className="campo-moneda">
+                  <span className="campo-moneda-signo" aria-hidden="true">$</span>
+                  <input
+                    id="pedido_minimo"
+                    name="pedido_minimo"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={formData.pedido_minimo}
+                    onChange={handleChange}
+                    required
+                    className="form-input"
+                    placeholder="Ej.: 5000"
+                  />
+                </div>
               </div>
 
               <div className="form-group">

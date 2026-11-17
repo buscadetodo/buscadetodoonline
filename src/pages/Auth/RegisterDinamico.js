@@ -457,7 +457,7 @@ function RegisterMejorado() {
                         setDatosComunes({...datosComunes, nombre: e.target.value});
                         setErrors({...errors, nombre: ''});
                       }}
-                      placeholder="Juan"
+                      placeholder="Ej.: Juan"
                     />
                     <span className="input-icon"><Icon name="user" /></span>
                   </div>
@@ -475,7 +475,7 @@ function RegisterMejorado() {
                         setDatosComunes({...datosComunes, apellido: e.target.value});
                         setErrors({...errors, apellido: ''});
                       }}
-                      placeholder="Pérez"
+                      placeholder="Ej.: Pérez"
                     />
                     <span className="input-icon"><Icon name="user" /></span>
                   </div>
@@ -494,7 +494,7 @@ function RegisterMejorado() {
                       setDatosComunes({...datosComunes, dni: e.target.value.replace(/\D/g, '')});
                       setErrors({...errors, dni: ''});
                     }}
-                    placeholder="12345678"
+                    placeholder="Sin puntos, ej.: 30111222"
                     maxLength="8"
                   />
                   <span className="input-icon">🆔</span>
@@ -532,7 +532,7 @@ function RegisterMejorado() {
                         setDatosComunes({...datosComunes, password: e.target.value});
                         setErrors({...errors, password: ''});
                       }}
-                      placeholder="••••••"
+                      placeholder="6+ caracteres"
                     />
                     <span className="input-icon"><Icon name="lock" /></span>
                     <button
@@ -568,7 +568,7 @@ function RegisterMejorado() {
                         setDatosComunes({...datosComunes, confirmarPassword: e.target.value});
                         setErrors({...errors, confirmarPassword: ''});
                       }}
-                      placeholder="••••••"
+                      placeholder="Repetila"
                     />
                     <span className="input-icon"><Icon name="lock" /></span>
                     <button
@@ -640,7 +640,7 @@ function RegisterMejorado() {
                           setDatosEspecificos({...datosEspecificos, razon_social: e.target.value});
                           setErrors({...errors, razon_social: ''});
                         }}
-                        placeholder="Mi Empresa S.A."
+                        placeholder="Ej.: Distribuidora del Sur S.A."
                       />
                       {errors.razon_social && <span className="error-message"><Icon name="warning" /> {errors.razon_social}</span>}
                     </div>
@@ -654,7 +654,7 @@ function RegisterMejorado() {
                           setDatosEspecificos({...datosEspecificos, cuit: normalizarCuit(e.target.value)});
                           setErrors({...errors, cuit: ''});
                         }}
-                        placeholder="20123456789"
+                        placeholder="Ej.: 20123456789"
                         inputMode="numeric"
                         maxLength={11}
                       />
@@ -677,13 +677,16 @@ function RegisterMejorado() {
                     </div>
 
                     <div className="form-group-mejorado">
-                      <label>Pedido Mínimo ($)</label>
-                      <input
-                        type="number"
-                        value={datosEspecificos.pedido_minimo}
-                        onChange={(e) => setDatosEspecificos({...datosEspecificos, pedido_minimo: e.target.value})}
-                        placeholder="10000"
-                      />
+                      <label>Pedido Mínimo</label>
+                      <div className="campo-moneda">
+                        <span className="campo-moneda-signo" aria-hidden="true">$</span>
+                        <input
+                          type="number"
+                          value={datosEspecificos.pedido_minimo}
+                          onChange={(e) => setDatosEspecificos({...datosEspecificos, pedido_minimo: e.target.value})}
+                          placeholder="Ej.: 10000"
+                        />
+                      </div>
                     </div>
 
                     <div className="checkbox-mejorado">
@@ -742,7 +745,7 @@ function RegisterMejorado() {
                           setDatosEspecificos({...datosEspecificos, patente: normalizarPatente(e.target.value)});
                           setErrors({...errors, patente: ''});
                         }}
-                        placeholder="ABC123"
+                        placeholder="Ej.: ABC123"
                         maxLength="7"
                       />
                       {errors.patente && <span className="error-message"><Icon name="warning" /> {errors.patente}</span>}
@@ -773,23 +776,29 @@ function RegisterMejorado() {
 
                     <div className="form-row-mejorado">
                       <div className="form-group-mejorado">
-                        <label>Precio Base ($)</label>
-                        <input
-                          type="number"
-                          value={datosEspecificos.precio_base}
-                          onChange={(e) => setDatosEspecificos({...datosEspecificos, precio_base: e.target.value})}
-                          placeholder="500"
-                        />
+                        <label>Precio Base</label>
+                        <div className="campo-moneda">
+                          <span className="campo-moneda-signo" aria-hidden="true">$</span>
+                          <input
+                            type="number"
+                            value={datosEspecificos.precio_base}
+                            onChange={(e) => setDatosEspecificos({...datosEspecificos, precio_base: e.target.value})}
+                            placeholder="Ej.: 500"
+                          />
+                        </div>
                       </div>
 
                       <div className="form-group-mejorado">
-                        <label>Precio por Km ($)</label>
-                        <input
-                          type="number"
-                          value={datosEspecificos.precio_por_km}
-                          onChange={(e) => setDatosEspecificos({...datosEspecificos, precio_por_km: e.target.value})}
-                          placeholder="15"
-                        />
+                        <label>Precio por Km</label>
+                        <div className="campo-moneda">
+                          <span className="campo-moneda-signo" aria-hidden="true">$</span>
+                          <input
+                            type="number"
+                            value={datosEspecificos.precio_por_km}
+                            onChange={(e) => setDatosEspecificos({...datosEspecificos, precio_por_km: e.target.value})}
+                            placeholder="Ej.: 15"
+                          />
+                        </div>
                       </div>
                     </div>
 

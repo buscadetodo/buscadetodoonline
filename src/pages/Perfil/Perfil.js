@@ -218,7 +218,7 @@ function Perfil() {
                 onChange={handleChange}
                 required
                 className="form-input"
-                placeholder="12345678"
+                placeholder="Sin puntos, ej.: 30111222"
               />
             </div>
 
@@ -250,7 +250,7 @@ function Perfil() {
                 value={formData.password}
                 onChange={handleChange}
                 className="form-input"
-                placeholder="••••••••"
+                placeholder="Dejalo vacío para no cambiarla"
                 minLength={6}
               />
               <small className="form-help">Mínimo 6 caracteres</small>
