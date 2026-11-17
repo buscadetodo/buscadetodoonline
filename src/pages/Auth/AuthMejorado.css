@@ -42,8 +42,8 @@
 
 .btn-back-home:hover {
   background: rgba(102, 126, 234, 0.08);
-  border-color: #667eea;
-  color: #667eea;
+  border-color: var(--color-primario);
+  color: var(--color-primario);
   transform: translateX(-4px);
 }
 
@@ -162,7 +162,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: var(--color, #667eea);
+  background: var(--color, var(--color-primario));
   transform: scaleX(0);
   transition: transform 0.3s ease;
 }
@@ -170,7 +170,7 @@
 .tipo-cuenta-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  border-color: var(--color, #667eea);
+  border-color: var(--color, var(--color-primario));
 }
 
 .tipo-cuenta-card:hover::before {
@@ -226,14 +226,14 @@
   content: '✓';
   position: absolute;
   left: 0;
-  color: var(--color, #667eea);
+  color: var(--color, var(--color-primario));
   font-weight: bold;
 }
 
 .btn-seleccionar {
   width: 100%;
   padding: 12px;
-  background: var(--color, #667eea);
+  background: var(--color, var(--color-primario));
   color: white;
   border: none;
   border-radius: 8px;
@@ -255,7 +255,7 @@
 }
 
 .login-redirect a {
-  color: #667eea;
+  color: var(--color-primario);
   font-weight: 600;
   text-decoration: none;
 }
@@ -275,7 +275,7 @@
 }
 
 .register-legales a {
-  color: #667eea;
+  color: var(--color-primario);
 }
 
 /* ========================================
@@ -312,9 +312,9 @@
 }
 
 .btn-nav-simple:hover {
-  color: #667eea;
+  color: var(--color-primario);
   background: rgba(102, 126, 234, 0.1);
-  border-color: #667eea;
+  border-color: var(--color-primario);
   transform: translateX(-2px);
 }
 
@@ -352,6 +352,7 @@
 
 .login-logo-icon {
   font-size: 56px;
+  color: var(--color-primario);
   animation: float 3s ease-in-out infinite;
 }
 
@@ -384,7 +385,7 @@
 
 .login-subtitle {
   font-size: 16px;
-  color: #667eea;
+  color: var(--color-primario);
   margin: 16px 0 0 0;
   font-weight: 600;
   letter-spacing: 0.3px;
@@ -476,7 +477,7 @@
   content: '';
   width: 4px;
   height: 20px;
-  background: var(--color, #667eea);
+  background: var(--color, var(--color-primario));
   margin-right: 10px;
   border-radius: 2px;
 }
@@ -509,7 +510,7 @@
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: var(--color, #667eea);
+  border-color: var(--color, var(--color-primario));
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
@@ -581,7 +582,7 @@
 }
 
 .form-footer a {
-  color: var(--color, #667eea);
+  color: var(--color, var(--color-primario));
   text-decoration: none;
   font-weight: 600;
 }
@@ -641,7 +642,7 @@
 }
 
 .link-forgot {
-  color: #667eea;
+  color: var(--color-primario);
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
@@ -676,7 +677,7 @@
 }
 
 .link-register {
-  color: #667eea;
+  color: var(--color-primario);
   font-weight: 600;
   text-decoration: none;
 }
@@ -873,6 +874,6 @@
   width: 18px;
   height: 18px;
   margin: 0;
-  accent-color: #667eea;
+  accent-color: var(--color-primario);
   cursor: pointer;
 }

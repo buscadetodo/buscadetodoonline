@@ -45,7 +45,7 @@
 
 .btn-login {
   padding: 0.625rem 1.5rem;
-  background: #667eea;
+  background: var(--color-primario);
   color: white;
   border-radius: 8px;
   text-decoration: none;
@@ -59,7 +59,7 @@
 }
 
 .btn-login:hover {
-  background: #5568d3;
+  background: var(--color-primario-hover);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
@@ -195,7 +195,7 @@
 
 .btn-detectar {
   padding: 0.5rem 0.875rem;
-  background: #667eea;
+  background: var(--color-primario);
   color: white;
   border: none;
   border-radius: 8px;
@@ -215,7 +215,7 @@
 }
 
 .btn-detectar:hover:not(:disabled) {
-  background: #5568d3;
+  background: var(--color-primario-hover);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
@@ -227,7 +227,7 @@
 }
 
 .btn-detectar.loading {
-  background: #667eea;
+  background: var(--color-primario);
   cursor: wait;
 }
 
@@ -341,13 +341,13 @@
 }
 
 .categoria-card:hover {
-  border-color: #667eea;
+  border-color: var(--color-primario);
   transform: translateY(-3px);
   box-shadow: 0 6px 16px rgba(102, 126, 234, 0.2);
 }
 
 .categoria-card.active {
-  border-color: #1565c0;
+  border-color: var(--color-primario);
   background: rgba(21, 101, 192, 0.08);
   box-shadow: 0 4px 12px rgba(21, 101, 192, 0.2);
 }
@@ -367,7 +367,7 @@
   align-items: center;
   gap: 0.4rem;
   padding: 0.6rem 1rem;
-  background: #667eea;
+  background: var(--color-primario);
   color: white;
   border: none;
   border-radius: 8px;
@@ -377,7 +377,7 @@
 }
 
 .btn-buscar:hover {
-  background: #5568d3;
+  background: var(--color-primario-hover);
 }
 
 /* Aclaración bajo el título de una sección */
@@ -459,7 +459,7 @@
 .producto-precio {
   font-size: 1.5rem;
   font-weight: 800;
-  color: #667eea;
+  color: var(--color-primario);
   margin: 0 0 1rem;
 }
 
@@ -495,7 +495,7 @@
   display: block;
   width: 100%;
   padding: 0.75rem;
-  background: #667eea;
+  background: var(--color-primario);
   color: white;
   border: none;
   border-radius: 8px;
@@ -509,7 +509,7 @@
 }
 
 .btn-comprar:hover {
-  background: #5568d3;
+  background: var(--color-primario-hover);
 }
 
 /* Mayoristas Section */
@@ -536,7 +536,7 @@
 }
 
 .mayorista-card:hover {
-  border-color: #667eea;
+  border-color: var(--color-primario);
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
 }
 
@@ -557,7 +557,7 @@
 }
 
 .mayorista-distancia {
-  color: #667eea;
+  color: var(--color-primario);
   font-weight: 600;
 }
 
@@ -573,7 +573,7 @@
   align-items: center;
   gap: 0.3rem;
   background: rgba(21, 101, 192, 0.08);
-  color: #1565c0;
+  color: var(--color-primario);
   font-size: 0.8rem;
   font-weight: 600;
   padding: 0.25rem 0.7rem;
@@ -593,7 +593,7 @@
 
 .btn-contactar {
   padding: 0.75rem 1.5rem;
-  background: #667eea;
+  background: var(--color-primario);
   color: white;
   border: none;
   border-radius: 8px;
@@ -603,7 +603,7 @@
 }
 
 .btn-contactar:hover:not(:disabled) {
-  background: #5568d3;
+  background: var(--color-primario-hover);
 }
 
 .btn-contactar:disabled {
@@ -675,7 +675,7 @@
 
 .btn-modal-primary {
   padding: 1rem;
-  background: #667eea;
+  background: var(--color-primario);
   color: white;
   border-radius: 8px;
   text-decoration: none;
@@ -685,14 +685,14 @@
 }
 
 .btn-modal-primary:hover {
-  background: #5568d3;
+  background: var(--color-primario-hover);
 }
 
 .btn-modal-secondary {
   padding: 1rem;
   background: transparent;
-  color: #667eea;
-  border: 2px solid #667eea;
+  color: var(--color-primario);
+  border: 2px solid var(--color-primario);
   border-radius: 8px;
   text-decoration: none;
   font-weight: 600;
@@ -782,7 +782,7 @@
   background: #f9fafb;
   padding: 1rem;
   border-radius: 8px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid var(--color-primario);
 }
 
 .btn-modal-ubicacion-ok {
@@ -940,7 +940,7 @@
 .feature-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
-  border-color: #667eea;
+  border-color: var(--color-primario);
 }
 
 .feature-icon {
@@ -985,7 +985,7 @@
   display: inline-block;
   padding: 1.25rem 3rem;
   background: white;
-  color: #667eea;
+  color: var(--color-primario);
   font-size: 1.25rem;
   font-weight: 700;
   border-radius: 12px;

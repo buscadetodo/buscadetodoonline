@@ -64,12 +64,12 @@
 }
 
 .sidebar-item:hover {
-  background: #1565c0;
+  background: var(--color-primario);
   color: #ffffff;
 }
 
 .sidebar-item.active {
-  background: #1565c0;
+  background: var(--color-primario);
   color: #ffffff;
   font-weight: 600;
 }

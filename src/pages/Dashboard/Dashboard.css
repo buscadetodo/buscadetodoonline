@@ -4,7 +4,7 @@
 
 /* ===== Hero de bienvenida (estilo Dashboard 2.0) ===== */
 .dashboard-hero {
-  background: linear-gradient(135deg, #1565c0, #42a5f5);
+  background: var(--marca-degrade);
   color: #fff;
   border-radius: 18px;
   padding: 35px;
@@ -12,7 +12,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 2rem;
-  box-shadow: 0 10px 25px rgba(21, 101, 192, 0.3);
+  box-shadow: 0 10px 25px rgba(79, 70, 229, 0.25);
   margin-bottom: 2rem;
   flex-wrap: wrap;
 }
@@ -24,7 +24,7 @@
 
 .hero-badge {
   background: #fff;
-  color: #1565c0;
+  color: var(--color-primario);
   padding: 7px 14px;
   border-radius: 30px;
   font-weight: 700;
@@ -49,7 +49,7 @@
   display: inline-block;
   margin-top: 20px;
   background: #fff;
-  color: #1565c0;
+  color: var(--color-primario);
   text-decoration: none;
   padding: 13px 22px;
   border-radius: 10px;
@@ -86,7 +86,7 @@
 .hero-progress-bar {
   width: 0;
   height: 100%;
-  background: #1565c0;
+  background: var(--color-primario);
   transition: width 0.6s ease;
 }
 
@@ -120,7 +120,7 @@
 .stat-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  border-color: var(--color);
+  border-color: var(--color-primario);
 }
 
 .stat-icon {
@@ -130,9 +130,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--color) 0%, var(--color) 100%);
+  background: var(--color-primario-suave);
+  color: var(--color-primario);
   border-radius: 15px;
-  filter: opacity(0.9);
 }
 
 .stat-content {
@@ -188,7 +188,7 @@
 .action-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  border-color: var(--color);
+  border-color: var(--color-primario);
 }
 
 .action-icon {
@@ -198,9 +198,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--color) 0%, var(--color) 100%);
+  background: var(--color-primario-suave);
+  color: var(--color-primario);
   border-radius: 12px;
-  filter: opacity(0.9);
 }
 
 .action-title {

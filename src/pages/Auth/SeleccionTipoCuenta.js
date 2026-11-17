@@ -13,7 +13,7 @@ function SeleccionTipoCuenta() {
       titulo: 'Soy Mayorista',
       icono: 'mayorista',
       descripcion: 'Vendo productos al por mayor',
-      color: '#667eea',
+      color: '#4f46e5',
       requisitos: ['CUIT', 'Razón Social', 'Productos al por mayor'],
       beneficios: ['Llega a más clientes', 'Gestiona tu catálogo', 'Recibe pedidos online']
     },
@@ -31,7 +31,7 @@ function SeleccionTipoCuenta() {
       titulo: 'Soy Comprador',
       icono: 'comprador',
       descripcion: 'Compro productos para consumo',
-      color: '#4facfe',
+      color: '#0369a1',
       requisitos: ['DNI', 'Email', 'Dirección de entrega'],
       beneficios: ['Accede a precios mayoristas', 'Gran variedad de productos', 'Compra online']
     },

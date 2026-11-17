@@ -74,7 +74,10 @@ function Sidebar({ onNavigate }) {
       <nav className="sidebar-nav">
         {menuItems.map((item) => (
           <Link
-            key={item.path}
+            // Clave por etiqueta: mientras cargan los perfiles "Inicio" apunta a
+            // /perfil igual que "Mi Perfil", y con la ruta como clave React
+            // duplicaba ítems ("Inicio" dos veces).
+            key={item.label}
             to={item.path}
             title={item.label}
             onClick={onNavigate}
