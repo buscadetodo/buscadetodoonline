@@ -1027,3 +1027,162 @@
     font-size: 2rem;
   }
 }
+
+/* ===== Landing público: cómo funciona ===== */
+.como-funciona-section {
+  padding: 2.5rem 0;
+}
+
+.pasos-grid {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.paso-card {
+  position: relative;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.paso-numero {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #a5b4fc;
+}
+
+.paso-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+.paso-card h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1.05rem;
+  color: #1f2937;
+}
+
+.paso-card p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+/* ===== Landing público: invitación a vender ===== */
+.vender-section {
+  padding: 2.5rem 0 3rem;
+}
+
+.vender-contenido {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  background: #1e1b4b;
+  color: #e0e7ff;
+  border-radius: 16px;
+  padding: 2.25rem 2.5rem;
+}
+
+.vender-texto h2 {
+  margin: 0 0 0.5rem;
+  color: #fff;
+  font-size: 1.6rem;
+}
+
+.vender-texto p {
+  margin: 0 0 1rem;
+  color: #c7d2fe;
+}
+
+.vender-beneficios {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.45rem;
+  font-size: 0.92rem;
+}
+
+.vender-beneficios li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vender-beneficios .icon {
+  color: #86efac;
+}
+
+.vender-acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.btn-vender-primario,
+.btn-vender-secundario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.4rem;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-vender-primario {
+  background: #fff;
+  color: #1e1b4b;
+}
+
+.btn-vender-primario:hover,
+.btn-vender-primario:focus-visible {
+  background: #e0e7ff;
+}
+
+.btn-vender-secundario {
+  border: 1px solid rgba(224, 231, 255, 0.5);
+  color: #e0e7ff;
+}
+
+.btn-vender-secundario:hover,
+.btn-vender-secundario:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 768px) {
+  .pasos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vender-contenido {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1.75rem 1.25rem;
+  }
+
+  .vender-texto h2 {
+    font-size: 1.35rem;
+  }
+}

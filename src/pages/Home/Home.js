@@ -42,57 +42,13 @@ function Home() {
     { nombre: 'Mascotas', icon: 'mascotas' }
   ];
 
-  // Datos de muestra del landing público (visitante sin sesión).
-  // No se pueden reemplazar por datos reales porque GET /productos/ y
-  // GET /mayoristas/ exigen token. Con sesión iniciada se usan los datos
-  // reales (ver productosReales / mayoristasReales más abajo).
-  const productosDestacados = [
-    {
-      nombre: 'Arroz Premium 50kg',
-      precio: 25000,
-      imagen: 'granos',
-      distancia: '2.5 km',
-      envio: true
-    },
-    {
-      nombre: 'Aceite Girasol x12',
-      precio: 18000,
-      imagen: 'aceites',
-      distancia: '3.8 km',
-      envio: true
-    },
-    {
-      nombre: 'Azúcar Refinada 25kg',
-      precio: 15000,
-      imagen: 'golosinas',
-      distancia: '1.2 km',
-      envio: false
-    },
-    {
-      nombre: 'Harina 0000 50kg',
-      precio: 22000,
-      imagen: 'panificados',
-      distancia: '4.1 km',
-      envio: true
-    }
-  ];
-
-  const mayoristas = [
-    {
-      nombre: 'Distribuidora Norte',
-      direccion: 'Av. Corrientes 1234',
-      distancia: '1.5 km'
-    },
-    {
-      nombre: 'Almacén Central',
-      direccion: 'Calle San Martín 567',
-      distancia: '2.3 km'
-    },
-    {
-      nombre: 'Mercado del Sur',
-      direccion: 'Av. Rivadavia 890',
-      distancia: '3.7 km'
-    }
+  // El landing público no muestra productos ni mayoristas de ejemplo: eran
+  // datos inventados (con distancias falsas) y GET /productos/ y
+  // GET /mayoristas/ exigen token. En su lugar se explica cómo funciona.
+  const PASOS = [
+    { icon: 'user', titulo: 'Creá tu cuenta gratis', texto: 'Registrate como comprador, comercio o transportista en un par de minutos.' },
+    { icon: 'search', titulo: 'Buscá por rubro', texto: 'Recorré el catálogo de productos por mayor con precio y stock actualizados.' },
+    { icon: 'mayorista', titulo: 'Compará comercios', texto: 'Mirá precio, stock y pedido mínimo de cada mayorista y minorista antes de decidir.' },
   ];
 
   const detectarUbicacion = async () => {
@@ -224,7 +180,6 @@ function Home() {
 
   // Sin sesión, estas acciones llevan a crear cuenta: el modal dice para qué
   const MOTIVOS_LOGIN = {
-    comprar: 'Para comprar, ingresá a tu cuenta',
     buscar: 'Para buscar en el catálogo, ingresá a tu cuenta',
     categoria: 'Para explorar por rubro, ingresá a tu cuenta',
   };
@@ -739,68 +694,45 @@ function Home() {
         </div>
       </section>
 
-      {/* Productos destacados */}
-      <section className="productos-section">
+      {/* Cómo funciona */}
+      <section className="como-funciona-section" aria-labelledby="como-funciona-titulo">
         <div className="container">
-          <h2 className="section-heading">
-            <Icon name="package" /> Productos destacados <span className="demo-badge">Ejemplo</span>
-          </h2>
-          <p className="section-hint">
-            Así se ven las publicaciones. Ingresá para ver el catálogo real de tu zona.
-          </p>
-          <div className="productos-grid">
-            {productosDestacados.map((producto, index) => (
-              <div key={index} className="producto-card">
-                <div className="producto-imagen"><Icon name={producto.imagen} /></div>
-                <div className="producto-info">
-                  <h3 className="producto-nombre">{producto.nombre}</h3>
-                  <p className="producto-precio">${producto.precio.toLocaleString()}</p>
-                  <div className="producto-meta">
-                    <span className="producto-distancia"><Icon name="location" /> {producto.distancia}</span>
-                    <span className={`producto-envio ${producto.envio ? 'disponible' : 'no-disponible'}`}>
-                      {producto.envio ? <><Icon name="transportista" /> Envío</> : <><Icon name="error" /> Sin envío</>}
-                    </span>
-                  </div>
-                  <button 
-                    className="btn-comprar"
-                    onClick={() => handleActionRequiresLogin('comprar')}
-                    aria-label={`Ingresá para comprar ${producto.nombre}`}
-                  >
-                    <Icon name="lock" /> Ingresá para comprar
-                  </button>
-                </div>
-              </div>
+          <h2 id="como-funciona-titulo" className="section-heading">Cómo funciona</h2>
+          <ol className="pasos-grid">
+            {PASOS.map((paso, i) => (
+              <li key={paso.titulo} className="paso-card">
+                <span className="paso-numero" aria-hidden="true">{i + 1}</span>
+                <span className="paso-icono" aria-hidden="true"><Icon name={paso.icon} /></span>
+                <h3>{paso.titulo}</h3>
+                <p>{paso.texto}</p>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
 
-      {/* Mayoristas cercanos */}
-      <section className="mayoristas-section">
+      {/* Invitación a vender: lo que más necesita un marketplace que arranca es oferta */}
+      <section className="vender-section" aria-labelledby="vender-titulo">
         <div className="container">
-          <h2 className="section-heading">
-            <Icon name="mayorista" /> Mayoristas cercanos <span className="demo-badge">Ejemplo</span>
-          </h2>
-          <div className="mayoristas-list">
-            {mayoristas.map((mayorista, index) => (
-              <div key={index} className="mayorista-card">
-                <div className="mayorista-info">
-                  <h3 className="mayorista-nombre">{mayorista.nombre}</h3>
-                  <p className="mayorista-direccion">{mayorista.direccion}</p>
-                  <span className="mayorista-distancia"><Icon name="location" /> {mayorista.distancia}</span>
-                </div>
-                {/* El contacto todavía no tiene flujo, tampoco con sesión */}
-                <button
-                  className="btn-contactar"
-                  disabled
-                  title="Disponible próximamente"
-                  aria-label={`Contacto con ${mayorista.nombre}: disponible próximamente`}
-                >
-                  Contacto próximamente
-                </button>
-              </div>
-            ))}
+        <div className="vender-contenido">
+          <div className="vender-texto">
+            <h2 id="vender-titulo">¿Tenés un comercio o una distribuidora?</h2>
+            <p>Publicá tu catálogo y llegá a comercios y compradores de tu zona.</p>
+            <ul className="vender-beneficios">
+              <li><Icon name="success" /> Crear tu cuenta es gratis</li>
+              <li><Icon name="success" /> Cargá productos con precio y stock en minutos</li>
+              <li><Icon name="success" /> Definí tu pedido mínimo y si hacés retiro en local</li>
+            </ul>
           </div>
+          <div className="vender-acciones">
+            <Link to="/registro/mayorista" className="btn-vender-primario">
+              <Icon name="mayorista" /> Registrar mi comercio
+            </Link>
+            <Link to="/registro/transportista" className="btn-vender-secundario">
+              <Icon name="transportista" /> Soy transportista
+            </Link>
+          </div>
+        </div>
         </div>
       </section>
 
