@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { borrarSesion, guardarSesion, leerSesion } from './sesion';
+import { borrarSesion, leerSesion } from './sesion';
+import { esSesionInvalida, renovarSesion } from './renovarSesion';
 
 // URL base de la API desde variables de entorno
 // Usar la misma URL tanto en desarrollo como en producción
@@ -37,38 +38,53 @@ httpClient.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
+    const esAuth = /\/auth\//.test(originalRequest?.url || '');
 
-    // Si el error es 401 (no autorizado) y no es un retry
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
-      try {
-        const refreshToken = leerSesion('refresh_token');
-        
-        if (refreshToken) {
-          // Intentar refrescar el token
-          const response = await axios.post(`${BASE_URL}/auth/refresh`, {
-            refresh_token: refreshToken,
-          });
-
-          const { access_token, refresh_token } = response.data;
-
-          // Guardar nuevos tokens donde ya estaban (respeta "Recordarme")
-          guardarSesion({ access_token, refresh_token });
-
-          // Reintentar request original con nuevo token
-          originalRequest.headers.Authorization = `Bearer ${access_token}`;
-          return httpClient(originalRequest);
-        }
-      } catch (refreshError) {
-        // Si falla el refresh, limpiar tokens y redirigir al login
-        borrarSesion();
-        window.location.href = '/login';
-        return Promise.reject(refreshError);
-      }
+    // Un 401 de login/refresh es un error de credenciales: no se renueva nada.
+    if (error.response?.status !== 401 || !originalRequest || originalRequest._retry || esAuth) {
+      return Promise.reject(error);
+    }
+    if (!leerSesion('refresh_token')) {
+      return Promise.reject(error);
     }
 
-    return Promise.reject(error);
+    originalRequest._retry = true;
+    const reintentar = (token) => {
+      originalRequest.headers.Authorization = `Bearer ${token}`;
+      return httpClient(originalRequest);
+    };
+
+    // Otra pestaña (o un pedido anterior) ya renovó mientras este estaba en
+    // vuelo: alcanza con reintentar con el token nuevo.
+    const tokenUsado = String(originalRequest.headers?.Authorization || '').replace(/^Bearer /, '');
+    const tokenActual = leerSesion('access_token');
+    if (tokenActual && tokenActual !== tokenUsado) {
+      return reintentar(tokenActual);
+    }
+
+    try {
+      // Todos los 401 simultáneos comparten la misma renovación.
+      const { access_token } = await renovarSesion();
+      return reintentar(access_token);
+    } catch (refreshError) {
+      // Pudo haber ganado otra pestaña con su propia renovación.
+      const tokenNuevo = leerSesion('access_token');
+      if (tokenNuevo && tokenNuevo !== tokenUsado) {
+        return reintentar(tokenNuevo);
+      }
+
+      // Sesión vencida o inválida: se cierra (en todas las pestañas) y al login.
+      if (esSesionInvalida(refreshError)) {
+        borrarSesion();
+        if (window.location.pathname !== '/login') {
+          window.location.href = '/login';
+        }
+      }
+      // 429 o sin conexión: la sesión sigue siendo válida, no se echa al
+      // usuario. Se devuelve ese error para que la pantalla muestre
+      // "Demasiadas solicitudes…" o "No hay conexión…".
+      return Promise.reject(refreshError);
+    }
   }
 );
 

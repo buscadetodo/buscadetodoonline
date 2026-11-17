@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import authService from '../services/authService';
 import mensajeDeError from '../api/mensajeDeError';
-import { leerSesion, pedirSesionAOtrasPestanas, suscribirCambiosDeSesion } from '../api/sesion';
+import { pedirSesionAOtrasPestanas, suscribirCambiosDeSesion } from '../api/sesion';
 
 const AuthContext = createContext(null);
 
@@ -76,8 +76,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
 
-      const refreshToken = leerSesion('refresh_token');
-      const result = await authService.refreshToken(refreshToken);
+      const result = await authService.refreshToken();
       setUser(authService.getCurrentUser());
 
       return { success: true, data: result };

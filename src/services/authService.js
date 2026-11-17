@@ -1,5 +1,6 @@
 import httpClient from '../api/httpClient';
 import { borrarSesion, guardarSesion, leerSesion } from '../api/sesion';
+import { renovarSesion } from '../api/renovarSesion';
 
 const authService = {
   /**
@@ -52,17 +53,9 @@ const authService = {
    * @param {string} refreshToken 
    * @returns {Promise} - nuevos tokens
    */
-  refreshToken: async (refreshToken) => {
-    const response = await httpClient.post('/auth/refresh', {
-      refresh_token: refreshToken,
-    });
-    
-    // Actualizar tokens donde ya estaban (respeta "Recordarme")
-    const { access_token, refresh_token } = response.data;
-    guardarSesion({ access_token, refresh_token });
-    
-    return response.data;
-  },
+  // Usa el refresh_token guardado; comparte la renovación en curso si la hay
+  // (ver api/renovarSesion). El parámetro se mantiene por compatibilidad.
+  refreshToken: async () => renovarSesion(),
 
   /**
    * Cerrar sesión (limpiar tokens)
