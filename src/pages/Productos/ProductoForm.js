@@ -40,7 +40,6 @@ function ProductoForm() {
   const {
     opciones: comercios,
     loading: loadingComercios,
-    isAdmin,
   } = useMisComercios();
 
   const [loading, setLoading] = useState(false);
@@ -233,9 +232,7 @@ function ProductoForm() {
                   ))}
                 </select>
                 <small className="form-hint">
-                  {isAdmin
-                    ? 'Como administrador podés publicar en cualquier comercio.'
-                    : 'Solo aparecen los comercios asociados a tu usuario.'}
+                  Solo aparecen los comercios asociados a tu usuario.
                 </small>
               </div>
 

@@ -5,6 +5,7 @@ import { useToast } from '../../components/Toast/Toast';
 import Icon from '../../components/Icon/Icon';
 import usuarioPerfilesService from '../../services/usuarioPerfilesService';
 import usersService from '../../services/usersService';
+import authService from '../../services/authService';
 import './AuthMejorado.css';
 import './RegisterMejorado.css';
 
@@ -15,6 +16,8 @@ function Login() {
   const [errors, setErrors] = useState({});
   const [loginError, setLoginError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  // Sin marcar, la sesión se cierra al cerrar el navegador (R-003 §5.3).
+  const [recordarme, setRecordarme] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
@@ -80,7 +83,7 @@ function Login() {
 
     setSubmitting(true);
 
-    const result = await login(email, password);
+    const result = await login(email, password, recordarme);
 
     if (!result.success) {
       const mensaje = result.error || 'Email o contraseña incorrectos. Verificá tus datos e intentá nuevamente.';
@@ -92,7 +95,7 @@ function Login() {
 
     try {
       // Login exitoso: obtener datos del usuario y redirigir de inmediato
-      const userId = localStorage.getItem('user_id');
+      const userId = authService.getCurrentUser()?.id;
       const userResponse = await usersService.getById(userId);
       // La API envuelve la respuesta en { success, data } → tomar el payload real
       const userData = userResponse?.data ?? userResponse;
@@ -202,6 +205,17 @@ function Login() {
               </div>
               {errors.password && <span className="error-message" role="alert"><Icon name="warning" /> {errors.password}</span>}
             </div>
+
+            {/* Recordarme: conserva la sesión 7 días aunque se cierre el navegador */}
+            <label className="login-recordarme" htmlFor="login-recordarme">
+              <input
+                id="login-recordarme"
+                type="checkbox"
+                checked={recordarme}
+                onChange={(e) => setRecordarme(e.target.checked)}
+              />
+              <span>Recordarme en este dispositivo</span>
+            </label>
 
             {/* Botón submit */}
             <button

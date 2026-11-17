@@ -1,32 +1,34 @@
 import httpClient from '../api/httpClient';
+import { borrarSesion, guardarSesion, leerSesion } from '../api/sesion';
+import { renovarSesion } from '../api/renovarSesion';
 
 const authService = {
   /**
    * Iniciar sesión con email y password
    * @param {string} email 
-   * @param {string} password 
+   * @param {string} password
+   * @param {boolean} [recordar] - "Recordarme": conservar la sesión al cerrar el navegador
    * @returns {Promise} - tokens JWT
    */
-  login: async (email, password) => {
+  login: async (email, password, recordar = false) => {
     const response = await httpClient.post('/auth/login', {
       email,
       password,
     });
     
-    // Guardar tokens en localStorage
+    // Guardar tokens (localStorage con "Recordarme", sessionStorage sin)
     const { access_token, refresh_token, user_id } = response.data;
-    localStorage.setItem('access_token', access_token);
-    localStorage.setItem('refresh_token', refresh_token);
-    
+    guardarSesion({ access_token, refresh_token }, recordar);
+
     // Intentar guardar user_id si viene en la respuesta
     if (user_id) {
-      localStorage.setItem('user_id', user_id);
+      guardarSesion({ user_id });
     } else {
       // Si no viene en la respuesta, intentar decodificar del token
       try {
         const payload = JSON.parse(atob(access_token.split('.')[1]));
         if (payload.user_id || payload.sub || payload.id) {
-          localStorage.setItem('user_id', payload.user_id || payload.sub || payload.id);
+          guardarSesion({ user_id: payload.user_id || payload.sub || payload.id });
         }
       } catch (err) {
         console.warn('No se pudo extraer user_id del token');
@@ -51,26 +53,15 @@ const authService = {
    * @param {string} refreshToken 
    * @returns {Promise} - nuevos tokens
    */
-  refreshToken: async (refreshToken) => {
-    const response = await httpClient.post('/auth/refresh', {
-      refresh_token: refreshToken,
-    });
-    
-    // Actualizar tokens
-    const { access_token, refresh_token } = response.data;
-    localStorage.setItem('access_token', access_token);
-    localStorage.setItem('refresh_token', refresh_token);
-    
-    return response.data;
-  },
+  // Usa el refresh_token guardado; comparte la renovación en curso si la hay
+  // (ver api/renovarSesion). El parámetro se mantiene por compatibilidad.
+  refreshToken: async () => renovarSesion(),
 
   /**
    * Cerrar sesión (limpiar tokens)
    */
   logout: () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user_id');
+    borrarSesion();
   },
 
   /**
@@ -78,7 +69,7 @@ const authService = {
    * @returns {boolean}
    */
   isAuthenticated: () => {
-    return !!localStorage.getItem('access_token');
+    return !!leerSesion('access_token');
   },
 
   /**
@@ -86,7 +77,7 @@ const authService = {
    * @returns {string|null}
    */
   getAccessToken: () => {
-    return localStorage.getItem('access_token');
+    return leerSesion('access_token');
   },
 
   /**
@@ -95,7 +86,7 @@ const authService = {
    * @returns {{id: string, email: string, id_rol: number}|null}
    */
   getCurrentUser: () => {
-    const token = localStorage.getItem('access_token');
+    const token = leerSesion('access_token');
     if (!token) return null;
     try {
       // Normalizar base64url → base64 antes de decodificar

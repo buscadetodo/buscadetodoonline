@@ -13,7 +13,8 @@ function ProductosList() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { rubros, fetchRubros } = useRubros();
-  const { opciones: comercios, isAdmin } = useMisComercios();
+  // comercios = propios (lo que se puede gestionar); todos = para nombres y filtro
+  const { opciones: comercios, opcionesTodas } = useMisComercios();
   const toast = useToast();
 
   // Paginación.
@@ -108,9 +109,8 @@ function ProductosList() {
   };
 
   // Solo se puede editar/borrar lo que la API va a aceptar: productos de un
-  // comercio propio. El admin puede sobre todos.
+  // comercio propio. El admin tampoco tiene bypass (R-003 §3).
   const puedeGestionar = (producto) => {
-    if (isAdmin) return true;
     return comercios.some(
       (c) =>
         (c.tipo === 'mayorista' && c.id === producto.mayorista_id) ||
@@ -119,7 +119,7 @@ function ProductosList() {
   };
 
   const nombreOferente = (producto) => {
-    const match = comercios.find(
+    const match = opcionesTodas.find(
       (c) =>
         (c.tipo === 'mayorista' && c.id === producto.mayorista_id) ||
         (c.tipo === 'minorista' && c.id === producto.minorista_id)
@@ -130,7 +130,7 @@ function ProductosList() {
       : `Minorista #${producto.minorista_id}`;
   };
 
-  const puedeCrear = isAdmin || comercios.length > 0;
+  const puedeCrear = comercios.length > 0;
   const desde = productos.length === 0 ? 0 : page * ITEMS_PER_PAGE + 1;
   const hasta = page * ITEMS_PER_PAGE + productos.length;
 
@@ -179,7 +179,7 @@ function ProductosList() {
             </select>
           </div>
 
-          {comercios.length > 0 && (
+          {opcionesTodas.length > 0 && (
             <div className="filter-group">
               <select
                 name="comercio"
@@ -188,7 +188,7 @@ function ProductosList() {
                 className="filter-select"
               >
                 <option value="">Todos los comercios</option>
-                {comercios.map((c) => (
+                {opcionesTodas.map((c) => (
                   <option key={`${c.tipo}:${c.id}`} value={`${c.tipo}:${c.id}`}>
                     {c.label} ({c.tipo === 'mayorista' ? 'Mayorista' : 'Minorista'})
                   </option>

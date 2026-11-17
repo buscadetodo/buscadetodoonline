@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import { usePerfilActivo } from '../../context/PerfilContext';
 import usersService from '../../services/usersService';
+import authService from '../../services/authService';
 import mayoristasService from '../../services/mayoristasService';
 import rubrosService from '../../services/rubrosService';
 import productosService from '../../services/productosService';
@@ -244,7 +245,7 @@ function Home() {
       if (isAuthenticated) {
         setLoadingUser(true);
         try {
-          const userId = localStorage.getItem('user_id');
+          const userId = authService.getCurrentUser()?.id;
           if (userId) {
             const response = await usersService.getById(userId);
             // La API envuelve la respuesta en { success, data }
