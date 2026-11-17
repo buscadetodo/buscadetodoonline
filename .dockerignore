@@ -1,0 +1,10 @@
+node_modules
+build
+.git
+.github
+.env.local
+.env.*.local
+npm-debug.log*
+docs
+postman_collection.json
+usuarios-dev.local.md

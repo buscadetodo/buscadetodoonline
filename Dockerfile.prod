@@ -1,7 +1,7 @@
 # Multi-stage build para producción
 
 # Etapa 1: Build de la aplicación React
-FROM node:18-alpine AS builder
+FROM node:24-alpine AS builder
 
 WORKDIR /app
 

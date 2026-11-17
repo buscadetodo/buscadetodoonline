@@ -34,6 +34,7 @@ libremercado/
 ├── nginx.conf              # Configuración de Nginx
 ├── render.yaml             # Configuración para Render
 ├── DEPLOYMENT.md           # Guía de deployment
+├── .github/workflows/      # CI en GitHub Actions
 ├── .env.example            # Variables de entorno ejemplo
 └── package.json            # Dependencias del proyecto
 ```
@@ -121,6 +122,11 @@ NODE_ENV=production
 ```
 
 **Nota:** Las variables deben empezar con `REACT_APP_` para estar disponibles en React.
+
+## ✅ CI/CD
+
+- **CI** (GitHub Actions, `.github/workflows/ci.yml`): en cada PR a `main` y en cada push a `main` corre el build de producción con `CI=true` (los warnings de ESLint lo cortan) y construye y prueba la imagen de `Dockerfile.prod`.
+- **CD** (Render): cada push a `main` se deploya solo si el CI pasó.
 
 ## ☁️ Deployment en Render
 
