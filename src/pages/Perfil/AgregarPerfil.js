@@ -15,7 +15,16 @@ import diasService from '../../services/diasService';
 import horariosService from '../../services/horariosService';
 import { PERFIL } from '../../config/roles';
 import Icon from '../../components/Icon/Icon';
-import { esPatenteValida, normalizarPatente, PATENTE_AYUDA, PATENTE_MAX } from '../../utils/validaciones';
+import {
+  CUIT_AYUDA,
+  errorTextoConHtml,
+  esCuitValido,
+  esPatenteValida,
+  normalizarCuit,
+  normalizarPatente,
+  PATENTE_AYUDA,
+  PATENTE_MAX,
+} from '../../utils/validaciones';
 import './AgregarPerfil.css';
 
 /**
@@ -180,6 +189,23 @@ function AgregarPerfil() {
 
     if (tipoSeleccionado === 'transportista' && !esPatenteValida(datosEspecificos.patente)) {
       toast.error(`Patente inválida (${PATENTE_AYUDA})`);
+      return;
+    }
+
+    const esComercio = tipoSeleccionado === 'mayorista' || tipoSeleccionado === 'minorista';
+    if (esComercio && !esCuitValido(datosEspecificos.cuit)) {
+      toast.error(`CUIT inválido (${CUIT_AYUDA})`);
+      return;
+    }
+
+    const errorHtml = errorTextoConHtml(datosEspecificos, {
+      razon_social: 'La razón social',
+      descripcion: 'La descripción',
+      tipo_vehiculo: 'El tipo de vehículo',
+      capacidad_carga: 'La capacidad de carga',
+    });
+    if (errorHtml) {
+      toast.error(errorHtml);
       return;
     }
 
@@ -352,10 +378,14 @@ function AgregarPerfil() {
               <input
                 type="text"
                 value={datosEspecificos.cuit}
-                onChange={(e) => setCampo('cuit', e.target.value)}
-                placeholder="20-12345678-9"
+                onChange={(e) => setCampo('cuit', normalizarCuit(e.target.value))}
+                placeholder="20123456789"
+                inputMode="numeric"
+                maxLength={11}
                 required
+                aria-describedby="ap-cuit-ayuda"
               />
+              <small id="ap-cuit-ayuda" className="ap-ayuda">{CUIT_AYUDA}</small>
             </div>
 
             <div className="ap-form-group">

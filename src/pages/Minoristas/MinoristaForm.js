@@ -7,6 +7,7 @@ import horariosService from '../../services/horariosService';
 import SelectorUsuario from '../../components/SelectorUsuario/SelectorUsuario';
 import SelectRubro from '../../components/SelectRubro/SelectRubro';
 import mensajeDeError from '../../api/mensajeDeError';
+import { CUIT_AYUDA, esCuitValido, errorTextoConHtml, normalizarCuit } from '../../utils/validaciones';
 import Icon from '../../components/Icon/Icon';
 import '../Mayoristas/Mayoristas.css';
 import '../Forms/Forms.css';
@@ -82,7 +83,7 @@ function MinoristaForm() {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: name === 'cuit' ? normalizarCuit(value) : value
     });
   };
 
@@ -90,14 +91,30 @@ function MinoristaForm() {
     e.preventDefault();
     setError(null);
 
+    // Un registro viejo puede traer el CUIT con guiones: se limpia al enviar.
+    const datos = { ...formData, cuit: normalizarCuit(formData.cuit) };
+
+    if (!esCuitValido(datos.cuit)) {
+      setError(`CUIT inválido (${CUIT_AYUDA})`);
+      return;
+    }
+    const errorHtml = errorTextoConHtml(datos, {
+      razon_social: 'La razón social',
+      descripcion: 'La descripción',
+    });
+    if (errorHtml) {
+      setError(errorHtml);
+      return;
+    }
+
     try {
       setLoading(true);
       
       if (isEdit) {
-        await minoristasService.update(id, formData);
+        await minoristasService.update(id, datos);
         toast.success('Minorista actualizado correctamente');
       } else {
-        await minoristasService.create(formData);
+        await minoristasService.create(datos);
         toast.success('Minorista creado correctamente');
       }
 
@@ -167,7 +184,11 @@ function MinoristaForm() {
                   required
                   className="form-input"
                   placeholder="20123456789"
+                  inputMode="numeric"
+                  maxLength={11}
+                  aria-describedby="cuit-ayuda"
                 />
+                <small id="cuit-ayuda" className="form-help">{CUIT_AYUDA}</small>
               </div>
             </div>
 

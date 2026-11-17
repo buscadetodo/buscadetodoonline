@@ -4,6 +4,7 @@ import { useRubros, useMisComercios } from '../../hooks';
 import { useToast } from '../../components/Toast/Toast';
 import productosService, { buildProductoPayload } from '../../services/productosService';
 import mensajeDeError from '../../api/mensajeDeError';
+import { errorTextoConHtml } from '../../utils/validaciones';
 import Icon from '../../components/Icon/Icon';
 import '../Forms/Forms.css';
 import './Productos.css';
@@ -133,6 +134,17 @@ function ProductoForm() {
       const msg = 'Seleccioná el comercio que ofrece el producto.';
       setError(msg);
       toast.error(msg);
+      return;
+    }
+
+    const errorHtml = errorTextoConHtml(formData, {
+      nombre: 'El nombre',
+      sku: 'El SKU',
+      descripcion: 'La descripción',
+    });
+    if (errorHtml) {
+      setError(errorHtml);
+      toast.error(errorHtml);
       return;
     }
 

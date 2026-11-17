@@ -24,3 +24,35 @@ export const normalizarPatente = (valor) =>
     .slice(0, PATENTE_MAX);
 
 export const esPatenteValida = (patente) => PATENTE_REGEX.test(normalizarPatente(patente));
+
+// CUIT: el backend (R-003 §4) exige exactamente 11 dígitos, sin guiones.
+// Se aceptan guiones o espacios al escribir y se limpian en el onChange,
+// así "20-12345678-9" queda "20123456789". No se valida el dígito
+// verificador porque el backend tampoco lo hace (rechazaríamos CUIT que la
+// API acepta, como el de los ejemplos de la colección).
+export const CUIT_LARGO = 11;
+export const CUIT_AYUDA = '11 dígitos, sin guiones (ej.: 20123456789)';
+
+export const normalizarCuit = (valor) =>
+  String(valor || '')
+    .replace(/\D/g, '')
+    .slice(0, CUIT_LARGO);
+
+export const esCuitValido = (cuit) => /^\d{11}$/.test(String(cuit || '').trim());
+
+// Textos libres: el backend (R-003 §4) rechaza con 422 cualquier texto que
+// tenga < o >. Se valida antes de enviar para mostrar un mensaje claro.
+export const TEXTO_SIN_HTML_AYUDA = 'no puede contener los caracteres < ni >';
+
+export const tieneCaracteresHtml = (texto) => /[<>]/.test(String(texto ?? ''));
+
+/**
+ * Devuelve el mensaje de error del primer campo de texto que tenga < o >,
+ * o null si están todos bien.
+ * @param {Object} datos - valores del formulario
+ * @param {Object} etiquetas - { nombreDelCampo: 'Etiqueta visible' }
+ */
+export const errorTextoConHtml = (datos, etiquetas) => {
+  const campo = Object.keys(etiquetas).find((k) => tieneCaracteresHtml(datos?.[k]));
+  return campo ? `${etiquetas[campo]} ${TEXTO_SIN_HTML_AYUDA}` : null;
+};

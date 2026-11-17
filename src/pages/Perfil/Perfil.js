@@ -4,7 +4,7 @@ import usersService from '../../services/usersService';
 import { usePerfilActivo } from '../../context/PerfilContext';
 import MisPerfiles from '../../components/MisPerfiles/MisPerfiles';
 import Icon from '../../components/Icon/Icon';
-import { esEmailValido } from '../../utils/validaciones';
+import { errorTextoConHtml, esEmailValido } from '../../utils/validaciones';
 import './Perfil.css';
 
 function Perfil() {
@@ -122,6 +122,12 @@ function Perfil() {
 
     if (!esEmailValido(formData.email)) {
       setError('Ingresá un email válido (ej.: nombre@empresa.com)');
+      return;
+    }
+
+    const errorHtml = errorTextoConHtml(formData, { nombre: 'El nombre', apellido: 'El apellido' });
+    if (errorHtml) {
+      setError(errorHtml);
       return;
     }
 

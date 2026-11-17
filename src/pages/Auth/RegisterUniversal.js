@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useToast } from '../../components/Toast/Toast';
 import Icon from '../../components/Icon/Icon';
-import { esEmailValido } from '../../utils/validaciones';
+import { esEmailValido, tieneCaracteresHtml, TEXTO_SIN_HTML_AYUDA } from '../../utils/validaciones';
 import { useAuth } from '../../hooks';
 import authService from '../../services/authService';
 import './AuthMejorado.css';
@@ -38,10 +38,14 @@ function RegisterUniversal() {
 
     if (!formData.nombre.trim()) {
       newErrors.nombre = 'El nombre es requerido';
+    } else if (tieneCaracteresHtml(formData.nombre)) {
+      newErrors.nombre = `El nombre ${TEXTO_SIN_HTML_AYUDA}`;
     }
 
     if (!formData.apellido.trim()) {
       newErrors.apellido = 'El apellido es requerido';
+    } else if (tieneCaracteresHtml(formData.apellido)) {
+      newErrors.apellido = `El apellido ${TEXTO_SIN_HTML_AYUDA}`;
     }
 
     if (!formData.dni.trim()) {

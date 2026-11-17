@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRubros } from '../../hooks';
 import Icon from '../../components/Icon/Icon';
+import { tieneCaracteresHtml, TEXTO_SIN_HTML_AYUDA } from '../../utils/validaciones';
 import '../Mayoristas/Mayoristas.css';
 import './Admin.css';
 
@@ -18,6 +19,10 @@ function RubrosList() {
     e.preventDefault();
     if (!nuevoRubro.trim()) {
       alert('Por favor ingresa un nombre para el rubro');
+      return;
+    }
+    if (tieneCaracteresHtml(nuevoRubro)) {
+      alert(`El nombre del rubro ${TEXTO_SIN_HTML_AYUDA}`);
       return;
     }
 
