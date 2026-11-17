@@ -404,3 +404,67 @@
     font-size: 1.5rem;
   }
 }
+
+@media (max-width: 600px) {
+  .panel-metricas {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+
+  .panel-metrica {
+    padding: 0.75rem;
+  }
+
+  .panel-metrica-titulo {
+    font-size: 0.75rem;
+    line-height: 1.25;
+  }
+
+  .panel-metrica-titulo .icon {
+    display: none;
+  }
+
+  .panel-metrica-valor {
+    font-size: 1.35rem;
+  }
+
+  .panel-metrica-ayuda {
+    display: none;
+  }
+
+  .dashboard .actions-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .dashboard .action-card {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 0.9rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .dashboard .action-card:hover {
+    transform: none;
+  }
+
+  .dashboard .action-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.3rem;
+    border-radius: 10px;
+  }
+
+  .dashboard .action-title {
+    text-align: left;
+  }
+
+  .dashboard-section {
+    margin-bottom: 2rem;
+  }
+
+  .dashboard-section h2,
+  .panel-seccion-cabecera h2 {
+    font-size: 1.15rem;
+  }
+}

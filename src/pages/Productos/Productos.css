@@ -270,10 +270,17 @@
 
   .filter-form {
     flex-direction: column;
+    align-items: stretch;
   }
 
-  .filter-input {
+  .filter-form .filter-group {
     width: 100%;
+  }
+
+  .filter-input,
+  .filter-form .filter-select {
+    width: 100%;
+    min-width: 0;
   }
 
   .filter-form .btn {

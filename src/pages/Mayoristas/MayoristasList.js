@@ -5,6 +5,7 @@ import { useToast } from '../../components/Toast/Toast';
 import { esAdmin } from '../../config/roles';
 import Pagination from '../../components/Pagination/Pagination';
 import Icon from '../../components/Icon/Icon';
+import { formatearPrecio } from '../../utils/formato';
 import './Mayoristas.css';
 
 function MayoristasList() {
@@ -110,7 +111,7 @@ function MayoristasList() {
                 </div>
                 <div className="info-item">
                   <span className="info-label">Pedido mínimo:</span>
-                  <span className="info-value">${mayorista.pedido_minimo}</span>
+                  <span className="info-value">{formatearPrecio(mayorista.pedido_minimo)}</span>
                 </div>
                 <div className="info-item">
                   <span className="info-label">Retiro en local:</span>
