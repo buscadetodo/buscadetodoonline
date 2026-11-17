@@ -42,7 +42,7 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: #1565c0;
+  background: var(--color-primario);
   color: #fff;
   display: inline-flex;
   align-items: center;
@@ -71,11 +71,11 @@
 }
 .ap-tipo-card:hover:not(.disabled) {
   transform: translateY(-4px);
-  border-color: var(--color, #1565c0);
+  border-color: var(--color, var(--color-primario));
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 .ap-tipo-card.selected {
-  border-color: var(--color, #1565c0);
+  border-color: var(--color, var(--color-primario));
   background: rgba(21, 101, 192, 0.06);
   box-shadow: 0 6px 18px rgba(21, 101, 192, 0.18);
 }
@@ -110,7 +110,7 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: var(--color, #1565c0);
+  background: var(--color, var(--color-primario));
   color: #fff;
   display: flex;
   align-items: center;
@@ -185,7 +185,7 @@
 .ap-form-group select:focus,
 .ap-form-group textarea:focus {
   outline: none;
-  border-color: #1565c0;
+  border-color: var(--color-primario);
   box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.12);
 }
 .ap-form-group textarea {
@@ -205,7 +205,7 @@
 .ap-check input {
   width: 18px;
   height: 18px;
-  accent-color: #1565c0;
+  accent-color: var(--color-primario);
   cursor: pointer;
 }
 
@@ -284,7 +284,7 @@
   border-color: #cbd5e0;
 }
 .ap-btn-submit {
-  background: #1565c0;
+  background: var(--color-primario);
   color: #fff;
   box-shadow: 0 4px 12px rgba(21, 101, 192, 0.3);
 }

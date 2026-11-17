@@ -90,8 +90,8 @@ function RegisterMejorado() {
       mayorista: {
         titulo: 'Registro de Mayorista',
         icono: 'mayorista',
-        color: '#667eea',
-        colorDark: '#5568d3',
+        color: '#4f46e5',
+        colorDark: '#4338ca',
         perfil_id: PERFIL.MAYORISTA,
         totalSteps: 2
       },
@@ -106,8 +106,8 @@ function RegisterMejorado() {
       comprador: {
         titulo: 'Registro de Comprador',
         icono: 'comprador',
-        color: '#4facfe',
-        colorDark: '#3d9ce3',
+        color: '#0369a1',
+        colorDark: '#075985',
         perfil_id: PERFIL.COMPRADOR,
         totalSteps: 1
       },

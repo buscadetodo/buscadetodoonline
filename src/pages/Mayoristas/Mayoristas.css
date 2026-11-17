@@ -59,7 +59,7 @@
 
 .filter-select:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--color-primario);
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
@@ -93,7 +93,7 @@
 .comprador-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-  border-color: #667eea;
+  border-color: var(--color-primario);
 }
 
 .mayorista-header,
@@ -219,13 +219,12 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--color-primario);
   color: white;
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  background: var(--color-primario-hover);
 }
 
 .btn-secondary {
@@ -236,18 +235,18 @@
 
 .btn-secondary:hover {
   background: #e5e7eb;
-  transform: translateY(-2px);
 }
 
+/* Acción destructiva: secundaria (contorno), para que no compita con la principal */
 .btn-danger {
-  background: #fee2e2;
-  color: #991b1b;
+  background: white;
+  color: var(--color-peligro);
   border: 2px solid #fecaca;
 }
 
 .btn-danger:hover {
-  background: #fecaca;
-  transform: translateY(-2px);
+  background: var(--color-peligro-suave);
+  border-color: var(--color-peligro);
 }
 
 .loading {

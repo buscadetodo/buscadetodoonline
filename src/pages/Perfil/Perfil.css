@@ -60,7 +60,7 @@
 }
 
 .info-card:hover {
-  border-color: #667eea;
+  border-color: var(--color-primario);
   transform: translateY(-2px);
 }
 
