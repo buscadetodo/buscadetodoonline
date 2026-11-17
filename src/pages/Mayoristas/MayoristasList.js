@@ -105,10 +105,13 @@ function MayoristasList() {
                 <span className="rubro-badge">{getRubroName(mayorista.rubro_id)}</span>
               </div>
               <div className="mayorista-info">
-                <div className="info-item">
-                  <span className="info-label">CUIT:</span>
-                  <span className="info-value">{mayorista.cuit}</span>
-                </div>
+                {/* Ficha ajena: la API no manda el CUIT (catálogo público, R-003) */}
+                {mayorista.cuit && (
+                  <div className="info-item">
+                    <span className="info-label">CUIT:</span>
+                    <span className="info-value">{mayorista.cuit}</span>
+                  </div>
+                )}
                 <div className="info-item">
                   <span className="info-label">Pedido mínimo:</span>
                   <span className="info-value">{formatearPrecio(mayorista.pedido_minimo)}</span>

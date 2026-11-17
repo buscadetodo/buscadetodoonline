@@ -5,4 +5,5 @@ export { useRubros, useRubrosAutoload } from './useRubros';
 export { useUsers, useUsersAutoload } from './useUsers';
 export { useMayoristas, useMayoristasAutoload } from './useMayoristas';
 export { useMisComercios } from './useMisComercios';
+export { useCatalogoComercios } from './useCatalogoComercios';
 export { useFichaComercial } from './useFichaComercial';

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FEATURE_PRODUCTOS } from '../../config/features';
-import { useAuth, useRubrosAutoload } from '../../hooks';
+import { useAuth, useCatalogoComercios, useRubrosAutoload } from '../../hooks';
 import productosService from '../../services/productosService';
 import usersService from '../../services/usersService';
 import Icon from '../../components/Icon/Icon';
@@ -22,6 +22,7 @@ const CANTIDAD = 8;
 function CompradorHome() {
   const { user } = useAuth();
   const { rubros } = useRubrosAutoload(50, 0);
+  const { nombreDe } = useCatalogoComercios();
   const [nombre, setNombre] = useState('');
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(FEATURE_PRODUCTOS);
@@ -140,8 +141,10 @@ function CompradorHome() {
                     </div>
                     <div className="panel-producto-cuerpo">
                       <p className="panel-producto-nombre">{p.nombre}</p>
-                      {nombreRubro(p.rubro_id) && (
-                        <p className="panel-producto-rubro">{nombreRubro(p.rubro_id)}</p>
+                      {(nombreDe(p) || nombreRubro(p.rubro_id)) && (
+                        <p className="panel-producto-rubro">
+                          {[nombreDe(p), nombreRubro(p.rubro_id)].filter(Boolean).join(' · ')}
+                        </p>
                       )}
                       <div className="panel-producto-pie">
                         <span className="panel-item-precio">{formatearPrecio(p.precio)}</span>
