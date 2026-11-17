@@ -40,7 +40,7 @@ function SeleccionTipoCuenta() {
       titulo: 'Soy Transportista',
       icono: 'transportista',
       descripcion: 'Ofrezco servicios de flete',
-      color: '#f093fb',
+      color: '#0f766e',
       requisitos: ['CUIT', 'Datos del vehículo', 'Patente'],
       beneficios: ['Consigue más clientes', 'Gestiona tus viajes', 'Tarifas personalizadas']
     }

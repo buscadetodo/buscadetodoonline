@@ -170,3 +170,19 @@
     right: -10px;
   }
 }
+
+/* Email de la cuenta, arriba del menú */
+.perfil-dropdown-usuario {
+  padding: 0.75rem 1rem 0.5rem;
+  font-size: 0.82rem;
+  color: #6b7280;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* Acciones del menú: texto tal cual (los nombres de perfil sí van capitalizados) */
+.perfil-item-nombre.sin-mayusculas {
+  text-transform: none;
+}

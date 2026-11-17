@@ -114,8 +114,8 @@ function RegisterMejorado() {
       transportista: {
         titulo: 'Registro de Transportista',
         icono: 'transportista',
-        color: '#f093fb',
-        colorDark: '#d77fe0',
+        color: '#0f766e',
+        colorDark: '#115e59',
         perfil_id: PERFIL.TRANSPORTISTA,
         totalSteps: 2
       }

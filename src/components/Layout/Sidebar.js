@@ -13,7 +13,7 @@ function Sidebar({ onNavigate }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const { perfilActivo, obtenerDashboardUrl, sinNingunPerfil } = usePerfilActivo();
+  const { panelUrl, sinNingunPerfil } = usePerfilActivo();
   const { tiposFaltantes } = useFichaComercial();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
@@ -37,14 +37,8 @@ function Sidebar({ onNavigate }) {
     { path: '/perfil', icon: 'settings', label: 'Mi Perfil' },
   ];
 
-  // Menú para usuarios comunes: solo lo suyo
-  const inicioUrl = (() => {
-    if (!perfilActivo) return '/';
-    const url = obtenerDashboardUrl(perfilActivo);
-    // Si no se pudo mapear (cae en /dashboard, que es admin), usar el home público
-    return url === '/dashboard' ? '/' : url;
-  })();
-
+  // Menú para usuarios comunes: solo lo suyo. "Inicio" es el panel del perfil
+  // activo (o Mi Perfil si todavía no eligió uno).
   // El acceso al alta se muestra cuando el usuario quedó a mitad de camino:
   // sin ningún perfil (el registro no lo completó) o con el perfil asignado
   // pero sin su ficha. En ambos casos no puede operar y necesita volver ahí.
@@ -62,8 +56,10 @@ function Sidebar({ onNavigate }) {
     : null;
 
   const userMenu = [
-    { path: inicioUrl, icon: 'home', label: 'Inicio' },
+    { path: panelUrl, icon: 'home', label: 'Inicio' },
     ...(altaPendiente ? [altaPendiente] : []),
+    // El catálogo solo se alcanzaba desde las tarjetas del panel
+    { path: '/productos', icon: 'package', label: 'Catálogo', feature: FEATURE_PRODUCTOS },
     { path: '/mayoristas', icon: 'mayorista', label: 'Explorar mayoristas' },
     { path: '/perfil', icon: 'settings', label: 'Mi Perfil' },
   ];
