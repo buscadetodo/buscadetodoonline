@@ -4,6 +4,7 @@ import { useToast } from '../../components/Toast/Toast';
 import compradoresService from '../../services/compradoresService';
 import SelectorUsuario from '../../components/SelectorUsuario/SelectorUsuario';
 import Icon from '../../components/Icon/Icon';
+import { errorTextoConHtml } from '../../utils/validaciones';
 import '../Mayoristas/Mayoristas.css';
 import '../Forms/Forms.css';
 
@@ -53,6 +54,12 @@ function CompradorForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+
+    const errorHtml = errorTextoConHtml(formData, { nombre: 'El nombre', apellido: 'El apellido' });
+    if (errorHtml) {
+      setError(errorHtml);
+      return;
+    }
 
     try {
       setLoading(true);

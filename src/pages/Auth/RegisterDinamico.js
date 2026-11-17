@@ -3,10 +3,15 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useToast } from '../../components/Toast/Toast';
 import Icon from '../../components/Icon/Icon';
 import {
+  CUIT_AYUDA,
+  esCuitValido,
   esEmailValido,
   esPatenteValida,
+  normalizarCuit,
   normalizarPatente,
   PATENTE_AYUDA,
+  tieneCaracteresHtml,
+  TEXTO_SIN_HTML_AYUDA,
 } from '../../utils/validaciones';
 import authService from '../../services/authService';
 import usuarioPerfilesService from '../../services/usuarioPerfilesService';
@@ -125,7 +130,9 @@ function RegisterMejorado() {
     const newErrors = {};
 
     if (!datosComunes.nombre.trim()) newErrors.nombre = 'El nombre es requerido';
+    else if (tieneCaracteresHtml(datosComunes.nombre)) newErrors.nombre = `El nombre ${TEXTO_SIN_HTML_AYUDA}`;
     if (!datosComunes.apellido.trim()) newErrors.apellido = 'El apellido es requerido';
+    else if (tieneCaracteresHtml(datosComunes.apellido)) newErrors.apellido = `El apellido ${TEXTO_SIN_HTML_AYUDA}`;
     if (!datosComunes.dni.trim()) newErrors.dni = 'El DNI es requerido';
     if (datosComunes.dni.length < 7) newErrors.dni = 'DNI inválido';
     
@@ -155,10 +162,22 @@ function RegisterMejorado() {
     if (tipo === 'mayorista' || tipo === 'minorista') {
       if (!datosEspecificos.razon_social.trim()) {
         newErrors.razon_social = 'La razón social es requerida';
+      } else if (tieneCaracteresHtml(datosEspecificos.razon_social)) {
+        newErrors.razon_social = `La razón social ${TEXTO_SIN_HTML_AYUDA}`;
       }
       if (!datosEspecificos.cuit.trim()) {
         newErrors.cuit = 'El CUIT es requerido';
+      } else if (!esCuitValido(datosEspecificos.cuit)) {
+        newErrors.cuit = `CUIT inválido (${CUIT_AYUDA})`;
       }
+    }
+
+    // Texto libre de cualquier tipo de cuenta (el backend rechaza < y >).
+    if (tieneCaracteresHtml(datosEspecificos.descripcion)) {
+      newErrors.descripcion = `La descripción ${TEXTO_SIN_HTML_AYUDA}`;
+    }
+    if (tieneCaracteresHtml(datosEspecificos.capacidad_carga)) {
+      newErrors.capacidad_carga = `La capacidad de carga ${TEXTO_SIN_HTML_AYUDA}`;
     }
 
     if (tipo === 'transportista') {
@@ -631,9 +650,15 @@ function RegisterMejorado() {
                       <input
                         type="text"
                         value={datosEspecificos.cuit}
-                        onChange={(e) => setDatosEspecificos({...datosEspecificos, cuit: e.target.value})}
-                        placeholder="20-12345678-9"
+                        onChange={(e) => {
+                          setDatosEspecificos({...datosEspecificos, cuit: normalizarCuit(e.target.value)});
+                          setErrors({...errors, cuit: ''});
+                        }}
+                        placeholder="20123456789"
+                        inputMode="numeric"
+                        maxLength={11}
                       />
+                      {!errors.cuit && <small className="form-hint">{CUIT_AYUDA}</small>}
                       {errors.cuit && <span className="error-message"><Icon name="warning" /> {errors.cuit}</span>}
                     </div>
 
@@ -673,7 +698,7 @@ function RegisterMejorado() {
                       </label>
                     </div>
 
-                    <div className="form-group-mejorado">
+                    <div className={`form-group-mejorado ${errors.descripcion ? 'error' : ''}`}>
                       <label>Descripción</label>
                       <textarea
                         value={datosEspecificos.descripcion}
@@ -681,6 +706,7 @@ function RegisterMejorado() {
                         placeholder="Contanos sobre tu negocio..."
                         rows="4"
                       />
+                      {errors.descripcion && <span className="error-message"><Icon name="warning" /> {errors.descripcion}</span>}
                     </div>
                   </>
                 )}
@@ -722,7 +748,7 @@ function RegisterMejorado() {
                       {errors.patente && <span className="error-message"><Icon name="warning" /> {errors.patente}</span>}
                     </div>
 
-                    <div className="form-group-mejorado">
+                    <div className={`form-group-mejorado ${errors.capacidad_carga ? 'error' : ''}`}>
                       <label>Capacidad de Carga</label>
                       <input
                         type="text"
@@ -730,6 +756,7 @@ function RegisterMejorado() {
                         onChange={(e) => setDatosEspecificos({...datosEspecificos, capacidad_carga: e.target.value})}
                         placeholder="Ej: 5000 kg"
                       />
+                      {errors.capacidad_carga && <span className="error-message"><Icon name="warning" /> {errors.capacidad_carga}</span>}
                     </div>
 
                     <div className="checkbox-mejorado">
@@ -766,7 +793,7 @@ function RegisterMejorado() {
                       </div>
                     </div>
 
-                    <div className="form-group-mejorado">
+                    <div className={`form-group-mejorado ${errors.descripcion ? 'error' : ''}`}>
                       <label>Descripción</label>
                       <textarea
                         value={datosEspecificos.descripcion}
@@ -774,6 +801,7 @@ function RegisterMejorado() {
                         placeholder="Contanos sobre tu servicio de transporte..."
                         rows="4"
                       />
+                      {errors.descripcion && <span className="error-message"><Icon name="warning" /> {errors.descripcion}</span>}
                     </div>
                   </>
                 )}

@@ -5,7 +5,13 @@ import transportistasService from '../../services/transportistasService';
 import SelectorUsuario from '../../components/SelectorUsuario/SelectorUsuario';
 import mensajeDeError from '../../api/mensajeDeError';
 import Icon from '../../components/Icon/Icon';
-import { esPatenteValida, normalizarPatente, PATENTE_AYUDA, PATENTE_MAX } from '../../utils/validaciones';
+import {
+  errorTextoConHtml,
+  esPatenteValida,
+  normalizarPatente,
+  PATENTE_AYUDA,
+  PATENTE_MAX,
+} from '../../utils/validaciones';
 import '../Mayoristas/Mayoristas.css';
 import '../Forms/Forms.css';
 
@@ -87,6 +93,16 @@ function TransportistaForm() {
 
     if (!esPatenteValida(formData.patente)) {
       setError(`Patente inválida (${PATENTE_AYUDA})`);
+      return;
+    }
+
+    const errorHtml = errorTextoConHtml(formData, {
+      tipo_vehiculo: 'El tipo de vehículo',
+      capacidad_carga: 'La capacidad de carga',
+      descripcion: 'La descripción',
+    });
+    if (errorHtml) {
+      setError(errorHtml);
       return;
     }
 
