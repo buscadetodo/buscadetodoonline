@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import { usePerfilActivo } from '../../context/PerfilContext';
+import { useCatalogoComercios } from '../../hooks';
+import productosService from '../../services/productosService';
+import rubrosService from '../../services/rubrosService';
+import { FEATURE_PRODUCTOS } from '../../config/features';
+import { formatearNumero, formatearPrecio } from '../../utils/formato';
+import '../Dashboards/Paneles.css';
 import Modal from '../../components/Modal/Modal';
 import Footer from '../../components/Footer/Footer';
 import Icon from '../../components/Icon/Icon';
@@ -20,12 +26,84 @@ function Home() {
   const [showUbicacionModal, setShowUbicacionModal] = useState(false);
   const [ubicacionModalData, setUbicacionModalData] = useState({ tipo: '', mensaje: '', detalles: '' });
 
-  const categorias = [
-    { nombre: 'Alimentos', icon: 'alimentos' },
-    { nombre: 'Bebidas', icon: 'bebidas' },
-    { nombre: 'Limpieza', icon: 'limpieza' },
-    { nombre: 'Mascotas', icon: 'mascotas' }
-  ];
+  // Categorías: GET /rubros/ es público desde R-003 (devolución v1). Si falla,
+  // se muestran estas cuatro como respaldo.
+  const ICONOS_RUBRO = {
+    alimentos: 'alimentos', bebidas: 'bebidas', limpieza: 'limpieza',
+    mascotas: 'mascotas', electronica: 'electronica',
+  };
+  const [categorias, setCategorias] = useState([
+    { id: 1, nombre: 'Alimentos', icon: 'alimentos' },
+    { id: 2, nombre: 'Bebidas', icon: 'bebidas' },
+    { id: 3, nombre: 'Limpieza', icon: 'limpieza' },
+    { id: 4, nombre: 'Mascotas', icon: 'mascotas' },
+  ]);
+
+  // Catálogo público (opción A: productos con precio, sin iniciar sesión).
+  // Se activa solo: si GET /productos/ responde sin token se muestran los
+  // productos reales; si la API todavía pide sesión (401), la home queda como
+  // antes (categorías y búsqueda llevan al login).
+  //   catalogoPublico: null = verificando · true = disponible · false = no
+  const [catalogoPublico, setCatalogoPublico] = useState(null);
+  const [productosPublicos, setProductosPublicos] = useState([]);
+  const [cargandoProductos, setCargandoProductos] = useState(false);
+  const [rubroFiltro, setRubroFiltro] = useState(null);
+  const [busquedaAplicada, setBusquedaAplicada] = useState('');
+  const { nombreDe } = useCatalogoComercios();
+
+  useEffect(() => {
+    if (isAuthenticated) return undefined;
+    let vigente = true;
+    rubrosService
+      .getAll(50, 0)
+      .then((resp) => {
+        const lista = resp?.data ?? resp;
+        if (!vigente || !Array.isArray(lista) || lista.length === 0) return;
+        setCategorias(
+          lista.map((r) => ({
+            id: r.id,
+            nombre: r.rubro,
+            icon: ICONOS_RUBRO[String(r.rubro || '').toLowerCase()] || 'folder',
+          }))
+        );
+      })
+      .catch(() => {}); // quedan las de respaldo
+    return () => {
+      vigente = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated]);
+
+  const cargarProductosPublicos = useCallback(async (filtros = {}) => {
+    setCargandoProductos(true);
+    try {
+      const resp = await productosService.getAll({ limit: 12, ...filtros });
+      const lista = resp?.data ?? resp;
+      setProductosPublicos(Array.isArray(lista) ? lista : []);
+      setCatalogoPublico(true);
+    } catch (err) {
+      // 401: la API todavía no publica el catálogo sin sesión
+      setCatalogoPublico(false);
+    } finally {
+      setCargandoProductos(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated || !FEATURE_PRODUCTOS) return;
+    cargarProductosPublicos();
+  }, [isAuthenticated, cargarProductosPublicos]);
+
+  const aplicarFiltros = (rubroId, texto) => {
+    setRubroFiltro(rubroId);
+    setBusquedaAplicada(texto);
+    cargarProductosPublicos({
+      rubro_id: rubroId || undefined,
+      search: texto.trim() || undefined,
+    });
+  };
+
+  const nombreRubro = (id) => categorias.find((c) => c.id === id)?.nombre || '';
 
   // El landing público no muestra productos ni mayoristas de ejemplo: eran
   // datos inventados (con distancias falsas) y GET /productos/ y
@@ -167,6 +245,7 @@ function Home() {
   const MOTIVOS_LOGIN = {
     buscar: 'Para buscar en el catálogo, ingresá a tu cuenta',
     categoria: 'Para explorar por rubro, ingresá a tu cuenta',
+    comprar: 'Para comprar o contactar al comercio, ingresá a tu cuenta',
   };
 
   const handleActionRequiresLogin = (action) => {
@@ -292,7 +371,12 @@ function Home() {
             role="search"
             onSubmit={(e) => {
               e.preventDefault();
-              handleActionRequiresLogin('buscar');
+              if (catalogoPublico) {
+                aplicarFiltros(rubroFiltro, searchQuery);
+                document.getElementById('productos-publicos')?.scrollIntoView({ behavior: 'smooth' });
+              } else {
+                handleActionRequiresLogin('buscar');
+              }
             }}
           >
             <span className="search-icon"><Icon name="search" /></span>
@@ -305,7 +389,11 @@ function Home() {
               className="search-input"
             />
             <button type="submit" className="btn-buscar">
-              <Icon name="lock" /> Ingresá para buscar
+              {catalogoPublico ? (
+                <><Icon name="search" /> Buscar</>
+              ) : (
+                <><Icon name="lock" /> Ingresá para buscar</>
+              )}
             </button>
           </form>
         </div>
@@ -315,16 +403,27 @@ function Home() {
       <section className="categorias-section">
         <div className="container">
           <h2 className="section-heading"><Icon name="folder" /> Categorías</h2>
-          <p className="section-hint">
-            <Icon name="lock" /> Ingresá para explorar el catálogo por rubro.
-          </p>
+          {!catalogoPublico && (
+            <p className="section-hint">
+              <Icon name="lock" /> Ingresá para explorar el catálogo por rubro.
+            </p>
+          )}
           <div className="categorias-grid">
-            {categorias.map((cat, index) => (
+            {categorias.map((cat) => (
               <button
-                key={index}
-                className="categoria-card"
-                onClick={() => handleActionRequiresLogin('categoria')}
-                aria-label={`${cat.nombre}: ingresá para ver el rubro`}
+                key={cat.id}
+                type="button"
+                className={`categoria-card ${catalogoPublico && rubroFiltro === cat.id ? 'activa' : ''}`}
+                onClick={() => {
+                  if (!catalogoPublico) {
+                    handleActionRequiresLogin('categoria');
+                    return;
+                  }
+                  aplicarFiltros(rubroFiltro === cat.id ? null : cat.id, busquedaAplicada);
+                  document.getElementById('productos-publicos')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                aria-pressed={catalogoPublico ? rubroFiltro === cat.id : undefined}
+                aria-label={catalogoPublico ? `Filtrar por ${cat.nombre}` : `${cat.nombre}: ingresá para ver el rubro`}
               >
                 <span className="categoria-icon"><Icon name={cat.icon} /></span>
                 <span className="categoria-nombre">{cat.nombre}</span>
@@ -333,6 +432,87 @@ function Home() {
           </div>
         </div>
       </section>
+
+      {/* Productos reales (solo si la API publica el catálogo sin sesión) */}
+      {catalogoPublico && (
+        <section id="productos-publicos" className="productos-publicos-section" aria-labelledby="productos-publicos-titulo">
+          <div className="container">
+            <div className="panel-seccion-cabecera">
+              <h2 id="productos-publicos-titulo" className="section-heading">
+                <Icon name="package" />{' '}
+                {rubroFiltro ? nombreRubro(rubroFiltro) : 'Productos publicados'}
+              </h2>
+              {(rubroFiltro || busquedaAplicada) && (
+                <button
+                  type="button"
+                  className="panel-link boton-link"
+                  onClick={() => {
+                    setSearchQuery('');
+                    aplicarFiltros(null, '');
+                  }}
+                >
+                  Ver todos
+                </button>
+              )}
+            </div>
+            {busquedaAplicada && (
+              <p className="section-hint">Resultados para “{busquedaAplicada}”</p>
+            )}
+
+            {cargandoProductos ? (
+              <div className="panel-grilla" aria-busy="true" aria-label="Cargando productos">
+                {[0, 1, 2, 3].map((i) => (
+                  <div key={i} className="panel-producto">
+                    <div className="panel-producto-imagen esqueleto" />
+                    <div className="panel-producto-cuerpo">
+                      <span className="esqueleto esqueleto-linea" style={{ width: '70%' }} />
+                      <span className="esqueleto esqueleto-linea" style={{ width: '40%' }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : productosPublicos.length === 0 ? (
+              <div className="panel-tarjeta">
+                <div className="panel-vacio">
+                  <span className="panel-vacio-icono"><Icon name="search" /></span>
+                  <h3>No encontramos productos</h3>
+                  <p>Probá con otra categoría o con otra búsqueda.</p>
+                </div>
+              </div>
+            ) : (
+              <div className="panel-grilla">
+                {productosPublicos.map((p) => {
+                  const stock = Number(p.stock) || 0;
+                  const detalle = [nombreDe(p), nombreRubro(p.rubro_id)].filter(Boolean).join(' · ');
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      className="panel-producto producto-publico"
+                      onClick={() => handleActionRequiresLogin('comprar')}
+                      aria-label={`${p.nombre}, ${formatearPrecio(p.precio)}. Ingresá para comprar`}
+                    >
+                      <div className="panel-producto-imagen">
+                        {p.imagen_url ? <img src={p.imagen_url} alt="" loading="lazy" /> : <Icon name="package" />}
+                      </div>
+                      <div className="panel-producto-cuerpo">
+                        <p className="panel-producto-nombre">{p.nombre}</p>
+                        {detalle && <p className="panel-producto-rubro">{detalle}</p>}
+                        <div className="panel-producto-pie">
+                          <span className="panel-item-precio">{formatearPrecio(p.precio)}</span>
+                          <span className={`panel-chip ${stock > 0 ? '' : 'sin-stock'}`}>
+                            {stock > 0 ? `${formatearNumero(stock)} u.` : 'Sin stock'}
+                          </span>
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* Cómo funciona */}
       <section className="como-funciona-section" aria-labelledby="como-funciona-titulo">

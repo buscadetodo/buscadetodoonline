@@ -1186,3 +1186,38 @@
     font-size: 1.35rem;
   }
 }
+
+/* ===== Catálogo público (se muestra si la API lo permite sin sesión) ===== */
+.productos-publicos-section {
+  padding: 2rem 0 1rem;
+}
+
+.productos-publicos-section .panel-seccion-cabecera {
+  align-items: center;
+}
+
+.productos-publicos-section .panel-seccion-cabecera .section-heading {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.producto-publico {
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+  width: 100%;
+}
+
+.boton-link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.categoria-card.activa {
+  border-color: var(--color-primario);
+  background: var(--color-primario-suave);
+}
