@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks';
 import { esAdmin } from '../config/roles';
+import Icon from './Icon/Icon';
 
 /**
  * Protege rutas privadas.
@@ -9,7 +10,16 @@ import { esAdmin } from '../config/roles';
  * @param {boolean} [props.adminOnly] - Si es true, solo el rol administrador puede acceder.
  */
 function PrivateRoute({ children, adminOnly = false }) {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, verificandoSesion } = useAuth();
+
+  // Pestaña nueva: se está consultando si otra pestaña tiene la sesión abierta.
+  if (verificandoSesion) {
+    return (
+      <div className="loading" role="status">
+        <Icon name="loading" /> Cargando...
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;

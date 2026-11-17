@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import authService from '../services/authService';
 import mensajeDeError from '../api/mensajeDeError';
-import { leerSesion } from '../api/sesion';
+import { leerSesion, pedirSesionAOtrasPestanas, suscribirCambiosDeSesion } from '../api/sesion';
 
 const AuthContext = createContext(null);
 
@@ -15,6 +15,32 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(authService.isAuthenticated());
   const [user, setUser] = useState(authService.getCurrentUser());
+  // Pestaña recién abierta sin sesión propia: mientras se le pregunta a las
+  // otras pestañas, las rutas privadas esperan en vez de mandar al login.
+  const [verificandoSesion, setVerificandoSesion] = useState(!authService.isAuthenticated());
+
+  const sincronizarDesdeAlmacen = useCallback(() => {
+    setIsAuthenticated(authService.isAuthenticated());
+    setUser(authService.getCurrentUser());
+  }, []);
+
+  useEffect(() => {
+    let vigente = true;
+    if (verificandoSesion) {
+      pedirSesionAOtrasPestanas().then(() => {
+        if (!vigente) return;
+        sincronizarDesdeAlmacen();
+        setVerificandoSesion(false);
+      });
+    }
+    // Login, renovación o logout hechos en otra pestaña.
+    const dejarDeEscuchar = suscribirCambiosDeSesion(sincronizarDesdeAlmacen);
+    return () => {
+      vigente = false;
+      dejarDeEscuchar();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const login = useCallback(async (email, password, recordar = false) => {
     try {
@@ -75,6 +101,7 @@ export const AuthProvider = ({ children }) => {
     error,
     isAuthenticated,
     user,
+    verificandoSesion,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
