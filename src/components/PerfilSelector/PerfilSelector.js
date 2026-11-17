@@ -1,13 +1,28 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePerfilActivo } from '../../context/PerfilContext';
+import { useAuth } from '../../hooks';
 import Icon from '../Icon/Icon';
 import './PerfilSelector.css';
 
 function PerfilSelector() {
   const navigate = useNavigate();
   const { perfiles, perfilActivo, cambiarPerfil, obtenerDashboardUrl } = usePerfilActivo();
+  const { user, logout } = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
+
+  // Cerrar sesión vive en el menú del usuario (y en el pie del menú lateral),
+  // no como un botón rojo suelto en la barra.
+  const handleCerrarSesion = () => {
+    setShowDropdown(false);
+    logout();
+    navigate('/login');
+  };
+
+  const handleMiPerfil = () => {
+    setShowDropdown(false);
+    navigate('/perfil');
+  };
 
   // Sin perfiles no hay nada que seleccionar, pero devolver null dejaba al
   // usuario recién registrado sin ningún acceso a la pantalla de alta: el
@@ -53,9 +68,12 @@ function PerfilSelector() {
 
   return (
     <div className="perfil-selector">
-      <button 
+      <button
         className="perfil-selector-btn"
         onClick={() => setShowDropdown(!showDropdown)}
+        aria-haspopup="menu"
+        aria-expanded={showDropdown}
+        aria-label={`Perfil activo: ${perfilActivo.perfil}. Abrir menú de cuenta`}
       >
         <span className="perfil-icono"><Icon name={getIconoPerfil(perfilActivo.perfil)} /></span>
         <span className="perfil-nombre">{perfilActivo.perfil}</span>
@@ -69,6 +87,11 @@ function PerfilSelector() {
             onClick={() => setShowDropdown(false)}
           />
           <div className="perfil-dropdown">
+            {user?.email && (
+              <div className="perfil-dropdown-usuario" title={user.email}>
+                {user.email}
+              </div>
+            )}
             <div className="perfil-dropdown-header">
               Cambiar perfil activo
             </div>
@@ -98,7 +121,18 @@ function PerfilSelector() {
               onClick={handleAgregarPerfil}
             >
               <span className="perfil-item-icono"><Icon name="add" /></span>
-              <span className="perfil-item-nombre">Agregar otro perfil</span>
+              <span className="perfil-item-nombre sin-mayusculas">Agregar otro perfil</span>
+            </button>
+
+            <div className="perfil-dropdown-divider" />
+
+            <button className="perfil-dropdown-item" onClick={handleMiPerfil}>
+              <span className="perfil-item-icono"><Icon name="settings" /></span>
+              <span className="perfil-item-nombre sin-mayusculas">Mi perfil</span>
+            </button>
+            <button className="perfil-dropdown-item" onClick={handleCerrarSesion}>
+              <span className="perfil-item-icono"><Icon name="logout" /></span>
+              <span className="perfil-item-nombre sin-mayusculas">Cerrar sesión</span>
             </button>
           </div>
         </>
