@@ -125,10 +125,14 @@
 @media (max-width: 768px) {
   .sidebar {
     transform: translateX(-100%);
-    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+    box-shadow: none;
+    visibility: hidden;
+    transition: width 0.2s ease, transform 0.2s ease, visibility 0.2s;
   }
   .layout.sidebar-mobile-open .sidebar {
     transform: translateX(0);
+    visibility: visible;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
   }
 }
 

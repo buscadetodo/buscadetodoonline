@@ -6,6 +6,7 @@ import { usePerfilActivo } from '../../context/PerfilContext';
 import MisPerfiles from '../../components/MisPerfiles/MisPerfiles';
 import Icon from '../../components/Icon/Icon';
 import { errorTextoConHtml, esEmailValido } from '../../utils/validaciones';
+import { ROL_ADMIN } from '../../config/roles';
 import './Perfil.css';
 
 function Perfil() {
@@ -250,7 +251,7 @@ function Perfil() {
                 value={formData.password}
                 onChange={handleChange}
                 className="form-input"
-                placeholder="Dejalo vacío para no cambiarla"
+                placeholder="Nueva contraseña"
                 minLength={6}
               />
               <small className="form-help">Mínimo 6 caracteres</small>
@@ -282,7 +283,9 @@ function Perfil() {
 
               <div className="info-card">
                 <span className="info-label">Rol</span>
-                <span className="info-value">ID: {formData.id_rol}</span>
+                <span className="info-value">
+                  {Number(formData.id_rol) === ROL_ADMIN ? 'Administrador' : 'Usuario'}
+                </span>
               </div>
             </div>
           </div>
