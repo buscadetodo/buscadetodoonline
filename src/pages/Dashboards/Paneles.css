@@ -1,0 +1,406 @@
+/* Paneles por perfil (mayorista, minorista, comprador, transportista).
+   Complementa Dashboard.css: encabezado, métricas reales, listas y estados
+   de carga / vacío. */
+
+.panel-encabezado {
+  margin-bottom: 2rem;
+}
+
+.panel-encabezado h1 {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.35rem;
+}
+
+.panel-encabezado p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+/* --- Métricas --- */
+.panel-metricas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.panel-metrica {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+}
+
+.panel-metrica-titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.panel-metrica-valor {
+  margin: 0;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1.1;
+}
+
+.panel-metrica-valor.alerta {
+  color: #b45309;
+}
+
+.panel-metrica-ayuda {
+  margin: 0.35rem 0 0;
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+/* --- Tarjeta genérica de sección --- */
+.panel-tarjeta {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.panel-seccion-cabecera {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.panel-seccion-cabecera h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.panel-link {
+  color: #4f46e5;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.panel-link:hover,
+.panel-link:focus-visible {
+  text-decoration: underline;
+}
+
+/* --- Lista de productos propios --- */
+.panel-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.panel-lista li + li {
+  border-top: 1px solid #f1f5f9;
+}
+
+.panel-item {
+  display: grid;
+  grid-template-columns: 48px 1fr auto auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1.25rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.panel-item:hover,
+.panel-item:focus-visible {
+  background: #f8fafc;
+}
+
+.panel-item-imagen {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: #94a3b8;
+  font-size: 1.3rem;
+}
+
+.panel-item-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.panel-item-nombre {
+  display: block;
+  margin: 0;
+  font-weight: 600;
+  color: #1f2937;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.panel-item-detalle {
+  display: block;
+  margin: 0.15rem 0 0;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.panel-item-precio {
+  font-weight: 700;
+  color: #1f2937;
+  white-space: nowrap;
+}
+
+.panel-chip {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: #ecfdf5;
+  color: #047857;
+  white-space: nowrap;
+}
+
+.panel-chip.sin-stock {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* --- Grilla de productos (comprador) --- */
+.panel-grilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.panel-producto {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.panel-producto:hover,
+.panel-producto:focus-visible {
+  border-color: #c7d2fe;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+}
+
+.panel-producto-imagen {
+  height: 150px;
+  overflow: hidden;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  font-size: 2rem;
+}
+
+.panel-producto-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.panel-producto-cuerpo {
+  padding: 0.9rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.panel-producto-nombre {
+  margin: 0;
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 0.98rem;
+}
+
+.panel-producto-rubro {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.panel-producto-pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+}
+
+/* --- Datos de la ficha (transportista) --- */
+.panel-datos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.25rem 2rem;
+  padding: 1.5rem;
+  margin: 0;
+}
+
+.panel-datos dt {
+  font-size: 0.82rem;
+  color: #6b7280;
+  margin-bottom: 0.2rem;
+}
+
+.panel-datos dd {
+  margin: 0;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+/* --- Estado vacío --- */
+.panel-vacio {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+}
+
+.panel-vacio-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.panel-vacio h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+  color: #1f2937;
+}
+
+.panel-vacio p {
+  margin: 0 auto 1.25rem;
+  max-width: 420px;
+  color: #6b7280;
+  font-size: 0.92rem;
+}
+
+.panel-boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.2rem;
+  border-radius: 8px;
+  background: #4f46e5;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.panel-boton:hover,
+.panel-boton:focus-visible {
+  background: #4338ca;
+}
+
+/* --- Aviso informativo (funciones que todavía no existen) --- */
+.panel-aviso {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  color: #475569;
+  font-size: 0.92rem;
+}
+
+.panel-aviso strong {
+  color: #1f2937;
+}
+
+/* --- Esqueleto de carga --- */
+.esqueleto {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: esqueleto-brillo 1.2s ease-in-out infinite;
+  border-radius: 6px;
+}
+
+@keyframes esqueleto-brillo {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .esqueleto {
+    animation: none;
+  }
+}
+
+.esqueleto-linea {
+  height: 14px;
+  margin: 0.35rem 0;
+}
+
+@media (max-width: 600px) {
+  .panel-encabezado h1 {
+    font-size: 1.5rem;
+  }
+
+  .panel-item {
+    grid-template-columns: 40px 1fr auto;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .panel-item-imagen {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* En celular el stock va debajo del nombre: se oculta la columna aparte */
+  .panel-item .panel-chip {
+    display: none;
+  }
+
+  .panel-grilla {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .panel-metricas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .panel-metrica {
+    padding: 1rem;
+  }
+
+  .panel-metrica-valor {
+    font-size: 1.5rem;
+  }
+}

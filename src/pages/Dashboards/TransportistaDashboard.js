@@ -1,99 +1,83 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useFichaComercial } from '../../hooks';
+import { useAuth, useFichaComercial } from '../../hooks';
 import { usePerfilActivo } from '../../context/PerfilContext';
 import AvisoFichaComercial from '../../components/AvisoFichaComercial/AvisoFichaComercial';
 import Icon from '../../components/Icon/Icon';
+import { formatearPrecio } from '../../utils/formato';
 import '../Dashboard/Dashboard.css';
+import './Paneles.css';
 
+/**
+ * Panel del transportista.
+ *
+ * Antes mostraba "Solicitudes", "Viajes" e "Ingresos del mes" fijos en 0, y
+ * accesos a "Configurar tarifas" y "Ver estadísticas" que llevaban a Mi Perfil.
+ * Ahora muestra los datos reales de su vehículo y avisa que las solicitudes de
+ * flete todavía no están disponibles.
+ */
 function TransportistaDashboard() {
+  const { user } = useAuth();
   const { tiposFaltantes } = useFichaComercial();
-  const { isAdmin } = usePerfilActivo();
+  const { transportistas = [], loadingComercios } = usePerfilActivo();
   const sinFicha = tiposFaltantes.includes('transportista');
+
+  const ficha = transportistas.find((t) => String(t.id_usuario) === String(user?.id));
+
+  const datos = ficha
+    ? [
+        ['Vehículo', ficha.tipo_vehiculo || '—'],
+        ['Patente', ficha.patente || '—'],
+        ['Capacidad de carga', ficha.capacidad_carga || '—'],
+        ['Refrigerado', ficha.refrigerado === 'y' ? 'Sí' : 'No'],
+        ['Precio base', ficha.precio_base != null ? formatearPrecio(ficha.precio_base) : '—'],
+        ['Precio por km', ficha.precio_por_km != null ? formatearPrecio(ficha.precio_por_km) : '—'],
+      ]
+    : [];
 
   return (
     <div className="dashboard">
-      <div className="dashboard-header">
-        <h1><Icon name="transportista" /> Dashboard Transportista</h1>
-        <p className="dashboard-subtitle">Panel de control para servicios de transporte</p>
-      </div>
+      <header className="panel-encabezado">
+        <h1><Icon name="transportista" /> Panel transportista</h1>
+        <p>Los datos de tu vehículo y tus tarifas.</p>
+      </header>
 
       <AvisoFichaComercial tipo="transportista" />
 
-      <div className="stats-grid">
-        <div className="stat-card" style={{ '--color': '#667eea' }}>
-          <div className="stat-icon"><Icon name="list" /></div>
-          <div className="stat-content">
-            <h3 className="stat-title">Solicitudes Pendientes</h3>
-            <p className="stat-count">0</p>
+      {!sinFicha && (
+        <section className="dashboard-section" aria-labelledby="transportista-datos">
+          <div className="panel-seccion-cabecera">
+            <h2 id="transportista-datos">Tu vehículo</h2>
+            <Link to="/perfil" className="panel-link">Ir a Mi perfil →</Link>
           </div>
-        </div>
-
-        <div className="stat-card" style={{ '--color': '#764ba2' }}>
-          <div className="stat-icon"><Icon name="transportista" /></div>
-          <div className="stat-content">
-            <h3 className="stat-title">Viajes Activos</h3>
-            <p className="stat-count">0</p>
+          <div className="panel-tarjeta">
+            {loadingComercios ? (
+              <div className="panel-datos" aria-busy="true">
+                {[0, 1, 2].map((i) => (
+                  <span key={i} className="esqueleto esqueleto-linea" style={{ display: 'block' }} />
+                ))}
+              </div>
+            ) : (
+              <dl className="panel-datos">
+                {datos.map(([etiqueta, valor]) => (
+                  <div key={etiqueta}>
+                    <dt>{etiqueta}</dt>
+                    <dd>{valor}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
           </div>
-        </div>
+        </section>
+      )}
 
-        <div className="stat-card" style={{ '--color': '#f093fb' }}>
-          <div className="stat-icon"><Icon name="success" /></div>
-          <div className="stat-content">
-            <h3 className="stat-title">Viajes Completados</h3>
-            <p className="stat-count">0</p>
-          </div>
-        </div>
 
-        <div className="stat-card" style={{ '--color': '#4facfe' }}>
-          <div className="stat-icon"><Icon name="money" /></div>
-          <div className="stat-content">
-            <h3 className="stat-title">Ingresos del Mes</h3>
-            <p className="stat-count">$0</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="dashboard-section">
-        <h2>Acciones Rápidas</h2>
-        <div className="actions-grid">
-          {sinFicha && (
-            <Link to="/agregar-perfil" className="action-card" style={{ '--color': '#f59e0b' }}>
-              <span className="action-icon"><Icon name="note" /></span>
-              <span className="action-title">Completar mis datos</span>
-            </Link>
-          )}
-          {/* /transportistas es adminOnly: para un transportista comun el link
-              rebotaba al inicio, asi que solo se muestra a quien puede entrar. */}
-          {isAdmin && (
-            <Link to="/transportistas" className="action-card" style={{ '--color': '#667eea' }}>
-              <span className="action-icon"><Icon name="transportista" /></span>
-              <span className="action-title">Ver Solicitudes</span>
-            </Link>
-          )}
-          <Link to="/perfil" className="action-card" style={{ '--color': '#764ba2' }}>
-            <span className="action-icon"><Icon name="settings" /></span>
-            <span className="action-title">Configurar Tarifas</span>
-          </Link>
-          <Link to="/perfil" className="action-card" style={{ '--color': '#f093fb' }}>
-            <span className="action-icon"><Icon name="chart" /></span>
-            <span className="action-title">Ver Estadísticas</span>
-          </Link>
-        </div>
-      </div>
-
-      <div className="dashboard-section">
-        <h2>Solicitudes Recientes</h2>
-        <div className="activity-card">
-          <p className="empty-state">No hay solicitudes de flete pendientes</p>
-        </div>
-      </div>
-
-      <div className="dashboard-section">
-        <h2>Historial de Viajes</h2>
-        <div className="activity-card">
-          <p className="empty-state">No hay viajes registrados</p>
-        </div>
+      <div className="panel-aviso">
+        <Icon name="transportista" />
+        <span>
+          <strong>Solicitudes de flete, próximamente.</strong> Cuando los compradores puedan pedir
+          fletes, las solicitudes y tus viajes van a aparecer en este panel.
+        </span>
       </div>
     </div>
   );
