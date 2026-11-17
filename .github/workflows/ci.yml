@@ -1,0 +1,72 @@
+name: CI
+
+# Corre en cada PR contra main y en cada push a main.
+# Render espera a que estos checks pasen antes de deployar (ver render.yaml).
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# Si llega un push nuevo a la misma rama, cancela la corrida anterior.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build de React
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      # package-lock.json no se versiona, por eso npm install y no npm ci.
+      - name: Instalar dependencias
+        run: npm install --no-audit --no-fund
+
+      # CI=true hace que los warnings de ESLint corten el build.
+      - name: Build de producción
+        run: npm run build
+        env:
+          CI: true
+
+  docker:
+    name: Imagen Docker de producción
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: docker/setup-buildx-action@v4
+
+      # Construye la misma imagen que Render, sin publicarla.
+      - name: Build de Dockerfile.prod
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: Dockerfile.prod
+          push: false
+          tags: libremercado-frontend:ci
+          load: true
+
+      - name: Probar que nginx sirve la app
+        run: |
+          docker run -d --name app -p 8080:80 libremercado-frontend:ci
+          for i in $(seq 1 15); do
+            if curl -fsS http://localhost:8080/ | grep -q '<div id="root">'; then
+              echo "index.html OK"
+              curl -fsS -o /dev/null http://localhost:8080/una/ruta/cualquiera && echo "Fallback de SPA OK"
+              exit 0
+            fi
+            sleep 2
+          done
+          docker logs app
+          exit 1

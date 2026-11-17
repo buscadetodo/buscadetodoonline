@@ -70,10 +70,13 @@ Tu proyecto ya está configurado para Render con:
 
 ### Auto-Deploy desde Git
 
-Render despliega automáticamente cuando haces push a tu rama principal:
-```bash
-git push origin main  # Trigger automático de deploy
-```
+Render despliega automáticamente cada push a `main`, **pero solo si pasan los checks de GitHub Actions** (`autoDeployTrigger: checksPass` en `render.yaml`):
+
+1. Se mergea un PR a `main`.
+2. GitHub Actions corre `.github/workflows/ci.yml`: build de React con `CI=true` y build + prueba de la imagen `Dockerfile.prod`.
+3. Si los dos jobs pasan, Render deploya. Si alguno falla, producción queda como estaba.
+
+Si el servicio se creó a mano y no con el Blueprint, el cambio de `render.yaml` no se aplica solo: en Render Dashboard → servicio → **Settings** → **Auto-Deploy**, elegí **"After CI Checks Pass"**.
 
 ### Health Checks
 

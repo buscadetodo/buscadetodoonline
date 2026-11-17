@@ -10,5 +10,6 @@ services:
       - key: NODE_ENV
         value: production
     healthCheckPath: /
-    autoDeploy: true
+    # Deploya los push a main solo cuando pasan los checks de GitHub Actions (.github/workflows/ci.yml)
+    autoDeployTrigger: checksPass
     # El puerto 80 se detecta automáticamente desde el EXPOSE en Dockerfile
