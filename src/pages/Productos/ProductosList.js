@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useToast } from '../../components/Toast/Toast';
-import { useRubros, useMisComercios } from '../../hooks';
+import { useRubros, useMisComercios, useCatalogoComercios } from '../../hooks';
 import productosService from '../../services/productosService';
 import Icon from '../../components/Icon/Icon';
 import './Productos.css';
@@ -15,6 +15,10 @@ function ProductosList() {
   const { rubros, fetchRubros } = useRubros();
   // comercios = propios (lo que se puede gestionar); todos = para nombres y filtro
   const { opciones: comercios, opcionesTodas } = useMisComercios();
+  // Todos los comercios visibles (catálogo público desde R-003 devolución v1):
+  // nombre del oferente en cada tarjeta y opciones del filtro.
+  const { nombreDe, opciones: catalogo } = useCatalogoComercios();
+  const comerciosFiltro = catalogo.length > 0 ? catalogo : opcionesTodas;
   const toast = useToast();
 
   // Paginación.
@@ -119,6 +123,8 @@ function ProductosList() {
   };
 
   const nombreOferente = (producto) => {
+    const delCatalogo = nombreDe(producto);
+    if (delCatalogo) return delCatalogo;
     const match = opcionesTodas.find(
       (c) =>
         (c.tipo === 'mayorista' && c.id === producto.mayorista_id) ||
@@ -179,7 +185,7 @@ function ProductosList() {
             </select>
           </div>
 
-          {opcionesTodas.length > 0 && (
+          {comerciosFiltro.length > 0 && (
             <div className="filter-group">
               <select
                 name="comercio"
@@ -188,7 +194,7 @@ function ProductosList() {
                 className="filter-select"
               >
                 <option value="">Todos los comercios</option>
-                {opcionesTodas.map((c) => (
+                {comerciosFiltro.map((c) => (
                   <option key={`${c.tipo}:${c.id}`} value={`${c.tipo}:${c.id}`}>
                     {c.label} ({c.tipo === 'mayorista' ? 'Mayorista' : 'Minorista'})
                   </option>

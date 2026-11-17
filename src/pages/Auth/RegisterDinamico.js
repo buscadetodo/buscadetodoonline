@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useToast } from '../../components/Toast/Toast';
 import Icon from '../../components/Icon/Icon';
+import SelectRubro from '../../components/SelectRubro/SelectRubro';
 import {
   CUIT_AYUDA,
   esCuitValido,
@@ -169,6 +170,10 @@ function RegisterMejorado() {
         newErrors.cuit = 'El CUIT es requerido';
       } else if (!esCuitValido(datosEspecificos.cuit)) {
         newErrors.cuit = `CUIT inválido (${CUIT_AYUDA})`;
+      }
+      // La API rechaza la ficha de comercio sin un rubro válido.
+      if (!datosEspecificos.rubro_id) {
+        newErrors.rubro_id = 'Elegí el rubro de tu comercio';
       }
     }
 
@@ -662,18 +667,20 @@ function RegisterMejorado() {
                       {errors.cuit && <span className="error-message"><Icon name="warning" /> {errors.cuit}</span>}
                     </div>
 
-                    <div className="form-group-mejorado">
-                      <label>Rubro</label>
-                      <select
+                    {/* GET /rubros/ es público desde R-003 (devolución v1): la lista
+                        sale de la API. Antes estaban fijos los IDs 1 a 4 porque el
+                        endpoint pedía token y en el registro todavía no hay sesión. */}
+                    <div className={`form-group-mejorado ${errors.rubro_id ? 'error' : ''}`}>
+                      <label htmlFor="reg-rubro">Rubro *</label>
+                      <SelectRubro
+                        id="reg-rubro"
                         value={datosEspecificos.rubro_id}
-                        onChange={(e) => setDatosEspecificos({...datosEspecificos, rubro_id: e.target.value})}
-                      >
-                        <option value="">Seleccionar rubro...</option>
-                        <option value="1">Alimentos</option>
-                        <option value="2">Bebidas</option>
-                        <option value="3">Limpieza</option>
-                        <option value="4">Mascotas</option>
-                      </select>
+                        onChange={(e) => {
+                          setDatosEspecificos({...datosEspecificos, rubro_id: e.target.value});
+                          setErrors({...errors, rubro_id: ''});
+                        }}
+                      />
+                      {errors.rubro_id && <span className="error-message"><Icon name="warning" /> {errors.rubro_id}</span>}
                     </div>
 
                     <div className="form-group-mejorado">

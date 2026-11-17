@@ -139,10 +139,13 @@ function MayoristaDetalle() {
 
       <div className="detalle-card">
         <div className="detalle-grid">
-          <div className="info-item">
-            <span className="info-label">CUIT</span>
-            <span className="info-value">{mayorista.cuit || '—'}</span>
-          </div>
+          {/* Ficha ajena: la API no manda el CUIT (catálogo público, R-003) */}
+          {mayorista.cuit && (
+            <div className="info-item">
+              <span className="info-label">CUIT</span>
+              <span className="info-value">{mayorista.cuit}</span>
+            </div>
+          )}
           <div className="info-item">
             <span className="info-label">Rubro</span>
             <span className="info-value">{rubrosMap[mayorista.rubro_id] || '—'}</span>
@@ -177,11 +180,16 @@ function MayoristaDetalle() {
         )}
 
         <div className="detalle-actions">
+          {/* El contacto todavía no tiene flujo (informe QA 30/09): desactivado,
+              igual que en el resto de la app, en vez de un alert de "pendiente". */}
           <button
-            className="btn btn-primary"
-            onClick={() => alert('Funcionalidad de contacto pendiente')}
+            type="button"
+            className="btn btn-secondary"
+            disabled
+            title="Disponible próximamente"
+            aria-label={`Contacto con ${mayorista.razon_social}: disponible próximamente`}
           >
-            <Icon name="phone" /> Contactar
+            <Icon name="phone" /> Contacto próximamente
           </button>
         </div>
       </div>

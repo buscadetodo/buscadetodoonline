@@ -109,10 +109,13 @@ function MinoristasList() {
               </div>
 
               <div className="minorista-info">
-                <div className="info-item">
-                  <span className="info-label">CUIT:</span>
-                  <span className="info-value">{minorista.cuit}</span>
-                </div>
+                {/* Ficha ajena: la API no manda el CUIT (catálogo público, R-003) */}
+                {minorista.cuit && (
+                  <div className="info-item">
+                    <span className="info-label">CUIT:</span>
+                    <span className="info-value">{minorista.cuit}</span>
+                  </div>
+                )}
                 <div className="info-item">
                   <span className="info-label">Pedido mínimo:</span>
                   <span className="info-value">{formatearPrecio(minorista.pedido_minimo)}</span>
