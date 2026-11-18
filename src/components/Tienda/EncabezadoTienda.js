@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Icon from '../Icon/Icon';
 import useAuth from '../../hooks/useAuth';
 import { useRubrosPublicos } from '../../hooks/useRubrosPublicos';
 import { usePerfilActivo } from '../../context/PerfilContext';
 import PerfilSelector from '../PerfilSelector/PerfilSelector';
 import { EVENTO_UBICACION, leerUbicacion } from '../../utils/ubicacion';
+import BuscadorInteligente from './BuscadorInteligente';
 import MiniCarrito from './MiniCarrito';
 import ModalZona from './ModalZona';
 import './Tienda.css';
@@ -25,13 +26,6 @@ function EncabezadoTienda() {
   const { isAuthenticated } = useAuth();
   const { panelUrl } = usePerfilActivo();
   const { rubros } = useRubrosPublicos();
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  // En /buscar el campo muestra lo que se está buscando
-  const qActual = location.pathname === '/buscar' ? new URLSearchParams(location.search).get('q') || '' : '';
-  const [texto, setTexto] = useState(qActual);
-  useEffect(() => setTexto(qActual), [qActual]);
 
   const [zona, setZona] = useState(() => leerUbicacion()?.texto || '');
   const [eligiendoZona, setEligiendoZona] = useState(false);
@@ -40,12 +34,6 @@ function EncabezadoTienda() {
     window.addEventListener(EVENTO_UBICACION, actualizar);
     return () => window.removeEventListener(EVENTO_UBICACION, actualizar);
   }, []);
-
-  const buscar = (e) => {
-    e.preventDefault();
-    const q = texto.trim();
-    navigate(q ? `/buscar?q=${encodeURIComponent(q)}` : '/buscar');
-  };
 
   const inicio = isAuthenticated ? panelUrl : '/';
 
@@ -57,21 +45,7 @@ function EncabezadoTienda() {
           <span>BuscaDeTodoOnline</span>
         </Link>
 
-        <form className="encabezado-buscador" role="search" onSubmit={buscar}>
-          <label htmlFor="buscador-principal" className="solo-lectores">Buscar productos</label>
-          <input
-            id="buscador-principal"
-            type="search"
-            value={texto}
-            onChange={(e) => setTexto(e.target.value)}
-            placeholder="Buscar productos por mayor, marcas y más…"
-            autoComplete="off"
-            enterKeyHint="search"
-          />
-          <button type="submit" aria-label="Buscar">
-            <Icon name="search" />
-          </button>
-        </form>
+        <BuscadorInteligente />
 
         <div className="encabezado-carrito-movil">
           <MiniCarrito />
