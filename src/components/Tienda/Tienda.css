@@ -25,7 +25,7 @@
 .tienda-main {
   flex: 1;
   width: 100%;
-  max-width: 1200px;
+  max-width: var(--ancho-sitio);
   margin: 0 auto;
   padding: 1.25rem 1rem 2.5rem;
 }
@@ -41,7 +41,7 @@
 }
 
 .encabezado-fila {
-  max-width: 1200px;
+  max-width: var(--ancho-sitio);
   margin: 0 auto;
   padding: 0 1rem;
   display: flex;
@@ -78,7 +78,7 @@
 
 .encabezado-buscador {
   flex: 1;
-  max-width: 640px;
+  max-width: 780px;
   display: flex;
   background: #fff;
   border-radius: 4px;
