@@ -89,7 +89,7 @@
 }
 
 .panel-link {
-  color: #4f46e5;
+  color: var(--color-enlace);
   font-weight: 600;
   font-size: 0.9rem;
   text-decoration: none;
@@ -215,7 +215,7 @@ button.panel-producto {
 
 .panel-producto:hover,
 .panel-producto:focus-visible {
-  border-color: #c7d2fe;
+  border-color: var(--color-acento-borde);
   box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
 }
 
@@ -298,8 +298,8 @@ button.panel-producto {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: #eef2ff;
-  color: #4f46e5;
+  background: var(--color-primario-suave);
+  color: var(--color-enlace);
   font-size: 1.5rem;
   margin-bottom: 0.75rem;
 }
@@ -323,7 +323,7 @@ button.panel-producto {
   gap: 0.4rem;
   padding: 0.65rem 1.2rem;
   border-radius: 8px;
-  background: #4f46e5;
+  background: var(--color-primario);
   color: #fff;
   font-weight: 600;
   text-decoration: none;
@@ -331,7 +331,7 @@ button.panel-producto {
 
 .panel-boton:hover,
 .panel-boton:focus-visible {
-  background: #4338ca;
+  background: var(--color-primario-hover);
 }
 
 /* --- Aviso informativo (funciones que todavía no existen) --- */

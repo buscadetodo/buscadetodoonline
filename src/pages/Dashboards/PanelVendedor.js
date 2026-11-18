@@ -143,18 +143,18 @@ function PanelVendedor({ tipo }) {
             </Link>
           )}
           {FEATURE_PRODUCTOS && !sinFicha && (
-            <Link to="/productos/nuevo" className="action-card" style={{ '--color': '#667eea' }}>
+            <Link to="/productos/nuevo" className="action-card" style={{ '--color': 'var(--color-primario)' }}>
               <span className="action-icon"><Icon name="add" /></span>
               <span className="action-title">Nuevo producto</span>
             </Link>
           )}
           {FEATURE_PRODUCTOS && (
-            <Link to="/productos" className="action-card" style={{ '--color': '#764ba2' }}>
+            <Link to="/productos" className="action-card" style={{ '--color': 'var(--color-primario-hover)' }}>
               <span className="action-icon"><Icon name="package" /></span>
               <span className="action-title">Ver catálogo</span>
             </Link>
           )}
-          <Link to="/perfil" className="action-card" style={{ '--color': '#f093fb' }}>
+          <Link to="/perfil" className="action-card" style={{ '--color': 'var(--color-enlace)' }}>
             <span className="action-icon"><Icon name="settings" /></span>
             <span className="action-title">Mi perfil</span>
           </Link>

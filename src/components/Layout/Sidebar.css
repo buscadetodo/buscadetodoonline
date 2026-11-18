@@ -1,6 +1,6 @@
 /* Sidebar estilo Dashboard 2.0 (oscuro), fijo */
 .sidebar {
-  background: #1e293b;
+  background: var(--color-tinta);
   width: 250px;
   border-right: none;
   position: fixed;
@@ -69,8 +69,8 @@
 }
 
 .sidebar-item.active {
-  background: var(--color-primario);
-  color: #ffffff;
+  background: var(--color-acento);
+  color: var(--color-sobre-acento);
   font-weight: 600;
 }
 

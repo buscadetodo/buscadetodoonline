@@ -91,32 +91,32 @@ function RegisterMejorado() {
       mayorista: {
         titulo: 'Registro de Mayorista',
         icono: 'mayorista',
-        color: '#4f46e5',
-        colorDark: '#4338ca',
+        color: 'var(--color-perfil-mayorista)',
+        colorDark: 'var(--color-perfil-mayorista-oscuro)',
         perfil_id: PERFIL.MAYORISTA,
         totalSteps: 2
       },
       minorista: {
         titulo: 'Registro de Minorista',
         icono: 'minorista',
-        color: '#764ba2',
-        colorDark: '#6a4391',
+        color: 'var(--color-perfil-minorista)',
+        colorDark: 'var(--color-perfil-minorista-oscuro)',
         perfil_id: PERFIL.MINORISTA,
         totalSteps: 2
       },
       comprador: {
         titulo: 'Registro de Comprador',
         icono: 'comprador',
-        color: '#0369a1',
-        colorDark: '#075985',
+        color: 'var(--color-perfil-comprador)',
+        colorDark: 'var(--color-perfil-comprador-oscuro)',
         perfil_id: PERFIL.COMPRADOR,
         totalSteps: 1
       },
       transportista: {
         titulo: 'Registro de Transportista',
         icono: 'transportista',
-        color: '#0f766e',
-        colorDark: '#115e59',
+        color: 'var(--color-perfil-transportista)',
+        colorDark: 'var(--color-perfil-transportista-oscuro)',
         perfil_id: PERFIL.TRANSPORTISTA,
         totalSteps: 2
       }

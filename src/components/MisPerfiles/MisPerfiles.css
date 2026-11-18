@@ -103,7 +103,7 @@
   display: inline-block;
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--color-primario);
+  color: var(--color-enlace);
   text-decoration: none;
 }
 

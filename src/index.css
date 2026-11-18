@@ -20,42 +20,72 @@ code {
     monospace;
 }
 
-/* Variables globales
- *
- * Paleta única (revisión UX/UI, bloque 3). Antes convivían un azul (var(--color-primario))
- * en el menú y el selector de perfil, un violeta (#667eea) en los botones y
- * colores sueltos por pantalla. El color de ACCIÓN es uno solo:
- * --color-primario (índigo, texto blanco con contraste ~6:1). El degradé
- * violeta queda como color de MARCA para fondos y encabezados.
+/*
+ * Paleta "grafito y lima" (2026-11-18).
+ *  - Tinta/grafito: encabezado, menú lateral y botones principales (texto blanco).
+ *  - Lima: el acento eléctrico. Solo como RELLENO con texto oscuro encima
+ *    (CTA principal, contador del carrito, marca, foco). Nunca texto lima
+ *    sobre blanco: no se lee.
+ *  - Oliva: la versión legible del lima para texto y enlaces sobre blanco
+ *    (contraste ~6:1).
+ * Toda la app toma los colores de acá: no escribir hex sueltos en los CSS.
  */
 :root {
   /* Ancho máximo del contenido de la tienda (encabezado y páginas) */
   --ancho-sitio: 1440px;
-  --color-primario: #4f46e5;
-  --color-primario-hover: #4338ca;
-  --color-primario-suave: #eef2ff;
-  --color-primario-texto: #3730a3;
-  --marca-degrade: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --color-texto: #1f2937;
-  --color-texto-suave: #6b7280;
-  --color-borde: #e5e7eb;
-  --color-fondo: #f9fafb;
+
+  /* Grafito */
+  --color-tinta: #0e1116;
+  --color-tinta-2: #1c2128;
+  --color-tinta-borde: #2d333b;
+  --color-tinta-texto: #c9d1d9; /* texto secundario sobre grafito */
+
+  /* Lima (acento) */
+  --color-acento: #c8f53a;
+  --color-acento-hover: #b6e62a;
+  --color-sobre-acento: #0e1116; /* texto sobre lima */
+  --color-acento-borde: #c2e35c;
+
+  /* Roles que usa toda la app */
+  --color-primario: #0e1116;          /* botones principales, fondos de marca */
+  --color-primario-hover: #2a313b;
+  --color-primario-suave: #f2fbd9;    /* fondos de íconos, estados activos */
+  --color-primario-suave-2: #e4f6ae;  /* hover de lo anterior */
+  --color-primario-texto: #3f6212;    /* texto sobre el fondo suave */
+  --color-enlace: #4d7c0f;            /* enlaces y textos de acción sobre blanco */
+  --color-foco: rgba(77, 124, 15, 0.28);
+  --marca-degrade: linear-gradient(135deg, #0e1116 0%, #1c2128 55%, #2b3a12 100%);
+
+  --color-texto: #14181f;
+  --color-texto-suave: #5f6b7a;
+  --color-borde: #e4e7eb;
+  --color-fondo: #f4f5f7;
   --color-peligro: #b91c1c;
   --color-peligro-suave: #fef2f2;
-  --color-exito: #047857;
-  --color-exito-suave: #ecfdf5;
+  --color-exito: #15803d;
+  --color-exito-suave: #ecfdf3;
+
+  /* Un color por tipo de cuenta (registro, alta de perfil) */
+  --color-perfil-mayorista: #0e1116;
+  --color-perfil-mayorista-oscuro: #2a313b;
+  --color-perfil-minorista: #4d7c0f;
+  --color-perfil-minorista-oscuro: #3f6212;
+  --color-perfil-comprador: #0369a1;
+  --color-perfil-comprador-oscuro: #075985;
+  --color-perfil-transportista: #0f766e;
+  --color-perfil-transportista-oscuro: #115e59;
 
   /* Nombres anteriores, se mantienen por compatibilidad */
   --primary-color: var(--color-primario);
-  --secondary-color: #764ba2;
+  --secondary-color: var(--color-tinta-2);
   --success-color: #10b981;
   --danger-color: #ef4444;
   --warning-color: #f59e0b;
-  --info-color: #3b82f6;
-  --text-color: #1f2937;
-  --text-secondary: #6b7280;
-  --border-color: #e5e7eb;
-  --background: #f9fafb;
+  --info-color: var(--color-enlace);
+  --text-color: var(--color-texto);
+  --text-secondary: var(--color-texto-suave);
+  --border-color: var(--color-borde);
+  --background: var(--color-fondo);
   --card-background: #ffffff;
 }
 

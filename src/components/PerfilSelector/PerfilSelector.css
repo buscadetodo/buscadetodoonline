@@ -19,8 +19,8 @@
 }
 
 .perfil-selector-btn:hover {
-  background: #0d47a1;
-  border-color: #0d47a1;
+  background: var(--color-primario-hover);
+  border-color: var(--color-primario-hover);
 }
 
 /* Alta pendiente: es una tarea, no el selector de un perfil ya existente. */
@@ -116,17 +116,17 @@
 
 .perfil-dropdown-item.active {
   background: #edf2f7;
-  color: var(--color-primario);
+  color: var(--color-enlace);
   font-weight: 600;
 }
 
 .perfil-dropdown-item.agregar {
-  color: var(--color-primario);
+  color: var(--color-enlace);
   font-weight: 600;
 }
 
 .perfil-dropdown-item.agregar:hover {
-  background: #eef2ff;
+  background: var(--color-primario-suave);
 }
 
 .perfil-item-icono {

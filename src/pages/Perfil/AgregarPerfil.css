@@ -76,8 +76,8 @@
 }
 .ap-tipo-card.selected {
   border-color: var(--color, var(--color-primario));
-  background: rgba(21, 101, 192, 0.06);
-  box-shadow: 0 6px 18px rgba(21, 101, 192, 0.18);
+  background: rgba(77, 124, 15, 0.06);
+  box-shadow: 0 6px 18px rgba(77, 124, 15, 0.18);
 }
 .ap-tipo-card.disabled {
   opacity: 0.55;
@@ -186,7 +186,7 @@
 .ap-form-group textarea:focus {
   outline: none;
   border-color: var(--color-primario);
-  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.12);
+  box-shadow: 0 0 0 3px rgba(77, 124, 15, 0.12);
 }
 .ap-form-group textarea {
   resize: vertical;
@@ -214,8 +214,8 @@
   gap: 0.6rem;
   align-items: flex-start;
   padding: 1rem 1.1rem;
-  background: rgba(21, 101, 192, 0.06);
-  border: 1px solid rgba(21, 101, 192, 0.15);
+  background: rgba(77, 124, 15, 0.06);
+  border: 1px solid rgba(77, 124, 15, 0.15);
   border-radius: 10px;
   color: #334155;
   font-size: 0.9rem;
@@ -286,10 +286,10 @@
 .ap-btn-submit {
   background: var(--color-primario);
   color: #fff;
-  box-shadow: 0 4px 12px rgba(21, 101, 192, 0.3);
+  box-shadow: 0 4px 12px rgba(77, 124, 15, 0.3);
 }
 .ap-btn-submit:hover:not(:disabled) {
-  background: #0d47a1;
+  background: var(--color-primario-hover);
   transform: translateY(-2px);
 }
 .ap-btn-submit:disabled {

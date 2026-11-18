@@ -74,6 +74,7 @@
 
 .encabezado-marca svg {
   font-size: 1.6rem;
+  color: var(--color-acento);
 }
 
 .encabezado-buscador {
@@ -102,7 +103,7 @@
 }
 
 .encabezado-buscador:focus-within {
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.55);
+  box-shadow: 0 0 0 2px var(--color-acento);
 }
 
 .encabezado-buscador button {
@@ -118,7 +119,7 @@
 }
 
 .encabezado-buscador button:hover {
-  color: var(--color-primario);
+  color: var(--color-enlace);
 }
 
 .encabezado-zona {
@@ -158,7 +159,7 @@
 
 .encabezado-zona small {
   font-size: 0.72rem;
-  opacity: 0.85;
+  color: var(--color-acento);
 }
 
 .encabezado-zona strong {
@@ -363,12 +364,12 @@
 }
 
 .tienda-btn-primario {
-  background: var(--color-primario);
-  color: #fff;
+  background: var(--color-acento);
+  color: var(--color-sobre-acento);
 }
 
 .tienda-btn-primario:hover {
-  background: var(--color-primario-hover);
+  background: var(--color-acento-hover);
 }
 
 .tienda-btn-secundario {
@@ -377,7 +378,7 @@
 }
 
 .tienda-btn-secundario:hover {
-  background: #e0e7ff;
+  background: var(--color-primario-suave-2);
 }
 
 /* ---------- Tarjeta de producto ---------- */
@@ -530,7 +531,7 @@
   align-items: center;
   justify-content: center;
   background: var(--color-primario-suave);
-  color: var(--color-primario);
+  color: var(--color-enlace);
   font-size: 1.6rem;
 }
 
@@ -597,7 +598,7 @@
   padding: 0;
   border: none;
   background: none;
-  color: var(--color-primario);
+  color: var(--color-enlace);
   font: inherit;
   font-weight: 600;
   cursor: pointer;
@@ -691,4 +692,39 @@
   .tienda-main {
     padding: 0.75rem 0.5rem 2rem;
   }
+}
+
+/* Grafito y lima: el encabezado es grafito con acentos en lima */
+.encabezado-tienda {
+  background: var(--color-tinta);
+  border-bottom: 1px solid var(--color-tinta-borde);
+}
+
+.encabezado-rubros a,
+.encabezado-cuenta > a {
+  color: var(--color-tinta-texto);
+}
+
+.encabezado-rubros a:hover,
+.encabezado-cuenta > a:hover {
+  color: var(--color-acento);
+  text-decoration: none;
+}
+
+.mini-carrito-contador {
+  background: var(--color-acento);
+  color: var(--color-sobre-acento);
+}
+
+.encabezado-icono-btn:hover {
+  color: var(--color-acento);
+}
+
+.encabezado-cuenta .perfil-selector-btn {
+  background: var(--color-tinta-2);
+  border-color: var(--color-tinta-borde);
+}
+
+.encabezado-cuenta .perfil-selector-btn:hover {
+  border-color: var(--color-acento);
 }

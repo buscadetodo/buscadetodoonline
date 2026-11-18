@@ -13,7 +13,7 @@ function SeleccionTipoCuenta() {
       titulo: 'Soy Mayorista',
       icono: 'mayorista',
       descripcion: 'Vendo productos al por mayor',
-      color: '#4f46e5',
+      color: 'var(--color-perfil-mayorista)',
       requisitos: ['CUIT', 'Razón Social', 'Productos al por mayor'],
       beneficios: ['Llega a más clientes', 'Gestiona tu catálogo', 'Recibe pedidos online']
     },
@@ -22,7 +22,7 @@ function SeleccionTipoCuenta() {
       titulo: 'Soy Minorista',
       icono: 'minorista',
       descripcion: 'Tengo un comercio y compro por mayor',
-      color: '#764ba2',
+      color: 'var(--color-perfil-minorista)',
       requisitos: ['CUIT/CUIL', 'Nombre del negocio', 'Dirección'],
       beneficios: ['Encuentra mejores precios', 'Compara proveedores', 'Organiza tus compras']
     },
@@ -31,7 +31,7 @@ function SeleccionTipoCuenta() {
       titulo: 'Soy Comprador',
       icono: 'comprador',
       descripcion: 'Compro productos para consumo',
-      color: '#0369a1',
+      color: 'var(--color-perfil-comprador)',
       requisitos: ['DNI', 'Email', 'Dirección de entrega'],
       beneficios: ['Accede a precios mayoristas', 'Gran variedad de productos', 'Compra online']
     },
@@ -40,7 +40,7 @@ function SeleccionTipoCuenta() {
       titulo: 'Soy Transportista',
       icono: 'transportista',
       descripcion: 'Ofrezco servicios de flete',
-      color: '#0f766e',
+      color: 'var(--color-perfil-transportista)',
       requisitos: ['CUIT', 'Datos del vehículo', 'Patente'],
       beneficios: ['Consigue más clientes', 'Gestiona tus viajes', 'Tarifas personalizadas']
     }
