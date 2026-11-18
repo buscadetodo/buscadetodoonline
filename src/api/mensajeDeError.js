@@ -33,8 +33,30 @@ const mensajeSinRespuesta = (err) => {
   return MENSAJE_SIN_RESPUESTA;
 };
 
+/**
+ * Código fijo del error de negocio ({ success:false, error, codigo }), o null.
+ * Lo usan las pantallas de cuenta (token_vencido, token_usado, etc.) para
+ * decidir qué mostrar sin depender del texto.
+ */
+export const codigoDeError = (err) => {
+  const codigo = err?.response?.data?.codigo;
+  return typeof codigo === 'string' ? codigo : null;
+};
+
+/** Segundos de espera que pide un 429 (cabecera Retry-After), o null. */
+export const segundosDeEspera = (err) => {
+  if (err?.response?.status !== 429) return null;
+  const valor = Number(err.response.headers?.['retry-after']);
+  return Number.isFinite(valor) && valor > 0 ? Math.ceil(valor) : 60;
+};
+
+const MENSAJE_EMAIL_NO_VERIFICADO =
+  'Verificá tu email para continuar. Te enviamos un enlace; si no te llegó, podés reenviarlo desde el aviso de arriba.';
+
 const mensajeDeError = (err, fallback = 'Ocurrió un error inesperado') => {
   if (esErrorSinRespuesta(err)) return mensajeSinRespuesta(err);
+  // Cualquier acción que exija email verificado (pedidos, publicar) responde así
+  if (codigoDeError(err) === 'email_no_verificado') return MENSAJE_EMAIL_NO_VERIFICADO;
 
   const data = err?.response?.data;
   const status = err?.response?.status;

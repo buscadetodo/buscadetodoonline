@@ -3,6 +3,7 @@ import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import Footer from '../Footer/Footer';
 import RetomarCompra from '../FichaProducto/RetomarCompra';
+import AvisoVerificarEmail from '../AvisoVerificarEmail/AvisoVerificarEmail';
 import './Layout.css';
 
 function Layout({ children }) {
@@ -48,7 +49,10 @@ function Layout({ children }) {
           aria-hidden="true"
         />
         <main className="main-content">
-          <div className="main-body">{children}</div>
+          <div className="main-body">
+            <AvisoVerificarEmail />
+            {children}
+          </div>
           <Footer variant="compact" />
         </main>
       </div>

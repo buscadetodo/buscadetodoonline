@@ -7,6 +7,8 @@ import MisPerfiles from '../../components/MisPerfiles/MisPerfiles';
 import Icon from '../../components/Icon/Icon';
 import { errorTextoConHtml, esEmailValido } from '../../utils/validaciones';
 import { ROL_ADMIN } from '../../config/roles';
+import { FEATURE_CUENTA_EMAIL } from '../../config/features';
+import CambiarContrasena from './CambiarContrasena';
 import './Perfil.css';
 
 function Perfil() {
@@ -111,12 +113,15 @@ function Perfil() {
         apellido: formData.apellido,
         dni: formData.dni,
         id_rol: formData.id_rol,
-        email_verificado: formData.email_verificado,
         estado_cuenta: formData.estado_cuenta,
       };
+      // Con la verificación de email, el usuario no manda este dato: lo
+      // decide la API (docs/README_verificacion_email_y_recupero.md §2.1).
+      if (!FEATURE_CUENTA_EMAIL) updateData.email_verificado = formData.email_verificado;
 
-      // Solo incluir password si se ingresó uno nuevo
-      if (formData.password && formData.password.trim() !== '') {
+      // Solo incluir password si se ingresó uno nuevo. Con FEATURE_CUENTA_EMAIL
+      // la contraseña se cambia aparte, pidiendo la actual (CambiarContrasena).
+      if (!FEATURE_CUENTA_EMAIL && formData.password && formData.password.trim() !== '') {
         updateData.password = formData.password;
       }
 
@@ -238,6 +243,7 @@ function Perfil() {
             </div>
           </div>
 
+          {!FEATURE_CUENTA_EMAIL && (
           <div className="form-section">
             <h3>Cambiar Contraseña</h3>
             <p className="form-hint">Deja en blanco si no deseas cambiar tu contraseña</p>
@@ -257,6 +263,7 @@ function Perfil() {
               <small className="form-help">Mínimo 6 caracteres</small>
             </div>
           </div>
+          )}
 
           <div className="form-section">
             <h3>Estado de Cuenta</h3>
@@ -304,6 +311,8 @@ function Perfil() {
             </button>
           </div>
         </form>
+
+        {FEATURE_CUENTA_EMAIL && <CambiarContrasena />}
 
         {/* Fuera del form: son acciones propias, no parte del alta de datos */}
         <MisPerfiles />

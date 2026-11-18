@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks';
 import { useToast } from '../../components/Toast/Toast';
 import Icon from '../../components/Icon/Icon';
 import usuarioPerfilesService from '../../services/usuarioPerfilesService';
 import usersService from '../../services/usersService';
 import authService from '../../services/authService';
+import { FEATURE_CUENTA_EMAIL } from '../../config/features';
 import './AuthMejorado.css';
 import './RegisterMejorado.css';
+import './Cuenta.css';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -21,6 +23,8 @@ function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
+  // Aviso que deja otra pantalla al traer acá (p. ej. "cambiaste tu contraseña")
+  const aviso = useLocation().state?.aviso;
 
   const validateForm = () => {
     const newErrors = {};
@@ -136,6 +140,12 @@ function Login() {
         {/* Formulario */}
         <form onSubmit={handleSubmit}>
           <div className="register-content">
+            {aviso && !loginError && (
+              <p className="cuenta-aviso-ok" role="status">
+                <Icon name="success" /> {aviso}
+              </p>
+            )}
+
             {/* Banner de error de login */}
             {loginError && (
               <div className="login-error-banner" style={{ display: 'flex' }}>
@@ -205,6 +215,12 @@ function Login() {
               </div>
               {errors.password && <span className="error-message" role="alert"><Icon name="warning" /> {errors.password}</span>}
             </div>
+
+            {FEATURE_CUENTA_EMAIL && (
+              <Link to="/olvide-contrasena" state={{ email }} className="login-olvide">
+                ¿Olvidaste tu contraseña?
+              </Link>
+            )}
 
             {/* Recordarme: conserva la sesión 7 días aunque se cierre el navegador */}
             <label className="login-recordarme" htmlFor="login-recordarme">

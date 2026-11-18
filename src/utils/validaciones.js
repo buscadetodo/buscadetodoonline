@@ -56,3 +56,18 @@ export const errorTextoConHtml = (datos, etiquetas) => {
   const campo = Object.keys(etiquetas).find((k) => tieneCaracteresHtml(datos?.[k]));
   return campo ? `${etiquetas[campo]} ${TEXTO_SIN_HTML_AYUDA}` : null;
 };
+
+// Contraseña. Hoy el registro pide 6; el pedido al backend propone 8 a 72
+// (72 = límite de bcrypt), pendiente de decidir en el equipo. Al confirmarlo,
+// se cambia solo PASSWORD_MIN.
+export const PASSWORD_MIN = 6;
+export const PASSWORD_MAX = 72;
+
+/** Mensaje de error de la contraseña o '' si está bien. */
+export const errorPassword = (password) => {
+  const largo = String(password || '').length;
+  if (largo === 0) return 'Ingresá una contraseña';
+  if (largo < PASSWORD_MIN) return `Mínimo ${PASSWORD_MIN} caracteres`;
+  if (largo > PASSWORD_MAX) return `Máximo ${PASSWORD_MAX} caracteres`;
+  return '';
+};
