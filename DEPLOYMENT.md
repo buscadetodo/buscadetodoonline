@@ -48,7 +48,7 @@ Tu proyecto ya está configurado para Render con:
 2. **Conecta tu repositorio**
    - Selecciona tu repositorio
    - Configura:
-     - **Name**: `libremercado-frontend`
+     - **Name**: `libremercado-frontend` (nombre técnico del servicio en Render: define la URL `*.onrender.com`; la marca del sitio es BuscaDeTodoOnline)
      - **Runtime**: Docker
      - **Dockerfile Path**: `./Dockerfile.prod`
      - **Region**: Ohio (o el más cercano)
@@ -107,8 +107,8 @@ Nginx responderá con tu index.html.
 ### Build falla
 ```bash
 # Verifica localmente con Docker
-docker build -f Dockerfile.prod -t libremercado-test .
-docker run -p 8080:80 libremercado-test
+docker build -f Dockerfile.prod -t buscadetodo-test .
+docker run -p 8080:80 buscadetodo-test
 ```
 
 ### Variables de entorno no funcionan

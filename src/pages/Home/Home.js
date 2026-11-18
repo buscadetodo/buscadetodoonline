@@ -15,7 +15,7 @@ import './Home.css';
 // Primera página del catálogo: se guarda en el navegador para mostrarla al
 // instante en la próxima visita y se actualiza por detrás.
 const CANTIDAD = 12;
-const CLAVE_CATALOGO = 'libremercado-catalogo-publico';
+const CLAVE_CATALOGO = 'buscadetodo-catalogo-publico';
 const VIGENCIA_CATALOGO_MS = 24 * 60 * 60 * 1000; // un día
 
 function leerCatalogoGuardado() {
