@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import Footer from '../Footer/Footer';
+import RetomarCompra from '../FichaProducto/RetomarCompra';
 import './Layout.css';
 
 function Layout({ children }) {
@@ -51,6 +52,8 @@ function Layout({ children }) {
           <Footer variant="compact" />
         </main>
       </div>
+      {/* Lo que eligió en el catálogo antes de ingresar se suma solo al carrito */}
+      <RetomarCompra />
     </div>
   );
 }

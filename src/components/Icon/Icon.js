@@ -32,6 +32,7 @@ import {
   Pencil,
   Phone,
   Plus,
+  Minus,
   Receipt,
   RefreshCw,
   Rocket,
@@ -74,6 +75,7 @@ const ICONOS = {
 
   // Acciones
   add: Plus,
+  minus: Minus,
   edit: Pencil,
   delete: Trash2,
   save: Save,
