@@ -138,8 +138,8 @@ function RegisterUniversal() {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card login-mejorado-card" style={{ maxWidth: '580px' }}>
+    <div className="auth-container auth-container--registro">
+      <div className="auth-card login-mejorado-card register-universal-card" style={{ maxWidth: '580px' }}>
         {/* Botón volver al home */}
         <Link to="/" className="btn-back-home">
           <span className="back-icon">←</span>
@@ -224,14 +224,13 @@ function RegisterUniversal() {
                 <input
                   id="reg-dni"
                   type="text"
-                  className="has-icon"
+                  inputMode="numeric"
                   value={formData.dni}
                   onChange={(e) => handleChange('dni', e.target.value.replace(/\D/g, ''))}
                   placeholder="Sin puntos, ej.: 30111222"
                   maxLength="8"
                   autoComplete="off"
                 />
-                <span className="input-icon" aria-hidden="true">🆔</span>
               </div>
               {errors.dni && <span className="error-message" role="alert"><Icon name="warning" /> {errors.dni}</span>}
             </div>
@@ -325,7 +324,6 @@ function RegisterUniversal() {
               type="submit" 
               className="btn-submit-login"
               disabled={loading}
-              style={{ marginTop: '24px' }}
             >
               {loading ? (
                 <>

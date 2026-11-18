@@ -636,3 +636,74 @@
   transform: translateY(-50%);
   margin: 0;
 }
+
+/* Registro (RegisterUniversal) en mobile: menos padding anidado,
+   header apilado y campos a una columna con buen espaciado */
+@media (max-width: 768px) {
+  .auth-container--registro {
+    padding: 16px 12px;
+    align-items: flex-start;
+  }
+
+  .register-universal-card {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+
+  .register-universal-card .btn-back-home {
+    margin-bottom: 16px;
+  }
+
+  .register-universal-card .register-content {
+    padding: 0;
+  }
+
+  .register-universal-card .login-header {
+    padding: 20px 12px;
+    margin-bottom: 24px;
+  }
+
+  .register-universal-card .login-logo-wrapper {
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .register-universal-card .login-brand {
+    text-align: center;
+  }
+
+  .register-universal-card .login-logo-icon {
+    font-size: 40px;
+  }
+
+  .register-universal-card .brand-name {
+    font-size: 24px;
+  }
+
+  .register-universal-card .login-subtitle {
+    margin-top: 8px;
+  }
+
+  .register-universal-card .form-row-mejorado {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .register-universal-card .form-group-mejorado {
+    margin-bottom: 18px;
+  }
+
+  /* 16px evita el zoom automático de iOS al enfocar un input */
+  .register-universal-card .form-group-mejorado input {
+    font-size: 16px;
+  }
+
+  .register-universal-card .btn-submit-login {
+    margin-top: 8px;
+  }
+
+  .register-universal-card .register-legales {
+    text-align: center;
+  }
+}
