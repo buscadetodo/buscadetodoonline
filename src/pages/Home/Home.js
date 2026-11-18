@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import { usePerfilActivo } from '../../context/PerfilContext';
@@ -12,6 +12,39 @@ import Modal from '../../components/Modal/Modal';
 import Footer from '../../components/Footer/Footer';
 import Icon from '../../components/Icon/Icon';
 import './Home.css';
+
+// Catálogo público: tamaño de página y copia guardada de la primera página.
+const POR_PAGINA = 12;
+const CLAVE_CATALOGO = 'libremercado-catalogo-publico';
+const VIGENCIA_CATALOGO_MS = 24 * 60 * 60 * 1000; // un día
+
+/** Primera página guardada ({productos, hayMas}) o null si no hay o venció. */
+function leerCatalogoGuardado() {
+  try {
+    const guardado = JSON.parse(localStorage.getItem(CLAVE_CATALOGO));
+    if (!guardado || !Array.isArray(guardado.productos) || guardado.productos.length === 0) return null;
+    if (Date.now() - guardado.guardado > VIGENCIA_CATALOGO_MS) return null;
+    return guardado;
+  } catch {
+    return null; // modo privado, datos corruptos, etc.: se carga normalmente
+  }
+}
+
+/** true si la API rechazó el pedido por falta de sesión. */
+function esRechazoDeSesion(err) {
+  const estado = err?.response?.status;
+  return estado === 401 || estado === 403;
+}
+
+/** Guarda la primera página (o la borra con null). Nunca falla. */
+function guardarCatalogo(datos) {
+  try {
+    if (datos) localStorage.setItem(CLAVE_CATALOGO, JSON.stringify({ ...datos, guardado: Date.now() }));
+    else localStorage.removeItem(CLAVE_CATALOGO);
+  } catch {
+    // sin almacenamiento disponible: no pasa nada
+  }
+}
 
 function Home() {
   const { isAuthenticated } = useAuth();
@@ -40,15 +73,24 @@ function Home() {
   ]);
 
   // Catálogo público (opción A: productos con precio, sin iniciar sesión).
-  // Se activa solo: si GET /productos/ responde sin token se muestran los
-  // productos reales; si la API todavía pide sesión (401), la home queda como
-  // antes (categorías y búsqueda llevan al login).
+  // GET /productos/ responde sin token. Si la API volviera a pedir sesión
+  // (401), la home queda como antes (categorías y búsqueda llevan al login).
   //   catalogoPublico: null = verificando · true = disponible · false = no
-  const [catalogoPublico, setCatalogoPublico] = useState(null);
-  const [productosPublicos, setProductosPublicos] = useState([]);
-  const [cargandoProductos, setCargandoProductos] = useState(false);
+  //
+  // Para que se sienta rápido, como en las tiendas grandes:
+  //  - la última primera página vista queda guardada en el navegador y se
+  //    muestra al instante; se actualiza por detrás;
+  //  - sin nada guardado, se muestran esqueletos desde el primer momento;
+  //  - "Ver más" trae la página siguiente sin perder lo que ya se ve.
+  const [cacheInicial] = useState(leerCatalogoGuardado); // solo al montar
+  const [catalogoPublico, setCatalogoPublico] = useState(cacheInicial ? true : null);
+  const [productosPublicos, setProductosPublicos] = useState(cacheInicial?.productos || []);
+  const [hayMasProductos, setHayMasProductos] = useState(Boolean(cacheInicial?.hayMas));
+  const [cargandoProductos, setCargandoProductos] = useState(!cacheInicial);
+  const [cargandoMas, setCargandoMas] = useState(false);
   const [rubroFiltro, setRubroFiltro] = useState(null);
   const [busquedaAplicada, setBusquedaAplicada] = useState('');
+  const pedidoActual = useRef(0);
   const { nombreDe } = useCatalogoComercios();
 
   useEffect(() => {
@@ -74,32 +116,83 @@ function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated]);
 
-  const cargarProductosPublicos = useCallback(async (filtros = {}) => {
-    setCargandoProductos(true);
+  /**
+   * Trae una página del catálogo. Se pide un producto de más para saber si
+   * hay otra página (la API no devuelve totales).
+   * @param {Object} filtros - { rubro_id, search }
+   * @param {{offset?: number, silencioso?: boolean}} opciones
+   *   offset > 0 agrega a la lista ("Ver más"); silencioso no muestra
+   *   esqueletos (se usa al refrescar lo que ya está en pantalla).
+   */
+  const cargarProductosPublicos = useCallback(async (filtros = {}, { offset = 0, silencioso = false } = {}) => {
+    const id = ++pedidoActual.current;
+    const agregar = offset > 0;
+    if (agregar) setCargandoMas(true);
+    else if (!silencioso) setCargandoProductos(true);
     try {
-      const resp = await productosService.getAll({ limit: 12, ...filtros });
+      const pedir = () => productosService.getAll({ ...filtros, limit: POR_PAGINA + 1, offset });
+      let resp;
+      try {
+        resp = await pedir();
+      } catch (err) {
+        // Un corte de red o un error momentáneo no debe ocultar el catálogo:
+        // se reintenta una vez. Si la API pide sesión, no tiene sentido.
+        if (esRechazoDeSesion(err)) throw err;
+        await new Promise((r) => setTimeout(r, 1500));
+        if (id !== pedidoActual.current) return;
+        resp = await pedir();
+      }
+      if (id !== pedidoActual.current) return; // llegó tarde: hay un pedido más nuevo
       const lista = resp?.data ?? resp;
-      setProductosPublicos(Array.isArray(lista) ? lista : []);
+      const datos = Array.isArray(lista) ? lista : [];
+      const pagina = datos.slice(0, POR_PAGINA);
+      const hayMas = datos.length > POR_PAGINA;
+      setProductosPublicos((previos) => (agregar ? [...previos, ...pagina] : pagina));
+      setHayMasProductos(hayMas);
       setCatalogoPublico(true);
+      if (!agregar && !filtros.rubro_id && !filtros.search) {
+        guardarCatalogo({ productos: pagina, hayMas });
+      }
     } catch (err) {
-      // 401: la API todavía no publica el catálogo sin sesión
-      setCatalogoPublico(false);
+      if (id !== pedidoActual.current) return;
+      if (agregar) return; // se conserva lo que ya se ve; el botón queda para reintentar
+      if (esRechazoDeSesion(err)) {
+        // 401/403: la API dejó de publicar el catálogo sin sesión
+        setCatalogoPublico(false);
+        guardarCatalogo(null);
+      } else if (!silencioso) {
+        // Falló dos veces por otro motivo. Si había una copia guardada en
+        // pantalla (silencioso) se deja; si no, se oculta la sección.
+        setCatalogoPublico(false);
+      }
     } finally {
-      setCargandoProductos(false);
+      if (id === pedidoActual.current) {
+        setCargandoProductos(false);
+        setCargandoMas(false);
+      }
     }
   }, []);
 
   useEffect(() => {
     if (isAuthenticated || !FEATURE_PRODUCTOS) return;
-    cargarProductosPublicos();
+    // Si había algo guardado ya está en pantalla: se refresca sin esqueletos.
+    cargarProductosPublicos({}, { silencioso: Boolean(leerCatalogoGuardado()) });
   }, [isAuthenticated, cargarProductosPublicos]);
+
+  const filtrosDe = (rubroId, texto) => ({
+    rubro_id: rubroId || undefined,
+    search: texto.trim() || undefined,
+  });
 
   const aplicarFiltros = (rubroId, texto) => {
     setRubroFiltro(rubroId);
     setBusquedaAplicada(texto);
-    cargarProductosPublicos({
-      rubro_id: rubroId || undefined,
-      search: texto.trim() || undefined,
+    cargarProductosPublicos(filtrosDe(rubroId, texto));
+  };
+
+  const verMasProductos = () => {
+    cargarProductosPublicos(filtrosDe(rubroFiltro, busquedaAplicada), {
+      offset: productosPublicos.length,
     });
   };
 
@@ -433,8 +526,8 @@ function Home() {
         </div>
       </section>
 
-      {/* Productos reales (solo si la API publica el catálogo sin sesión) */}
-      {catalogoPublico && (
+      {/* Productos reales (se oculta solo si la API pide sesión) */}
+      {FEATURE_PRODUCTOS && catalogoPublico !== false && (
         <section id="productos-publicos" className="productos-publicos-section" aria-labelledby="productos-publicos-titulo">
           <div className="container">
             <div className="panel-seccion-cabecera">
@@ -461,12 +554,16 @@ function Home() {
 
             {cargandoProductos ? (
               <div className="panel-grilla" aria-busy="true" aria-label="Cargando productos">
-                {[0, 1, 2, 3].map((i) => (
-                  <div key={i} className="panel-producto">
+                {Array.from({ length: 8 }, (_, i) => (
+                  <div key={i} className="panel-producto producto-esqueleto" aria-hidden="true">
                     <div className="panel-producto-imagen esqueleto" />
                     <div className="panel-producto-cuerpo">
-                      <span className="esqueleto esqueleto-linea" style={{ width: '70%' }} />
-                      <span className="esqueleto esqueleto-linea" style={{ width: '40%' }} />
+                      <span className="esqueleto esqueleto-linea" style={{ width: '75%' }} />
+                      <span className="esqueleto esqueleto-linea" style={{ width: '50%' }} />
+                      <div className="panel-producto-pie">
+                        <span className="esqueleto esqueleto-linea" style={{ width: '35%' }} />
+                        <span className="esqueleto esqueleto-linea" style={{ width: '20%' }} />
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -508,6 +605,20 @@ function Home() {
                     </button>
                   );
                 })}
+              </div>
+            )}
+
+            {!cargandoProductos && hayMasProductos && (
+              <div className="ver-mas-productos">
+                <button
+                  type="button"
+                  className="btn-ver-mas"
+                  onClick={verMasProductos}
+                  disabled={cargandoMas}
+                  aria-busy={cargandoMas}
+                >
+                  {cargandoMas ? 'Cargando…' : 'Ver más productos'}
+                </button>
               </div>
             )}
           </div>
