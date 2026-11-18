@@ -13,6 +13,7 @@ import Footer from '../../components/Footer/Footer';
 import Icon from '../../components/Icon/Icon';
 import FichaProducto from '../../components/FichaProducto/FichaProducto';
 import { guardarCompraPendiente } from '../../utils/carrito';
+import { borrarUbicacion, guardarUbicacion, leerUbicacion, zonaDesdeNominatim } from '../../utils/ubicacion';
 import './Home.css';
 
 // Catálogo público: tamaño de página y copia guardada de la primera página.
@@ -52,7 +53,8 @@ function Home() {
   const { isAuthenticated } = useAuth();
   // panelUrl ya resuelve admin vs. panel del perfil (ver PerfilContext)
   const { panelUrl, loading: cargandoPerfiles } = usePerfilActivo();
-  const [codigoPostal, setCodigoPostal] = useState('');
+  // La zona queda guardada en el navegador para la próxima visita (utils/ubicacion)
+  const [codigoPostal, setCodigoPostal] = useState(() => leerUbicacion()?.texto || '');
   const [searchQuery, setSearchQuery] = useState('');
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [accionLogin, setAccionLogin] = useState('');
@@ -263,12 +265,14 @@ function Home() {
       
       // Extraer información de la dirección
       const address = data.address || {};
+      const zona = { ...zonaDesdeNominatim(address), origen: 'detectada' };
       const postalCode = address.postcode || address.postal_code || '';
       const city = address.city || address.town || address.village || '';
       
       // Si hay código postal, usarlo
       if (postalCode) {
         setCodigoPostal(postalCode);
+        guardarUbicacion({ ...zona, texto: postalCode });
         setUbicacionModalData({
           tipo: 'success',
           mensaje: '¡Ubicación detectada!',
@@ -278,6 +282,7 @@ function Home() {
       } else if (city) {
         // Si no hay CP pero hay ciudad, mostrar la ciudad
         setCodigoPostal(city);
+        guardarUbicacion({ ...zona, texto: city });
         setUbicacionModalData({
           tipo: 'success',
           mensaje: '¡Ubicación detectada!',
@@ -288,6 +293,7 @@ function Home() {
         // Mostrar la dirección completa
         const displayAddress = data.display_name || `${latitude}, ${longitude}`;
         setCodigoPostal(displayAddress.split(',')[0]);
+        guardarUbicacion({ ...zona, texto: displayAddress.split(',')[0] });
         setUbicacionModalData({
           tipo: 'success',
           mensaje: '¡Ubicación detectada!',
@@ -436,7 +442,11 @@ function Home() {
               type="text"
               placeholder="Código postal o ciudad"
               value={codigoPostal}
-              onChange={(e) => setCodigoPostal(e.target.value)}
+              onChange={(e) => {
+                setCodigoPostal(e.target.value);
+                guardarUbicacion({ texto: e.target.value, origen: 'manual' });
+              }}
+              autoComplete="postal-code"
               className="zona-input"
               disabled={detectandoUbicacion}
             />
@@ -458,6 +468,21 @@ function Home() {
               )}
             </button>
           </div>
+          {codigoPostal.trim() && !ubicacionError && !detectandoUbicacion && (
+            <p className="zona-guardada">
+              Guardamos tu zona en este navegador para la próxima visita.{' '}
+              <button
+                type="button"
+                className="zona-borrar"
+                onClick={() => {
+                  borrarUbicacion();
+                  setCodigoPostal('');
+                }}
+              >
+                Borrar
+              </button>
+            </p>
+          )}
           {ubicacionError && (
             <div className="ubicacion-error-hint">
               <Icon name="warning" />
