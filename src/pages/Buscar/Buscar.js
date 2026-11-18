@@ -20,7 +20,12 @@ const ORDENES = [
 ];
 
 /**
- * Resultados de búsqueda (/buscar), pública.
+ * Listado de productos con filtros. Lo usan la búsqueda (/buscar) y la tienda
+ * de cada comercio (/tienda/:tipo/:id, con `comercioFijo`).
+ *
+ * @param {string} [props.comercioFijo] "mayorista:3": muestra solo ese comercio
+ *   (sin filtro de comercio y con buscador propio)
+ * @param {string} [props.titulo] título cuando no hay búsqueda
  *
  * Todo el estado vive en la URL (?q=&rubro=&comercio=&min=&max=&stock=&orden=)
  * para poder compartir el link y volver atrás sin perder los filtros.
@@ -29,11 +34,11 @@ const ORDENES = [
  * orden se aplican sobre lo que ya se trajo, porque la API todavía no los
  * acepta (pendiente de pedir al backend).
  */
-function Buscar() {
+export function ListadoProductos({ comercioFijo = '', titulo: tituloFijo = '' }) {
   const [params, setParams] = useSearchParams();
   const q = params.get('q') || '';
   const rubro = params.get('rubro') || '';
-  const comercio = params.get('comercio') || ''; // "mayorista:3" | "minorista:2"
+  const comercio = comercioFijo || params.get('comercio') || ''; // "mayorista:3" | "minorista:2"
   const min = params.get('min') || '';
   const max = params.get('max') || '';
   const soloStock = params.get('stock') === '1';
@@ -107,8 +112,9 @@ function Buscar() {
 
   useEffect(() => {
     cargar(0);
-    window.scrollTo(0, 0);
-  }, [cargar]);
+    // En /buscar cada búsqueda arranca arriba; en la tienda no se salta la cabecera
+    if (!comercioFijo) window.scrollTo(0, 0);
+  }, [cargar, comercioFijo]);
 
   // Precio, stock y orden sobre lo cargado
   const visibles = useMemo(() => {
@@ -127,13 +133,13 @@ function Buscar() {
   }, [productos, min, max, soloStock, orden]);
 
   const nombreComercioFiltro = comercios.find((c) => `${c.tipo}:${c.id}` === comercio)?.label || '';
-  const titulo = q ? `“${q}”` : rubro ? nombreRubro(rubro) || 'Rubro' : 'Todos los productos';
+  const titulo = q ? `“${q}”` : rubro ? nombreRubro(rubro) || 'Rubro' : tituloFijo || 'Todos los productos';
 
   // Chips de filtros activos (se pueden quitar de a uno)
   const activos = [
     q && { clave: 'q', texto: `Búsqueda: ${q}` },
     rubro && { clave: 'rubro', texto: nombreRubro(rubro) || 'Rubro' },
-    comercio && { clave: 'comercio', texto: nombreComercioFiltro || 'Comercio' },
+    comercio && !comercioFijo && { clave: 'comercio', texto: nombreComercioFiltro || 'Comercio' },
     (min || max) && {
       clave: 'precio',
       texto: min && max ? `${formatearPrecio(min)} a ${formatearPrecio(max)}` : min ? `Desde ${formatearPrecio(min)}` : `Hasta ${formatearPrecio(max)}`,
@@ -152,7 +158,7 @@ function Buscar() {
     <Filtros
       rubros={rubros}
       rubro={rubro}
-      comercios={comercios}
+      comercios={comercioFijo ? [] : comercios}
       comercio={comercio}
       min={min}
       max={max}
@@ -171,6 +177,8 @@ function Buscar() {
         </aside>
 
         <section className="buscar-resultados" aria-label="Resultados">
+          {comercioFijo && <BuscadorInterno q={q} onBuscar={(texto) => cambiar({ q: texto })} />}
+
           <div className="buscar-barra">
             <div className="buscar-encabezado-movil">
               <h1 className="buscar-titulo">{titulo}</h1>
@@ -235,7 +243,7 @@ function Buscar() {
             <>
               <div className="grilla-productos">
                 {visibles.map((p) => (
-                  <TarjetaProducto key={p.id} producto={p} comercio={nombreDe(p)} onAbrir={setAbierto} />
+                  <TarjetaProducto key={p.id} producto={p} comercio={comercioFijo ? '' : nombreDe(p)} onAbrir={setAbierto} />
                 ))}
               </div>
               {hayMas && (
@@ -248,9 +256,11 @@ function Buscar() {
             </>
           )}
 
-          <p className="buscar-vender">
-            ¿Vendés por mayor? <Link to="/registro/mayorista">Publicá tus productos gratis</Link>
-          </p>
+          {!comercioFijo && (
+            <p className="buscar-vender">
+              ¿Vendés por mayor? <Link to="/registro/mayorista">Publicá tus productos gratis</Link>
+            </p>
+          )}
         </section>
       </div>
 
@@ -278,6 +288,33 @@ function Buscar() {
 
       {abierto && <FichaSegunSesion producto={abierto} onClose={() => setAbierto(null)} />}
     </div>
+  );
+}
+
+/** Buscador dentro de la tienda de un comercio (filtra solo sus productos). */
+function BuscadorInterno({ q, onBuscar }) {
+  const [texto, setTexto] = useState(q);
+  useEffect(() => setTexto(q), [q]);
+  return (
+    <form
+      className="buscar-interno"
+      role="search"
+      onSubmit={(e) => {
+        e.preventDefault();
+        onBuscar(texto.trim());
+      }}
+    >
+      <label htmlFor="buscar-interno" className="solo-lectores">Buscar en esta tienda</label>
+      <Icon name="search" />
+      <input
+        id="buscar-interno"
+        type="search"
+        value={texto}
+        onChange={(e) => setTexto(e.target.value)}
+        placeholder="Buscar en esta tienda"
+      />
+      <button type="submit" className="tienda-btn tienda-btn-secundario">Buscar</button>
+    </form>
   );
 }
 
@@ -370,6 +407,11 @@ function Filtros({ rubros, rubro, comercios, comercio, min, max, soloStock, camb
       </div>
     </div>
   );
+}
+
+/** Página /buscar: búsqueda en todo el catálogo. */
+function Buscar() {
+  return <ListadoProductos />;
 }
 
 export default Buscar;

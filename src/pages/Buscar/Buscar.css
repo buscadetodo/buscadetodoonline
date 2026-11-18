@@ -344,3 +344,38 @@
     font-size: 1.15rem;
   }
 }
+
+/* Buscador dentro de la tienda de un comercio */
+.buscar-interno {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0.35rem 0.35rem 0.35rem 0.85rem;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  color: var(--color-texto-suave);
+}
+
+.buscar-interno:focus-within {
+  border-color: var(--color-enlace);
+  box-shadow: 0 0 0 3px var(--color-foco);
+}
+
+.buscar-interno input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  font: inherit;
+  color: var(--color-texto);
+  background: transparent;
+}
+
+.buscar-interno input:focus {
+  outline: none;
+}
+
+.buscar-interno .tienda-btn {
+  padding: 0.45rem 0.9rem;
+}

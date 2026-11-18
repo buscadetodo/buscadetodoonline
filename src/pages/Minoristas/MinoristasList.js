@@ -128,6 +128,10 @@ function MinoristasList() {
 
               <p className="minorista-description">{minorista.descripcion}</p>
 
+              <Link to={`/tienda/minorista/${minorista.id}`} className="btn btn-secondary btn-sm btn-block">
+                <Icon name="view" /> Ver tienda
+              </Link>
+
               {isAdmin && (
                 <div className="minorista-actions">
                   <Link to={`/minoristas/${minorista.id}/editar`} className="btn btn-primary btn-sm">

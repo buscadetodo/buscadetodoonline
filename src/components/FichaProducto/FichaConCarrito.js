@@ -4,6 +4,7 @@ import { useCatalogoComercios, useRubrosAutoload } from '../../hooks';
 import { agregarAlCarrito, cantidadEnCarrito } from '../../utils/carrito';
 import { formatearNumero } from '../../utils/formato';
 import FichaProducto from './FichaProducto';
+import { urlTiendaDe } from '../Tienda/urlTienda';
 
 /**
  * Ficha de producto para quien ya tiene sesión: "Agregar al carrito" guarda
@@ -33,6 +34,7 @@ function FichaConCarrito({ producto, avisoInicial, onClose }) {
     <FichaProducto
       producto={producto}
       comercio={nombreDe(producto)}
+      comercioUrl={urlTiendaDe(producto)}
       rubro={rubro}
       enCarrito={enCarrito}
       aviso={aviso}
