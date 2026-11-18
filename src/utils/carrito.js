@@ -75,6 +75,53 @@ export function agregarAlCarrito(usuarioId, producto, cantidad) {
   return total;
 }
 
+const guardarItems = (usuarioId, items) => {
+  escribir(localStorage, PREFIJO_CARRITO + usuarioId, items.length ? items : null);
+  window.dispatchEvent(new Event(EVENTO_CARRITO));
+};
+
+/** Fija la cantidad de un ítem (mínimo 1, sin pasar el stock conocido). */
+export function cambiarCantidad(usuarioId, productoId, cantidad) {
+  if (!usuarioId) return;
+  const items = leerCarrito(usuarioId).map((i) => {
+    if (i.producto?.id !== productoId) return i;
+    const stock = Number(i.producto.stock) || 0;
+    let n = Math.max(1, Math.round(Number(cantidad)) || 1);
+    if (stock > 0) n = Math.min(n, stock);
+    return { ...i, cantidad: n };
+  });
+  guardarItems(usuarioId, items);
+}
+
+/** Saca un producto del carrito. */
+export function quitarDelCarrito(usuarioId, productoId) {
+  if (!usuarioId) return;
+  guardarItems(usuarioId, leerCarrito(usuarioId).filter((i) => i.producto?.id !== productoId));
+}
+
+/** Vacía el carrito del usuario. */
+export function vaciarCarrito(usuarioId) {
+  if (!usuarioId) return;
+  guardarItems(usuarioId, []);
+}
+
+/**
+ * Actualiza los datos guardados de cada producto con los actuales de la API
+ * (precio, stock, nombre, foto). `frescos` = { [id]: producto }. La cantidad
+ * se recorta si ahora hay menos stock. No toca los que no vinieron.
+ */
+export function actualizarProductosDelCarrito(usuarioId, frescos) {
+  if (!usuarioId) return;
+  const items = leerCarrito(usuarioId).map((i) => {
+    const nuevo = frescos[i.producto?.id];
+    if (!nuevo) return i;
+    const stock = Number(nuevo.stock) || 0;
+    const cantidad = stock > 0 ? Math.min(i.cantidad, stock) : i.cantidad;
+    return { producto: resumenDe(nuevo), cantidad };
+  });
+  guardarItems(usuarioId, items);
+}
+
 /** Guarda lo que eligió alguien sin sesión (una sola compra pendiente por pestaña). */
 export function guardarCompraPendiente(producto, cantidad) {
   if (!producto?.id || !(cantidad > 0)) return;

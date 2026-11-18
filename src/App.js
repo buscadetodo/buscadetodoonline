@@ -76,6 +76,7 @@ import Buscar from './pages/Buscar/Buscar';
 import TiendaLayout from './components/Tienda/TiendaLayout';
 import ProductosInicio from './pages/Productos/ProductosInicio';
 import TiendaComercio from './pages/Tienda/TiendaComercio';
+import Carrito from './pages/Carrito/Carrito';
 import { RedirigirATienda } from './pages/Tienda/RedirigirATienda';
 
 // 404
@@ -95,6 +96,7 @@ function App() {
           <Route path="/terminos" element={<Terminos />} />
           <Route path="/buscar" element={<TiendaLayout><Buscar /></TiendaLayout>} />
           <Route path="/tienda/:tipo/:id" element={<TiendaComercio />} />
+          <Route path="/carrito" element={<Carrito />} />
           
           {/* Auth - Sistema nuevo (Universal) */}
           <Route path="/login" element={<Login />} />
