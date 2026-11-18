@@ -21,7 +21,7 @@ const TITULOS = [
   ['/minoristas', 'Minoristas'],
   ['/transportistas', 'Transportistas'],
   ['/compradores', 'Compradores'],
-  ['/productos', 'Productos'],
+  ['/productos', 'Mis publicaciones'],
   ['/rubros', 'Rubros'],
   ['/usuarios', 'Usuarios'],
   ['/perfil', 'Mi perfil'],

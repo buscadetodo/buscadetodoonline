@@ -151,7 +151,7 @@ function PanelVendedor({ tipo }) {
           {FEATURE_PRODUCTOS && (
             <Link to="/productos" className="action-card" style={{ '--color': 'var(--color-primario-hover)' }}>
               <span className="action-icon"><Icon name="package" /></span>
-              <span className="action-title">Ver catálogo</span>
+              <span className="action-title">Mis publicaciones</span>
             </Link>
           )}
           <Link to="/perfil" className="action-card" style={{ '--color': 'var(--color-enlace)' }}>

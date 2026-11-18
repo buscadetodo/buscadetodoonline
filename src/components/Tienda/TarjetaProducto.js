@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Icon from '../Icon/Icon';
 import { formatearNumero, formatearPrecio } from '../../utils/formato';
 import '../../pages/Dashboards/Paneles.css'; // esqueletos
@@ -6,25 +6,29 @@ import './Tienda.css';
 
 /**
  * Tarjeta de producto de la tienda, una sola para todo el sitio (home,
- * búsqueda, inicio del comprador y tienda del comercio).
+ * búsqueda, inicio del comprador, tienda del comercio y vista previa al
+ * publicar).
  *
  * Estilo de los listados de los marketplaces grandes: foto arriba sobre
  * blanco, el precio como dato principal, el nombre en dos líneas como máximo,
- * la disponibilidad en verde y el comercio que lo vende. Toda la tarjeta es
- * un botón que abre la ficha del producto.
+ * la disponibilidad en verde y el comercio que lo vende. Con `onAbrir`, toda
+ * la tarjeta es un botón que abre la ficha; sin él, es solo de muestra.
  */
 function TarjetaProducto({ producto, comercio, onAbrir }) {
   const stock = Number(producto.stock) || 0;
-  return (
-    <button
-      type="button"
-      className="tarjeta-producto"
-      onClick={() => onAbrir(producto)}
-      aria-label={`${producto.nombre}, ${formatearPrecio(producto.precio)}${stock ? '' : ', sin stock'}. Ver detalle`}
-    >
+  // Si la URL de la foto no carga, se muestra el ícono en lugar de la imagen rota
+  const [imagenRota, setImagenRota] = useState(false);
+  const [urlAnterior, setUrlAnterior] = useState(producto.imagen_url);
+  if (urlAnterior !== producto.imagen_url) {
+    setUrlAnterior(producto.imagen_url);
+    setImagenRota(false);
+  }
+
+  const contenido = (
+    <>
       <span className="tarjeta-producto-imagen">
-        {producto.imagen_url ? (
-          <img src={producto.imagen_url} alt="" loading="lazy" />
+        {producto.imagen_url && !imagenRota ? (
+          <img src={producto.imagen_url} alt="" loading="lazy" onError={() => setImagenRota(true)} />
         ) : (
           <Icon name="package" />
         )}
@@ -37,6 +41,21 @@ function TarjetaProducto({ producto, comercio, onAbrir }) {
         </span>
         {comercio && <span className="tarjeta-producto-comercio">Por {comercio}</span>}
       </span>
+    </>
+  );
+
+  if (!onAbrir) {
+    return <div className="tarjeta-producto tarjeta-producto-muestra">{contenido}</div>;
+  }
+
+  return (
+    <button
+      type="button"
+      className="tarjeta-producto"
+      onClick={() => onAbrir(producto)}
+      aria-label={`${producto.nombre}, ${formatearPrecio(producto.precio)}${stock ? '' : ', sin stock'}. Ver detalle`}
+    >
+      {contenido}
     </button>
   );
 }
