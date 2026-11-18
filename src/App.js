@@ -44,7 +44,6 @@ import TransportistaDashboard from './pages/Dashboards/TransportistaDashboard';
 // Mayoristas
 import MayoristasList from './pages/Mayoristas/MayoristasList';
 import MayoristaForm from './pages/Mayoristas/MayoristaForm';
-import MayoristaDetalle from './pages/Mayoristas/MayoristaDetalle';
 
 // Minoristas
 import MinoristasList from './pages/Minoristas/MinoristasList';
@@ -76,6 +75,8 @@ import { Privacidad, Terminos } from './pages/Legal/Legal';
 import Buscar from './pages/Buscar/Buscar';
 import TiendaLayout from './components/Tienda/TiendaLayout';
 import ProductosInicio from './pages/Productos/ProductosInicio';
+import TiendaComercio from './pages/Tienda/TiendaComercio';
+import { RedirigirATienda } from './pages/Tienda/RedirigirATienda';
 
 // 404
 import NotFound from './pages/NotFound/NotFound';
@@ -93,6 +94,7 @@ function App() {
           <Route path="/privacidad" element={<Privacidad />} />
           <Route path="/terminos" element={<Terminos />} />
           <Route path="/buscar" element={<TiendaLayout><Buscar /></TiendaLayout>} />
+          <Route path="/tienda/:tipo/:id" element={<TiendaComercio />} />
           
           {/* Auth - Sistema nuevo (Universal) */}
           <Route path="/login" element={<Login />} />
@@ -180,7 +182,7 @@ function App() {
                 <Routes>
                   <Route path="/" element={<MayoristasList />} />
                   <Route path="/nuevo" element={<MayoristaForm />} />
-                  <Route path="/:id" element={<MayoristaDetalle />} />
+                  <Route path="/:id" element={<RedirigirATienda tipo="mayorista" />} />
                   <Route path="/:id/editar" element={<MayoristaForm />} />
                 </Routes>
               </Layout>

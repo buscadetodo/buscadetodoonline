@@ -302,3 +302,17 @@
     border-top: 1px solid var(--color-borde);
   }
 }
+
+/* Enlace a la tienda del comercio, en la línea de arriba del nombre */
+.ficha-comercio {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--color-enlace);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.ficha-comercio:hover {
+  text-decoration: underline;
+}

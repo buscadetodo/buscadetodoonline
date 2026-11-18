@@ -6,6 +6,7 @@ import { guardarCompraPendiente } from '../../utils/carrito';
 import FichaProducto from '../FichaProducto/FichaProducto';
 import FichaConCarrito from '../FichaProducto/FichaConCarrito';
 import ModalIngresar from './ModalIngresar';
+import { urlTiendaDe } from './urlTienda';
 
 /**
  * Ficha de producto que se adapta a la sesión:
@@ -35,6 +36,7 @@ function FichaSegunSesion({ producto, onClose }) {
     <FichaProducto
       producto={producto}
       comercio={nombreDe(producto)}
+      comercioUrl={urlTiendaDe(producto)}
       rubro={nombreRubro(producto.rubro_id)}
       onAgregar={(cantidad) => {
         guardarCompraPendiente(producto, cantidad);

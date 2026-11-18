@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Modal from '../Modal/Modal';
 import Icon from '../Icon/Icon';
 import { formatearNumero, formatearPrecio } from '../../utils/formato';
@@ -14,6 +15,7 @@ import './FichaProducto.css';
  *
  * @param {Object}   props.producto        producto tal como lo devuelve /productos/
  * @param {string}   [props.comercio]      nombre del comercio que lo vende
+ * @param {string}   [props.comercioUrl]   ruta a la tienda del comercio
  * @param {string}   [props.rubro]         nombre del rubro
  * @param {number}   [props.enCarrito]     unidades que ya tiene en el carrito
  * @param {number}   [props.cantidadInicial]
@@ -24,6 +26,7 @@ import './FichaProducto.css';
 function FichaProducto({
   producto,
   comercio,
+  comercioUrl,
   rubro,
   enCarrito = 0,
   cantidadInicial = 1,
@@ -85,7 +88,17 @@ function FichaProducto({
 
       <div className="ficha-info">
         {(comercio || rubro) && (
-          <p className="ficha-meta">{[comercio, rubro].filter(Boolean).join(' · ')}</p>
+          <p className="ficha-meta">
+            {comercio && comercioUrl ? (
+              <Link to={comercioUrl} className="ficha-comercio" onClick={onClose}>
+                <Icon name="minorista" /> {comercio}
+              </Link>
+            ) : (
+              comercio
+            )}
+            {comercio && rubro && ' · '}
+            {rubro}
+          </p>
         )}
         <h2 id={titulo} className="ficha-nombre">{producto.nombre}</h2>
         <p className="ficha-precio">{formatearPrecio(producto.precio)}</p>

@@ -33,6 +33,8 @@ import {
   Phone,
   Plus,
   Minus,
+  Clock,
+  CalendarDays,
   Receipt,
   RefreshCw,
   Rocket,
@@ -76,6 +78,8 @@ const ICONOS = {
   // Acciones
   add: Plus,
   minus: Minus,
+  clock: Clock,
+  calendar: CalendarDays,
   edit: Pencil,
   delete: Trash2,
   save: Save,

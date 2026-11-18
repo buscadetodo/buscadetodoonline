@@ -125,8 +125,8 @@ function MayoristasList() {
               <p className="mayorista-description">{mayorista.descripcion}</p>
 
               <div className="mayorista-actions">
-                <Link to={`/mayoristas/${mayorista.id}`} className="btn btn-secondary btn-sm btn-block">
-                  <Icon name="view" /> Ver detalles
+                <Link to={`/tienda/mayorista/${mayorista.id}`} className="btn btn-secondary btn-sm btn-block">
+                  <Icon name="view" /> Ver tienda
                 </Link>
                 {isAdmin && (
                   <div className="mayorista-actions-row">
