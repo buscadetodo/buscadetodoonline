@@ -20,7 +20,7 @@
  */
 
 const CLAVES = ['access_token', 'refresh_token', 'user_id'];
-const NOMBRE_CANAL = 'libremercado-sesion';
+const NOMBRE_CANAL = 'buscadetodo-sesion';
 /** Cuánto se espera la respuesta de otra pestaña antes de asumir que no hay sesión. */
 export const ESPERA_OTRAS_PESTANAS_MS = 150;
 

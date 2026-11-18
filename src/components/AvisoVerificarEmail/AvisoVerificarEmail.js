@@ -7,7 +7,7 @@ import { FEATURE_CUENTA_EMAIL } from '../../config/features';
 import Icon from '../Icon/Icon';
 import './AvisoVerificarEmail.css';
 
-const CLAVE_OCULTO = 'libremercado-aviso-verificar-oculto';
+const CLAVE_OCULTO = 'buscadetodo-aviso-verificar-oculto';
 
 const leerOculto = () => {
   try {

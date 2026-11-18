@@ -8,10 +8,10 @@
 // También guarda la "compra pendiente": lo que eligió alguien sin sesión antes
 // de que le pidiéramos ingresar, para agregarlo solo después del login.
 
-const PREFIJO_CARRITO = 'libremercado-carrito-';
+const PREFIJO_CARRITO = 'buscadetodo-carrito-';
 /** Evento de window que avisa que el carrito cambió (lo escucha el encabezado). */
-export const EVENTO_CARRITO = 'libremercado-carrito';
-const CLAVE_PENDIENTE = 'libremercado-compra-pendiente';
+export const EVENTO_CARRITO = 'buscadetodo-carrito';
+const CLAVE_PENDIENTE = 'buscadetodo-compra-pendiente';
 const VIGENCIA_PENDIENTE_MS = 2 * 60 * 60 * 1000; // dos horas
 
 /** Datos del producto que se guardan junto a la cantidad (para mostrarlo sin pedirlo de nuevo). */

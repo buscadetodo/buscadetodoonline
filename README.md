@@ -1,4 +1,4 @@
-# LibreMercado - Aplicación React Dockerizada
+# BuscaDeTodoOnline - Aplicación React Dockerizada
 
 Aplicación web React completamente dockerizada con entornos de desarrollo y producción optimizados.
 
@@ -14,7 +14,7 @@ Aplicación web React completamente dockerizada con entornos de desarrollo y pro
 ## 📁 Estructura del Proyecto
 
 ```
-libremercado/
+buscadetodo-online/
 ├── src/
 │   ├── api/                # Cliente HTTP (Axios)
 │   ├── components/         # Componentes reutilizables
@@ -97,14 +97,14 @@ docker-compose up -d --scale frontend-prod=3
 
 ### Desarrollo
 ```bash
-docker build -f Dockerfile.dev -t libremercado-dev .
-docker run -p 3000:3000 -v ${PWD}/src:/app/src libremercado-dev
+docker build -f Dockerfile.dev -t buscadetodo-dev .
+docker run -p 3000:3000 -v ${PWD}/src:/app/src buscadetodo-dev
 ```
 
 ### Producción
 ```bash
-docker build -f Dockerfile.prod -t libremercado-prod .
-docker run -p 8080:80 libremercado-prod
+docker build -f Dockerfile.prod -t buscadetodo-prod .
+docker run -p 8080:80 buscadetodo-prod
 ```
 
 ## 📝 Variables de Entorno
@@ -176,10 +176,10 @@ La configuración de Nginx incluye:
 ### Docker Hub
 ```bash
 # Tag de la imagen
-docker tag libremercado-prod usuario/libremercado:latest
+docker tag buscadetodo-prod usuario/buscadetodo-online:latest
 
 # Push a Docker Hub
-docker push usuario/libremercado:latest
+docker push usuario/buscadetodo-online:latest
 ```
 ### Kubernetes
 Puedes usar la imagen de producción para crear deployments en Kubernetes con múltiples réplicas.

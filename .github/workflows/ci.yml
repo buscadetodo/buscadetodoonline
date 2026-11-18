@@ -54,12 +54,12 @@ jobs:
           context: .
           file: Dockerfile.prod
           push: false
-          tags: libremercado-frontend:ci
+          tags: buscadetodo-frontend:ci
           load: true
 
       - name: Probar que nginx sirve la app
         run: |
-          docker run -d --name app -p 8080:80 libremercado-frontend:ci
+          docker run -d --name app -p 8080:80 buscadetodo-frontend:ci
           for i in $(seq 1 15); do
             if curl -fsS http://localhost:8080/ | grep -q '<div id="root">'; then
               echo "index.html OK"

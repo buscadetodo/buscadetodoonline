@@ -9,9 +9,9 @@
 // Se usa localStorage y no una cookie: el servidor no necesita leerla, y así
 // no viaja en cada pedido a la API.
 
-const CLAVE = 'libremercado-ubicacion';
+const CLAVE = 'buscadetodo-ubicacion';
 /** Evento de window que avisa que la zona cambió. */
-export const EVENTO_UBICACION = 'libremercado-ubicacion';
+export const EVENTO_UBICACION = 'buscadetodo-ubicacion';
 const avisar = () => window.dispatchEvent(new Event(EVENTO_UBICACION));
 const MAX_TEXTO = 120;
 
