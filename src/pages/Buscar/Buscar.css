@@ -70,7 +70,7 @@
 }
 
 .filtros-grupo li button:hover {
-  color: var(--color-primario);
+  color: var(--color-enlace);
 }
 
 .filtros-grupo li button.activo {
@@ -85,7 +85,7 @@
 }
 
 .filtros-ver-mas {
-  color: var(--color-primario);
+  color: var(--color-enlace);
   font-weight: 600;
 }
 
@@ -118,7 +118,7 @@
   border: none;
   border-radius: 50%;
   background: var(--color-primario-suave);
-  color: var(--color-primario);
+  color: var(--color-enlace);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -191,7 +191,7 @@
   font: inherit;
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--color-primario);
+  color: var(--color-enlace);
   cursor: pointer;
 }
 
@@ -242,7 +242,7 @@
 }
 
 .buscar-vender a {
-  color: var(--color-primario);
+  color: var(--color-enlace);
   font-weight: 600;
 }
 

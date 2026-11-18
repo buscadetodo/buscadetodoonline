@@ -26,5 +26,5 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #764ba2;
+  background: var(--color-primario-hover);
 }

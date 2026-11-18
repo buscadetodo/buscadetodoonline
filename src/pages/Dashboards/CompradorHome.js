@@ -78,16 +78,16 @@ function CompradorHome() {
         <h2>¿Qué querés hacer?</h2>
         <div className="actions-grid">
           {FEATURE_PRODUCTOS && (
-            <Link to="/buscar" className="action-card" style={{ '--color': '#667eea' }}>
+            <Link to="/buscar" className="action-card" style={{ '--color': 'var(--color-primario)' }}>
               <span className="action-icon"><Icon name="search" /></span>
               <span className="action-title">Buscar productos</span>
             </Link>
           )}
-          <Link to="/mayoristas" className="action-card" style={{ '--color': '#764ba2' }}>
+          <Link to="/mayoristas" className="action-card" style={{ '--color': 'var(--color-primario-hover)' }}>
             <span className="action-icon"><Icon name="mayorista" /></span>
             <span className="action-title">Ver mayoristas</span>
           </Link>
-          <Link to="/perfil" className="action-card" style={{ '--color': '#f093fb' }}>
+          <Link to="/perfil" className="action-card" style={{ '--color': 'var(--color-enlace)' }}>
             <span className="action-icon"><Icon name="user" /></span>
             <span className="action-title">Mi perfil</span>
           </Link>

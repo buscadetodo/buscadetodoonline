@@ -12,7 +12,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 2rem;
-  box-shadow: 0 10px 25px rgba(79, 70, 229, 0.25);
+  box-shadow: 0 10px 25px rgba(77, 124, 15, 0.25);
   margin-bottom: 2rem;
   flex-wrap: wrap;
 }
@@ -24,7 +24,7 @@
 
 .hero-badge {
   background: #fff;
-  color: var(--color-primario);
+  color: var(--color-enlace);
   padding: 7px 14px;
   border-radius: 30px;
   font-weight: 700;
@@ -49,7 +49,7 @@
   display: inline-block;
   margin-top: 20px;
   background: #fff;
-  color: var(--color-primario);
+  color: var(--color-enlace);
   text-decoration: none;
   padding: 13px 22px;
   border-radius: 10px;
@@ -64,7 +64,7 @@
 
 .hero-profile {
   background: #fff;
-  color: #243041;
+  color: var(--color-tinta-2);
   padding: 22px;
   border-radius: 15px;
   width: 310px;
@@ -131,7 +131,7 @@
   align-items: center;
   justify-content: center;
   background: var(--color-primario-suave);
-  color: var(--color-primario);
+  color: var(--color-enlace);
   border-radius: 15px;
 }
 
@@ -199,7 +199,7 @@
   align-items: center;
   justify-content: center;
   background: var(--color-primario-suave);
-  color: var(--color-primario);
+  color: var(--color-enlace);
   border-radius: 12px;
 }
 

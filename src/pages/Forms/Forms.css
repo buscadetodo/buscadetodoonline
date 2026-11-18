@@ -84,7 +84,7 @@
 .form-textarea:focus {
   outline: none;
   border-color: var(--color-primario);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 0 3px rgba(77, 124, 15, 0.1);
 }
 
 .form-textarea {
@@ -156,8 +156,8 @@
 }
 
 .info-box {
-  background: #eff6ff;
-  border-left: 4px solid #3b82f6;
+  background: var(--color-primario-suave);
+  border-left: 4px solid var(--color-enlace);
   padding: 1rem 1.25rem;
   border-radius: 8px;
   margin-top: 1rem;
@@ -165,7 +165,7 @@
 
 .info-box p {
   margin: 0;
-  color: #1e40af;
+  color: var(--color-primario-texto);
   font-size: 0.95rem;
   line-height: 1.5;
 }

@@ -58,7 +58,7 @@
 }
 
 .legal-card a {
-  color: #4f46e5;
+  color: var(--color-enlace);
 }
 
 .legal-fecha {

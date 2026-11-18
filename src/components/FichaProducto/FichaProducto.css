@@ -189,7 +189,7 @@
 }
 
 .selector-cantidad button:hover:not(:disabled) {
-  background: #e0e7ff;
+  background: var(--color-primario-suave-2);
 }
 
 .selector-cantidad button:disabled {
@@ -250,10 +250,10 @@
   padding: 0.95rem 1rem;
   border: none;
   border-radius: 10px;
-  background: var(--color-primario);
-  color: #fff;
+  background: var(--color-acento);
+  color: var(--color-sobre-acento);
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -262,7 +262,7 @@
 }
 
 .ficha-btn-agregar:hover:not(:disabled) {
-  background: var(--color-primario-hover);
+  background: var(--color-acento-hover);
 }
 
 .ficha-btn-agregar:disabled {

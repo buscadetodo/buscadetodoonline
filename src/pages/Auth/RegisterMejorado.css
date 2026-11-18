@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--marca-degrade);
   padding: 40px 20px;
 }
 
@@ -34,7 +34,7 @@
 
 /* Header del formulario */
 .register-header {
-  background: linear-gradient(135deg, var(--color, #667eea), var(--color-dark, #764ba2));
+  background: linear-gradient(135deg, var(--color, var(--color-primario)), var(--color-dark, var(--color-primario-hover)));
   padding: 40px;
   text-align: center;
   color: white;
@@ -115,7 +115,7 @@
   background: var(--color, var(--color-primario));
   border-color: var(--color, var(--color-primario));
   color: white;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(77, 124, 15, 0.3);
 }
 
 .step.completed .step-number {
@@ -229,7 +229,7 @@
 .form-group-mejorado textarea:focus {
   outline: none;
   border-color: var(--color, var(--color-primario));
-  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 0 4px rgba(77, 124, 15, 0.1);
 }
 
 .form-group-mejorado input:focus + .input-icon {
@@ -394,7 +394,7 @@
 
 .btn-next,
 .btn-submit {
-  background: linear-gradient(135deg, var(--color, #667eea), var(--color-dark, #764ba2));
+  background: linear-gradient(135deg, var(--color, var(--color-primario)), var(--color-dark, var(--color-primario-hover)));
   color: white;
   border: none;
 }
@@ -402,7 +402,7 @@
 .btn-next:hover,
 .btn-submit:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 20px rgba(77, 124, 15, 0.3);
 }
 
 .btn-submit:disabled {
@@ -602,8 +602,8 @@
 }
 
 .password-toggle:hover {
-  color: var(--color-primario);
-  background: rgba(102, 126, 234, 0.1);
+  color: var(--color-enlace);
+  background: rgba(77, 124, 15, 0.1);
 }
 
 .password-toggle:active {

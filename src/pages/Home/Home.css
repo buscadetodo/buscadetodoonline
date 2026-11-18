@@ -36,15 +36,15 @@
   gap: 0.45rem;
   padding: 0.75rem 1.3rem;
   border-radius: 6px;
-  background: #fff;
-  color: var(--color-primario-texto);
+  background: var(--color-acento);
+  color: var(--color-sobre-acento);
   font-weight: 700;
   text-decoration: none;
   white-space: nowrap;
 }
 
 .home-banner-btn:hover {
-  background: var(--color-primario-suave);
+  background: var(--color-acento-hover);
 }
 
 .home-banner-btn-sec {
@@ -98,7 +98,7 @@
 }
 
 .home-ver-todos {
-  color: var(--color-primario);
+  color: var(--color-enlace);
   font-weight: 600;
   font-size: 0.95rem;
   text-decoration: none;
@@ -140,7 +140,7 @@
 .home-rubro:hover .home-rubro-icono,
 .home-rubro:focus-visible .home-rubro-icono {
   box-shadow: 0 0 0 2px var(--color-primario);
-  color: var(--color-primario);
+  color: var(--color-enlace);
 }
 
 .home-rubro-icono {
@@ -182,7 +182,7 @@
   flex-shrink: 0;
   border-radius: 50%;
   background: var(--color-primario-suave);
-  color: var(--color-primario);
+  color: var(--color-enlace);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -211,8 +211,8 @@
   gap: 1.5rem;
   padding: 1.75rem 2rem;
   border-radius: 8px;
-  background: #1e1b4b;
-  color: #e0e7ff;
+  background: var(--color-tinta);
+  color: var(--color-primario-suave-2);
 }
 
 .home-vender h2 {
@@ -223,7 +223,7 @@
 
 .home-vender p {
   margin: 0;
-  color: #c7d2fe;
+  color: var(--color-acento-borde);
 }
 
 @media (max-width: 900px) {

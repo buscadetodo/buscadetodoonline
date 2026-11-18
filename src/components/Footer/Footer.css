@@ -1,5 +1,6 @@
 .site-footer {
-  background: #1f2937;
+  background: var(--color-tinta);
+  border-top: 1px solid var(--color-tinta-borde);
   color: #d1d5db;
   padding: 1.5rem 0;
   font-size: 0.9rem;

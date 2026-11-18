@@ -49,17 +49,17 @@ function Dashboard() {
   }, []);
 
   const stats = [
-    { title: 'Mayoristas', count: '0', icon: 'mayorista', color: '#667eea', link: '/mayoristas' },
-    { title: 'Minoristas', count: '0', icon: 'minorista', color: '#764ba2', link: '/minoristas' },
-    { title: 'Transportistas', count: '0', icon: 'transportista', color: '#f093fb', link: '/transportistas' },
-    { title: 'Compradores', count: '0', icon: 'comprador', color: '#4facfe', link: '/compradores' },
+    { title: 'Mayoristas', count: '0', icon: 'mayorista', color: 'var(--color-primario)', link: '/mayoristas' },
+    { title: 'Minoristas', count: '0', icon: 'minorista', color: 'var(--color-primario-hover)', link: '/minoristas' },
+    { title: 'Transportistas', count: '0', icon: 'transportista', color: 'var(--color-enlace)', link: '/transportistas' },
+    { title: 'Compradores', count: '0', icon: 'comprador', color: 'var(--color-primario)', link: '/compradores' },
   ];
 
   const quickActions = [
-    { title: 'Nuevo Mayorista', icon: 'add', link: '/mayoristas/nuevo', color: '#667eea' },
-    { title: 'Nuevo Minorista', icon: 'add', link: '/minoristas/nuevo', color: '#764ba2' },
-    { title: 'Ver Rubros', icon: 'folder', link: '/rubros', color: '#f093fb' },
-    { title: 'Gestionar Usuarios', icon: 'users', link: '/usuarios', color: '#4facfe' },
+    { title: 'Nuevo Mayorista', icon: 'add', link: '/mayoristas/nuevo', color: 'var(--color-primario)' },
+    { title: 'Nuevo Minorista', icon: 'add', link: '/minoristas/nuevo', color: 'var(--color-primario-hover)' },
+    { title: 'Ver Rubros', icon: 'folder', link: '/rubros', color: 'var(--color-enlace)' },
+    { title: 'Gestionar Usuarios', icon: 'users', link: '/usuarios', color: 'var(--color-primario)' },
   ];
 
   return (
