@@ -5,6 +5,7 @@ import { useAuth, useCatalogoComercios, useRubrosAutoload } from '../../hooks';
 import productosService from '../../services/productosService';
 import usersService from '../../services/usersService';
 import Icon from '../../components/Icon/Icon';
+import FichaConCarrito from '../../components/FichaProducto/FichaConCarrito';
 import { formatearNumero, formatearPrecio, primerNombre } from '../../utils/formato';
 import '../Dashboard/Dashboard.css';
 import './Paneles.css';
@@ -27,6 +28,8 @@ function CompradorHome() {
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(FEATURE_PRODUCTOS);
   const [error, setError] = useState(null);
+  // Ficha flotante del producto que se está mirando (null = cerrada)
+  const [productoAbierto, setProductoAbierto] = useState(null);
 
   useEffect(() => {
     if (!user?.id) return undefined;
@@ -135,7 +138,13 @@ function CompradorHome() {
               {productos.map((p) => {
                 const stock = Number(p.stock) || 0;
                 return (
-                  <Link key={p.id} to="/productos" className="panel-producto">
+                  <button
+                    key={p.id}
+                    type="button"
+                    className="panel-producto"
+                    onClick={() => setProductoAbierto(p)}
+                    aria-label={`${p.nombre}, ${formatearPrecio(p.precio)}. Ver detalle`}
+                  >
                     <div className="panel-producto-imagen">
                       {p.imagen_url ? <img src={p.imagen_url} alt="" loading="lazy" /> : <Icon name="package" />}
                     </div>
@@ -153,7 +162,7 @@ function CompradorHome() {
                         </span>
                       </div>
                     </div>
-                  </Link>
+                  </button>
                 );
               })}
             </div>
@@ -164,10 +173,14 @@ function CompradorHome() {
       <div className="panel-aviso">
         <Icon name="cart" />
         <span>
-          <strong>Pedidos y fletes, próximamente.</strong> Por ahora podés recorrer el catálogo y
-          ver precios y stock de cada producto.
+          <strong>Pedidos y fletes, próximamente.</strong> Ya podés abrir cada producto y armar tu
+          carrito: queda guardado en este dispositivo hasta que se habiliten los pedidos.
         </span>
       </div>
+
+      {productoAbierto && (
+        <FichaConCarrito producto={productoAbierto} onClose={() => setProductoAbierto(null)} />
+      )}
     </div>
   );
 }

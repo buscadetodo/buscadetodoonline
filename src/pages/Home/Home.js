@@ -11,6 +11,8 @@ import '../Dashboards/Paneles.css';
 import Modal from '../../components/Modal/Modal';
 import Footer from '../../components/Footer/Footer';
 import Icon from '../../components/Icon/Icon';
+import FichaProducto from '../../components/FichaProducto/FichaProducto';
+import { guardarCompraPendiente } from '../../utils/carrito';
 import './Home.css';
 
 // Catálogo público: tamaño de página y copia guardada de la primera página.
@@ -91,6 +93,8 @@ function Home() {
   const [rubroFiltro, setRubroFiltro] = useState(null);
   const [busquedaAplicada, setBusquedaAplicada] = useState('');
   const pedidoActual = useRef(0);
+  // Ficha flotante del producto que se está mirando (null = cerrada)
+  const [productoAbierto, setProductoAbierto] = useState(null);
   const { nombreDe } = useCatalogoComercios();
 
   useEffect(() => {
@@ -339,6 +343,16 @@ function Home() {
     buscar: 'Para buscar en el catálogo, ingresá a tu cuenta',
     categoria: 'Para explorar por rubro, ingresá a tu cuenta',
     comprar: 'Para comprar o contactar al comercio, ingresá a tu cuenta',
+    carrito: 'Para armar tu carrito, ingresá o registrate',
+  };
+
+  // Mirar es libre; recién al agregar al carrito se pide cuenta. Lo elegido
+  // queda guardado y se suma solo al carrito después de ingresar o registrarse
+  // (ver RetomarCompra en el Layout).
+  const agregarSinSesion = (cantidad) => {
+    guardarCompraPendiente(productoAbierto, cantidad);
+    setProductoAbierto(null);
+    handleActionRequiresLogin('carrito');
   };
 
   const handleActionRequiresLogin = (action) => {
@@ -586,8 +600,8 @@ function Home() {
                       key={p.id}
                       type="button"
                       className="panel-producto producto-publico"
-                      onClick={() => handleActionRequiresLogin('comprar')}
-                      aria-label={`${p.nombre}, ${formatearPrecio(p.precio)}. Ingresá para comprar`}
+                      onClick={() => setProductoAbierto(p)}
+                      aria-label={`${p.nombre}, ${formatearPrecio(p.precio)}. Ver detalle`}
                     >
                       <div className="panel-producto-imagen">
                         {p.imagen_url ? <img src={p.imagen_url} alt="" loading="lazy" /> : <Icon name="package" />}
@@ -667,6 +681,16 @@ function Home() {
         </div>
       </section>
 
+      {productoAbierto && (
+        <FichaProducto
+          producto={productoAbierto}
+          comercio={nombreDe(productoAbierto)}
+          rubro={nombreRubro(productoAbierto.rubro_id)}
+          onAgregar={agregarSinSesion}
+          onClose={() => setProductoAbierto(null)}
+        />
+      )}
+
       {/* Modal Login Required */}
       {showLoginModal && (
         <Modal
@@ -679,7 +703,11 @@ function Home() {
           <h3 id="login-modal-titulo">
             {MOTIVOS_LOGIN[accionLogin] || 'Para continuar, ingresá a tu cuenta'}
           </h3>
-          <p>Si todavía no tenés cuenta, registrarte es gratis.</p>
+          <p>
+            {accionLogin === 'carrito'
+              ? 'Guardamos lo que elegiste: cuando ingreses, lo sumamos a tu carrito. Registrarte es gratis.'
+              : 'Si todavía no tenés cuenta, registrarte es gratis.'}
+          </p>
           <div className="modal-actions">
             <Link to="/registro" className="btn-modal-primary">
               Registrarse

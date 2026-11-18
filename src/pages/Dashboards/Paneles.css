@@ -204,6 +204,15 @@
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+/* Tarjeta que abre la ficha flotante: se ve igual que la que es un enlace */
+button.panel-producto {
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+  width: 100%;
+}
+
 .panel-producto:hover,
 .panel-producto:focus-visible {
   border-color: #c7d2fe;
