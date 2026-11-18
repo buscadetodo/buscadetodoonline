@@ -1,0 +1,140 @@
+/* Pantallas de cuenta: olvidé mi contraseña, restablecer y verificar email */
+
+.cuenta-intro {
+  margin: 0 0 20px;
+  color: var(--color-texto-suave);
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.cuenta-ayuda {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--color-texto-suave);
+}
+
+/* Resultado (enviado, verificado, link vencido…) */
+.cuenta-estado {
+  text-align: center;
+  padding: 8px 0 4px;
+}
+
+.cuenta-estado-icono {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  background: var(--color-primario-suave);
+  color: var(--color-primario);
+}
+
+.cuenta-estado-ok .cuenta-estado-icono {
+  background: var(--color-exito-suave);
+  color: var(--color-exito);
+}
+
+.cuenta-estado-error .cuenta-estado-icono {
+  background: var(--color-peligro-suave);
+  color: var(--color-peligro);
+}
+
+.cuenta-estado-cargando .cuenta-estado-icono svg {
+  animation: cuentaGirar 1s linear infinite;
+}
+
+@keyframes cuentaGirar {
+  to { transform: rotate(360deg); }
+}
+
+.cuenta-estado h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  color: var(--color-texto);
+}
+
+.cuenta-estado p {
+  margin: 0 0 10px;
+  color: var(--color-texto-suave);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.cuenta-estado-acciones {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cuenta-estado-acciones .btn-submit-login {
+  margin-top: 0;
+  text-decoration: none;
+}
+
+.cuenta-btn-secundario {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border: 2px solid var(--color-primario);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--color-primario);
+  font: inherit;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.cuenta-btn-secundario:disabled {
+  border-color: var(--color-borde);
+  color: var(--color-texto-suave);
+  cursor: not-allowed;
+}
+
+/* Login: link "¿Olvidaste tu contraseña?" y aviso de contraseña restablecida */
+.login-olvide {
+  display: block;
+  margin: -12px 0 16px;
+  text-align: right;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-primario);
+  text-decoration: none;
+}
+
+.login-olvide:hover {
+  text-decoration: underline;
+}
+
+.cuenta-aviso-ok {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--color-exito-suave);
+  color: var(--color-exito);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+/* Botón con aspecto de enlace (p. ej. "Cambiarlo") */
+.cuenta-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: var(--color-primario);
+  text-decoration: underline;
+  cursor: pointer;
+}

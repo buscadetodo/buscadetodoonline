@@ -7,6 +7,9 @@ import { NOMBRE_SITIO } from '../config/sitio';
 const TITULOS = [
   ['/login', 'Iniciar sesión'],
   ['/registro', 'Crear cuenta'],
+  ['/olvide-contrasena', 'Recuperar contraseña'],
+  ['/restablecer-contrasena', 'Elegir contraseña nueva'],
+  ['/verificar-email', 'Confirmar email'],
   ['/privacidad', 'Política de privacidad'],
   ['/terminos', 'Términos y condiciones'],
   ['/mayorista/dashboard', 'Panel mayorista'],

@@ -154,3 +154,28 @@
     width: 100%;
   }
 }
+
+/* Cambiar contraseña (con FEATURE_CUENTA_EMAIL): formulario aparte */
+.perfil-cambiar-contrasena {
+  margin-top: 1.5rem;
+}
+
+.form-error {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.25rem;
+  color: var(--color-peligro);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.perfil-mostrar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.25rem 0 1rem;
+  font-size: 0.9rem;
+  color: var(--color-texto);
+  cursor: pointer;
+}

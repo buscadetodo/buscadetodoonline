@@ -10,7 +10,7 @@ import { AuthProvider } from './context/AuthContext';
 import { PerfilProvider } from './context/PerfilContext';
 
 // Config
-import { FEATURE_PRODUCTOS } from './config/features';
+import { FEATURE_CUENTA_EMAIL, FEATURE_PRODUCTOS } from './config/features';
 
 // Layout
 import Layout from './components/Layout/Layout';
@@ -26,6 +26,11 @@ import Register from './pages/Auth/Register';
 import RegisterUniversal from './pages/Auth/RegisterUniversal';
 import SeleccionTipoCuenta from './pages/Auth/SeleccionTipoCuenta';
 import RegisterDinamico from './pages/Auth/RegisterDinamico';
+
+// Cuenta: verificación de email y recupero de contraseña (detrás del flag)
+import OlvideContrasena from './pages/Auth/OlvideContrasena';
+import RestablecerContrasena from './pages/Auth/RestablecerContrasena';
+import VerificarEmail from './pages/Auth/VerificarEmail';
 
 // Dashboard
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -87,6 +92,15 @@ function App() {
           {/* Auth - Sistema nuevo (Universal) */}
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<RegisterUniversal />} />
+
+          {/* Cuenta: los links de los mails llevan acá (públicas) */}
+          {FEATURE_CUENTA_EMAIL && (
+            <>
+              <Route path="/olvide-contrasena" element={<OlvideContrasena />} />
+              <Route path="/restablecer-contrasena" element={<RestablecerContrasena />} />
+              <Route path="/verificar-email" element={<VerificarEmail />} />
+            </>
+          )}
           
           {/* Auth - Sistema antiguo (deprecated - mantener por compatibilidad) */}
           <Route path="/login-old" element={<Login />} />
