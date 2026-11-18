@@ -59,7 +59,7 @@ function Sidebar({ onNavigate }) {
     { path: panelUrl, icon: 'home', label: 'Inicio' },
     ...(altaPendiente ? [altaPendiente] : []),
     // El catálogo solo se alcanzaba desde las tarjetas del panel
-    { path: '/productos', icon: 'package', label: 'Catálogo', feature: FEATURE_PRODUCTOS },
+    { path: '/productos', icon: 'package', label: 'Mis publicaciones', feature: FEATURE_PRODUCTOS },
     { path: '/mayoristas', icon: 'mayorista', label: 'Explorar mayoristas' },
     { path: '/perfil', icon: 'settings', label: 'Mi Perfil' },
   ];

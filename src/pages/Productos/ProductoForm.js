@@ -6,6 +6,8 @@ import productosService, { buildProductoPayload } from '../../services/productos
 import mensajeDeError from '../../api/mensajeDeError';
 import { errorTextoConHtml } from '../../utils/validaciones';
 import Icon from '../../components/Icon/Icon';
+import TarjetaProducto from '../../components/Tienda/TarjetaProducto';
+import '../../components/Tienda/Tienda.css';
 import '../Forms/Forms.css';
 import './Productos.css';
 
@@ -181,6 +183,27 @@ function ProductoForm() {
     return <div className="loading"><Icon name="loading" /> Cargando...</div>;
   }
 
+  // Vista previa: cómo se va a ver la tarjeta en la tienda mientras se completa
+  const comercioElegido = comercios.find(
+    (c) => c.tipo === formData.oferente_tipo && String(c.id) === String(formData.oferente_id)
+  );
+  const vistaPrevia = {
+    id: 'vista-previa',
+    nombre: formData.nombre.trim() || 'Nombre del producto',
+    precio: formData.precio === '' ? 0 : formData.precio,
+    stock: formData.stock === '' ? 0 : formData.stock,
+    imagen_url: formData.imagen_url.trim(),
+  };
+  // Qué le falta a la publicación para venderse mejor
+  const consejos = [
+    { ok: formData.nombre.trim().length >= 10, texto: 'Nombre claro, con marca y presentación (ej.: "Aceite de girasol 1,5 L x 12")' },
+    { ok: Boolean(formData.imagen_url.trim()), texto: 'Una foto del producto' },
+    { ok: formData.descripcion.trim().length >= 30, texto: 'Descripción con detalles (medidas, sabores, unidades por bulto)' },
+    { ok: Number(formData.precio) > 0, texto: 'Precio' },
+    { ok: Number(formData.stock) > 0, texto: 'Stock disponible' },
+  ];
+  const completos = consejos.filter((c) => c.ok).length;
+
   const valorComercio = formData.oferente_id
     ? `${formData.oferente_tipo}:${formData.oferente_id}`
     : '';
@@ -191,12 +214,13 @@ function ProductoForm() {
   return (
     <div className="form-page">
       <div className="form-header">
-        <h1>{isEdit ? <><Icon name="edit" /> Editar Producto</> : <><Icon name="add" /> Nuevo Producto</>}</h1>
+        <h1>{isEdit ? <><Icon name="edit" /> Editar publicación</> : <><Icon name="add" /> Publicar producto</>}</h1>
         <button onClick={() => navigate('/productos')} className="btn btn-secondary">
           ← Volver
         </button>
       </div>
 
+      <div className="publicar-columnas">
       <div className="form-container">
         {error && <div className="error-message"><Icon name="error" /> {error}</div>}
 
@@ -371,17 +395,6 @@ function ProductoForm() {
               </small>
             </div>
 
-            {formData.imagen_url && (
-              <div className="producto-imagen-preview">
-                <img
-                  src={formData.imagen_url}
-                  alt="Vista previa del producto"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-              </div>
-            )}
           </div>
 
           <div className="form-actions">
@@ -397,10 +410,33 @@ function ProductoForm() {
               disabled={loading || sinComercios}
               className="btn btn-primary"
             >
-              {loading ? <><Icon name="loading" /> Guardando...</> : isEdit ? <><Icon name="save" /> Actualizar</> : <><Icon name="sparkles" /> Crear Producto</>}
+              {loading ? <><Icon name="loading" /> Guardando...</> : isEdit ? <><Icon name="save" /> Guardar cambios</> : <><Icon name="add" /> Publicar</>}
             </button>
           </div>
         </form>
+      </div>
+
+      <aside className="publicar-preview" aria-label="Vista previa">
+        <h2>Así se va a ver en la tienda</h2>
+        <TarjetaProducto producto={vistaPrevia} comercio={comercioElegido?.label} />
+        <div className="publicar-calidad">
+          <h3>Tu publicación: {completos} de {consejos.length}</h3>
+          <div className="publicar-calidad-barra" aria-hidden="true">
+            <span style={{ width: `${(completos / consejos.length) * 100}%` }} />
+          </div>
+          <ul>
+            {consejos.map((c) => (
+              <li key={c.texto} className={c.ok ? 'ok' : ''}>
+                <Icon name={c.ok ? 'success' : 'add'} />
+                <span>
+                  <span className="solo-lectores">{c.ok ? 'Listo: ' : 'Falta: '}</span>
+                  {c.texto}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </aside>
       </div>
     </div>
   );

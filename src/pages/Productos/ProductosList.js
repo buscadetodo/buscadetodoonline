@@ -1,331 +1,362 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useToast } from '../../components/Toast/Toast';
-import { useRubros, useMisComercios, useCatalogoComercios } from '../../hooks';
+import { useMisComercios } from '../../hooks';
+import { useRubrosPublicos } from '../../hooks/useRubrosPublicos';
 import productosService from '../../services/productosService';
+import mensajeDeError from '../../api/mensajeDeError';
 import Icon from '../../components/Icon/Icon';
+import Modal from '../../components/Modal/Modal';
+import { formatearNumero, formatearPrecio } from '../../utils/formato';
+import '../../components/Tienda/Tienda.css'; // modal, botones y solo-lectores
+import '../Dashboards/Paneles.css'; // esqueletos
 import './Productos.css';
 
-const ITEMS_PER_PAGE = 12;
+// La API no devuelve totales: se piden hasta TOPE productos por comercio.
+const TOPE = 200;
+const POCAS_UNIDADES = 5;
 
+const ESTADOS = [
+  { valor: 'todas', texto: 'Todas' },
+  { valor: 'activas', texto: 'Activas' },
+  { valor: 'pocas', texto: 'Pocas unidades' },
+  { valor: 'sin-stock', texto: 'Sin stock' },
+];
+
+const ORDENES = [
+  { valor: 'recientes', texto: 'Más recientes' },
+  { valor: 'stock', texto: 'Menos stock' },
+  { valor: 'precio_desc', texto: 'Mayor precio' },
+  { valor: 'nombre', texto: 'Nombre (A–Z)' },
+];
+
+const estadoDe = (p) => {
+  const stock = Number(p.stock) || 0;
+  if (stock === 0) return 'sin-stock';
+  if (stock <= POCAS_UNIDADES) return 'pocas';
+  return 'activas';
+};
+
+const ETIQUETA_ESTADO = { activas: 'Activa', pocas: 'Pocas unidades', 'sin-stock': 'Sin stock' };
+
+const fecha = (p) => new Date(p.modificado || p.creado || 0).getTime() || 0;
+
+/**
+ * "Mis publicaciones" (/productos para quien vende).
+ *
+ * Como la sección de publicaciones de un marketplace: solo los productos de
+ * los comercios propios, en filas, con contadores por estado, búsqueda,
+ * orden y acciones (ver en la tienda, editar, eliminar).
+ *
+ * El admin no tiene comercios propios (y la API no le deja editar productos
+ * ajenos): ve todas las publicaciones, sin acciones de edición.
+ */
 function ProductosList() {
-  const [productos, setProductos] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const { rubros, fetchRubros } = useRubros();
-  // comercios = propios (lo que se puede gestionar); todos = para nombres y filtro
-  const { opciones: comercios, opcionesTodas } = useMisComercios();
-  // Todos los comercios visibles (catálogo público desde R-003 devolución v1):
-  // nombre del oferente en cada tarjeta y opciones del filtro.
-  const { nombreDe, opciones: catalogo } = useCatalogoComercios();
-  const comerciosFiltro = catalogo.length > 0 ? catalogo : opcionesTodas;
   const toast = useToast();
+  const { opciones: comercios, loading: cargandoComercios, isAdmin } = useMisComercios();
+  const { nombreRubro } = useRubrosPublicos();
 
-  // Paginación.
-  // La API no devuelve `total`, así que no se puede calcular la cantidad de
-  // páginas. Se pide un ítem extra (limit + 1): si vuelve, hay página siguiente.
-  const [page, setPage] = useState(0);
-  const [haySiguiente, setHaySiguiente] = useState(false);
+  const [productos, setProductos] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState('');
+  const [estado, setEstado] = useState('todas');
+  const [orden, setOrden] = useState('recientes');
+  const [texto, setTexto] = useState('');
+  const [comercioFiltro, setComercioFiltro] = useState('');
+  const [aBorrar, setABorrar] = useState(null);
+  const [borrando, setBorrando] = useState(false);
 
-  // Filtros
-  const [filters, setFilters] = useState({
-    rubro_id: '',
-    search: '',
-    comercio: '', // "mayorista:3" | "minorista:1" | "" (todos)
-  });
+  const vistaAdmin = isAdmin && comercios.length === 0;
+  const clave = (tipo, id) => `${tipo}:${id}`;
+  const comercioDe = (p) =>
+    p.mayorista_id != null ? clave('mayorista', p.mayorista_id) : clave('minorista', p.minorista_id);
+  const nombreComercio = (p) => comercios.find((c) => clave(c.tipo, c.id) === comercioDe(p))?.label || '';
 
-  useEffect(() => {
-    fetchRubros();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const fetchProductos = useCallback(async () => {
+  const cargar = useCallback(async () => {
+    if (cargandoComercios) return;
+    setCargando(true);
+    setError('');
     try {
-      setLoading(true);
-      setError(null);
-
-      const [tipo, comercioId] = filters.comercio
-        ? filters.comercio.split(':')
-        : [null, null];
-
-      const response = await productosService.getAll({
-        rubro_id: filters.rubro_id || undefined,
-        search: filters.search || undefined,
-        mayorista_id: tipo === 'mayorista' ? comercioId : undefined,
-        minorista_id: tipo === 'minorista' ? comercioId : undefined,
-        limit: ITEMS_PER_PAGE + 1,
-        offset: page * ITEMS_PER_PAGE,
-      });
-
-      const data = Array.isArray(response?.data) ? response.data : [];
-
-      // El ítem extra solo sirve para detectar la página siguiente: no se muestra.
-      setHaySiguiente(data.length > ITEMS_PER_PAGE);
-      setProductos(data.slice(0, ITEMS_PER_PAGE));
+      let lista = [];
+      if (vistaAdmin) {
+        const resp = await productosService.getAll({ limit: TOPE });
+        lista = resp?.data ?? resp;
+      } else {
+        const respuestas = await Promise.all(
+          comercios.map((c) =>
+            productosService.getAll({
+              mayorista_id: c.tipo === 'mayorista' ? c.id : undefined,
+              minorista_id: c.tipo === 'minorista' ? c.id : undefined,
+              limit: TOPE,
+            })
+          )
+        );
+        lista = respuestas.flatMap((r) => {
+          const datos = r?.data ?? r;
+          return Array.isArray(datos) ? datos : [];
+        });
+      }
+      setProductos(Array.isArray(lista) ? lista : []);
     } catch (err) {
-      setError('Error al cargar productos');
-      toast.error('Error al cargar productos');
+      setError(mensajeDeError(err, 'No pudimos cargar tus publicaciones.'));
       setProductos([]);
-      setHaySiguiente(false);
     } finally {
-      setLoading(false);
+      setCargando(false);
     }
+    // comercios cambia de referencia en cada render del contexto: se compara por contenido
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters, page]);
+  }, [cargandoComercios, vistaAdmin, comercios.map((c) => clave(c.tipo, c.id)).join(',')]);
 
   useEffect(() => {
-    fetchProductos();
-  }, [fetchProductos]);
+    cargar();
+  }, [cargar]);
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('¿Estás seguro de eliminar este producto?')) return;
+  const cuentas = useMemo(() => {
+    const c = { todas: productos.length, activas: 0, pocas: 0, 'sin-stock': 0 };
+    productos.forEach((p) => {
+      c[estadoDe(p)] += 1;
+    });
+    // "Activas" incluye las que tienen pocas unidades: siguen a la venta
+    c.activas += c.pocas;
+    return c;
+  }, [productos]);
 
+  const visibles = useMemo(() => {
+    const t = texto.trim().toLowerCase();
+    let lista = productos.filter((p) => {
+      const e = estadoDe(p);
+      if (estado === 'activas' && e === 'sin-stock') return false;
+      if (estado === 'pocas' && e !== 'pocas') return false;
+      if (estado === 'sin-stock' && e !== 'sin-stock') return false;
+      if (comercioFiltro && comercioDe(p) !== comercioFiltro) return false;
+      if (t && !`${p.nombre} ${p.sku}`.toLowerCase().includes(t)) return false;
+      return true;
+    });
+    const por = {
+      recientes: (a, b) => fecha(b) - fecha(a),
+      stock: (a, b) => (Number(a.stock) || 0) - (Number(b.stock) || 0),
+      precio_desc: (a, b) => (Number(b.precio) || 0) - (Number(a.precio) || 0),
+      nombre: (a, b) => String(a.nombre).localeCompare(String(b.nombre), 'es'),
+    };
+    return [...lista].sort(por[orden]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productos, estado, orden, texto, comercioFiltro]);
+
+  const confirmarBorrado = async () => {
+    if (!aBorrar) return;
+    setBorrando(true);
     try {
-      await productosService.delete(id);
-      toast.success('Producto eliminado correctamente');
-      fetchProductos();
+      await productosService.delete(aBorrar.id);
+      toast.success(`Eliminaste "${aBorrar.nombre}".`);
+      setProductos((prev) => prev.filter((p) => p.id !== aBorrar.id));
+      setABorrar(null);
     } catch (err) {
-      const status = err.response?.status;
-      const msg =
-        status === 403
+      toast.error(
+        err?.response?.status === 403
           ? 'No podés eliminar productos de un comercio que no es tuyo.'
-          : err.response?.data?.error || 'Error al eliminar producto';
-      toast.error(msg);
+          : mensajeDeError(err, 'No se pudo eliminar el producto.')
+      );
+    } finally {
+      setBorrando(false);
     }
   };
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters({ ...filters, [name]: value });
-    setPage(0); // Reset a la primera página
-  };
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    setPage(0);
-    fetchProductos();
-  };
-
-  const getRubroName = (rubroId) => {
-    if (!rubros) return 'N/A';
-    const rubro = rubros.find((r) => r.id === rubroId);
-    return rubro ? rubro.rubro : 'N/A';
-  };
-
-  // Solo se puede editar/borrar lo que la API va a aceptar: productos de un
-  // comercio propio. El admin tampoco tiene bypass (R-003 §3).
-  const puedeGestionar = (producto) => {
-    return comercios.some(
-      (c) =>
-        (c.tipo === 'mayorista' && c.id === producto.mayorista_id) ||
-        (c.tipo === 'minorista' && c.id === producto.minorista_id)
-    );
-  };
-
-  const nombreOferente = (producto) => {
-    const delCatalogo = nombreDe(producto);
-    if (delCatalogo) return delCatalogo;
-    const match = opcionesTodas.find(
-      (c) =>
-        (c.tipo === 'mayorista' && c.id === producto.mayorista_id) ||
-        (c.tipo === 'minorista' && c.id === producto.minorista_id)
-    );
-    if (match) return match.label;
-    return producto.mayorista_id != null
-      ? `Mayorista #${producto.mayorista_id}`
-      : `Minorista #${producto.minorista_id}`;
-  };
-
-  const puedeCrear = comercios.length > 0;
-  const desde = productos.length === 0 ? 0 : page * ITEMS_PER_PAGE + 1;
-  const hasta = page * ITEMS_PER_PAGE + productos.length;
+  const sinComercios = !cargandoComercios && !vistaAdmin && comercios.length === 0;
 
   return (
-    <div className="productos-page">
-      <div className="page-header">
+    <div className="publicaciones">
+      <header className="publicaciones-cabecera">
         <div>
-          <h1><Icon name="package" /> Catálogo de Productos</h1>
-          <p className="page-subtitle">Gestiona los productos disponibles</p>
+          <h1>{vistaAdmin ? 'Publicaciones' : 'Mis publicaciones'}</h1>
+          <p>
+            {vistaAdmin
+              ? 'Todos los productos publicados en el sitio.'
+              : 'Los productos de tus comercios: precio, stock y estado.'}
+          </p>
         </div>
-        {puedeCrear && (
-          <Link to="/productos/nuevo" className="btn btn-primary">
-            <Icon name="add" /> Nuevo Producto
+        {!vistaAdmin && !sinComercios && (
+          <Link to="/productos/nuevo" className="publicaciones-btn-publicar">
+            <Icon name="add" /> Publicar producto
           </Link>
         )}
-      </div>
+      </header>
 
-      {/* Filtros */}
-      <div className="filter-section">
-        <form onSubmit={handleSearch} className="filter-form">
-          <div className="filter-group">
-            <input
-              type="text"
-              name="search"
-              value={filters.search}
-              onChange={handleFilterChange}
-              placeholder="Buscar por nombre..."
-              className="filter-input"
-            />
+      {sinComercios ? (
+        <div className="publicaciones-vacio">
+          <Icon name="mayorista" />
+          <h2>Primero dá de alta tu comercio</h2>
+          <p>Para publicar productos necesitás la ficha de tu comercio (razón social, CUIT, rubro y horarios).</p>
+          <Link to="/agregar-perfil" className="publicaciones-btn-publicar">Dar de alta mi comercio</Link>
+        </div>
+      ) : (
+        <>
+          <div className="publicaciones-pestanas" role="tablist" aria-label="Estado de las publicaciones">
+            {ESTADOS.map((e) => (
+              <button
+                key={e.valor}
+                type="button"
+                role="tab"
+                aria-selected={estado === e.valor}
+                className={estado === e.valor ? 'activa' : ''}
+                onClick={() => setEstado(e.valor)}
+              >
+                {e.texto} <span>{cuentas[e.valor]}</span>
+              </button>
+            ))}
           </div>
 
-          <div className="filter-group">
-            <select
-              name="rubro_id"
-              value={filters.rubro_id}
-              onChange={handleFilterChange}
-              className="filter-select"
-            >
-              <option value="">Todos los rubros</option>
-              {rubros &&
-                rubros.map((rubro) => (
-                  <option key={rubro.id} value={rubro.id}>
-                    {rubro.rubro}
-                  </option>
+          <div className="publicaciones-herramientas">
+            <label className="publicaciones-buscar">
+              <Icon name="search" />
+              <span className="solo-lectores">Buscar por nombre o SKU</span>
+              <input
+                type="search"
+                value={texto}
+                onChange={(e) => setTexto(e.target.value)}
+                placeholder="Buscar por nombre o SKU"
+              />
+            </label>
+            {comercios.length > 1 && (
+              <select value={comercioFiltro} onChange={(e) => setComercioFiltro(e.target.value)} aria-label="Comercio">
+                <option value="">Todos mis comercios</option>
+                {comercios.map((c) => (
+                  <option key={clave(c.tipo, c.id)} value={clave(c.tipo, c.id)}>{c.label}</option>
                 ))}
+              </select>
+            )}
+            <select value={orden} onChange={(e) => setOrden(e.target.value)} aria-label="Ordenar">
+              {ORDENES.map((o) => (
+                <option key={o.valor} value={o.valor}>{o.texto}</option>
+              ))}
             </select>
           </div>
 
-          {comerciosFiltro.length > 0 && (
-            <div className="filter-group">
-              <select
-                name="comercio"
-                value={filters.comercio}
-                onChange={handleFilterChange}
-                className="filter-select"
-              >
-                <option value="">Todos los comercios</option>
-                {comerciosFiltro.map((c) => (
-                  <option key={`${c.tipo}:${c.id}`} value={`${c.tipo}:${c.id}`}>
-                    {c.label} ({c.tipo === 'mayorista' ? 'Mayorista' : 'Minorista'})
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-
-          <button type="submit" className="btn btn-secondary">
-            <Icon name="search" /> Buscar
-          </button>
-        </form>
-      </div>
-
-      {loading && <div className="loading"><Icon name="loading" /> Cargando productos...</div>}
-      {error && <div className="error-message"><Icon name="error" /> {error}</div>}
-
-      {/* Grid de productos */}
-      <div className="productos-grid">
-        {productos.length > 0
-          ? productos.map((producto) => (
-              <div key={producto.id} className="producto-card">
-                {producto.imagen_url ? (
-                  <img
-                    src={producto.imagen_url}
-                    alt={producto.nombre}
-                    className="producto-image"
-                    onError={(e) => {
-                      // Si la URL está caída, se degrada al placeholder.
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
-                ) : (
-                  <div className="producto-image-placeholder"><Icon name="package" /></div>
-                )}
-                <div className="producto-content">
-                  <h3 className="producto-nombre">{producto.nombre}</h3>
-                  <div className="producto-meta">
-                    {producto.sku && (
-                      <span className="producto-sku">{producto.sku}</span>
-                    )}
-                    <span className="producto-rubro">
-                      {getRubroName(producto.rubro_id)}
-                    </span>
-                  </div>
-                  <span className="producto-oferente">
-                    <Icon name={producto.mayorista_id != null ? 'mayorista' : 'minorista'} />{' '}
-                    {nombreOferente(producto)}
+          {cargando || cargandoComercios ? (
+            <ul className="publicaciones-lista" aria-busy="true" aria-label="Cargando publicaciones">
+              {[0, 1, 2].map((i) => (
+                <li key={i} className="publicacion">
+                  <span className="publicacion-img esqueleto" />
+                  <span className="publicacion-datos">
+                    <span className="esqueleto esqueleto-linea" style={{ width: '50%' }} />
+                    <span className="esqueleto esqueleto-linea" style={{ width: '30%' }} />
                   </span>
-                  <p className="producto-descripcion">
-                    {producto.descripcion || 'Sin descripción'}
-                  </p>
-                  <div className="producto-precio">
-                    <span className="precio-label">Precio:</span>
-                    <span className="precio-valor">
-                      ${Number(producto.precio || 0).toLocaleString('es-AR')}
+                </li>
+              ))}
+            </ul>
+          ) : error ? (
+            <div className="publicaciones-vacio" role="alert">
+              <Icon name="warning" />
+              <h2>No pudimos cargar tus publicaciones</h2>
+              <p>{error}</p>
+              <button type="button" className="publicaciones-btn-publicar" onClick={cargar}>Reintentar</button>
+            </div>
+          ) : productos.length === 0 ? (
+            <div className="publicaciones-vacio">
+              <Icon name="package" />
+              <h2>Publicá tu primer producto</h2>
+              <p>Cargá nombre, precio, stock y una foto. En un par de minutos queda a la venta.</p>
+              {!vistaAdmin && <Link to="/productos/nuevo" className="publicaciones-btn-publicar">Publicar producto</Link>}
+            </div>
+          ) : visibles.length === 0 ? (
+            <div className="publicaciones-vacio">
+              <Icon name="search" />
+              <h2>Ninguna publicación coincide</h2>
+              <button
+                type="button"
+                className="publicaciones-link"
+                onClick={() => {
+                  setTexto('');
+                  setEstado('todas');
+                  setComercioFiltro('');
+                }}
+              >
+                Ver todas
+              </button>
+            </div>
+          ) : (
+            <ul className="publicaciones-lista">
+              {visibles.map((p) => {
+                const e = estadoDe(p);
+                const [tipo, idComercio] = comercioDe(p).split(':');
+                const meta = [p.sku && `SKU ${p.sku}`, nombreRubro(p.rubro_id), comercios.length > 1 && nombreComercio(p)]
+                  .filter(Boolean)
+                  .join(' · ');
+                return (
+                  <li key={p.id} className="publicacion">
+                    <span className="publicacion-img">
+                      {p.imagen_url ? <img src={p.imagen_url} alt="" loading="lazy" /> : <Icon name="package" />}
                     </span>
-                  </div>
-                  <div className="producto-stock">
-                    <span
-                      className={`stock-badge ${
-                        producto.stock > 0 ? 'disponible' : 'agotado'
-                      }`}
-                    >
-                      {producto.stock > 0 ? `Stock: ${producto.stock}` : 'Agotado'}
+                    <span className="publicacion-datos">
+                      {vistaAdmin ? (
+                        <span className="publicacion-nombre">{p.nombre}</span>
+                      ) : (
+                        <Link to={`/productos/${p.id}/editar`} className="publicacion-nombre">{p.nombre}</Link>
+                      )}
+                      {meta && <span className="publicacion-meta">{meta}</span>}
                     </span>
-                  </div>
-                </div>
-                {puedeGestionar(producto) && (
-                  <div className="producto-actions">
-                    <Link
-                      to={`/productos/${producto.id}/editar`}
-                      className="btn btn-sm btn-secondary"
-                    >
-                      <Icon name="edit" /> Editar
-                    </Link>
-                    <button
-                      onClick={() => handleDelete(producto.id)}
-                      className="btn btn-sm btn-danger"
-                    >
-                      <Icon name="delete" /> Eliminar
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))
-          : !loading && (
-              <div className="empty-state">
-                <div className="empty-icon"><Icon name="package" /></div>
-                <h3>No hay productos</h3>
-                <p>
-                  {page > 0
-                    ? 'No hay más productos en esta página.'
-                    : puedeCrear
-                    ? 'Comienza agregando tu primer producto'
-                    : 'Todavía no hay productos publicados.'}
-                </p>
-                {puedeCrear && page === 0 && (
-                  <Link to="/productos/nuevo" className="btn btn-primary">
-                    <Icon name="add" /> Crear Producto
-                  </Link>
-                )}
-              </div>
-            )}
-      </div>
+                    <span className="publicacion-precio">{formatearPrecio(p.precio)}</span>
+                    <span className="publicacion-stock">
+                      <span className={`publicacion-estado estado-${e}`}>{ETIQUETA_ESTADO[e]}</span>
+                      <small>{formatearNumero(Number(p.stock) || 0)} u.</small>
+                    </span>
+                    <span className="publicacion-acciones">
+                      <Link
+                        to={`/tienda/${tipo}/${idComercio}?q=${encodeURIComponent(p.nombre || '')}`}
+                        className="publicacion-accion"
+                        title="Ver en la tienda"
+                        aria-label={`Ver ${p.nombre} en la tienda`}
+                      >
+                        <Icon name="view" />
+                      </Link>
+                      {!vistaAdmin && (
+                        <>
+                          <Link
+                            to={`/productos/${p.id}/editar`}
+                            className="publicacion-accion"
+                            title="Editar"
+                            aria-label={`Editar ${p.nombre}`}
+                          >
+                            <Icon name="edit" />
+                          </Link>
+                          <button
+                            type="button"
+                            className="publicacion-accion publicacion-accion-peligro"
+                            title="Eliminar"
+                            aria-label={`Eliminar ${p.nombre}`}
+                            onClick={() => setABorrar(p)}
+                          >
+                            <Icon name="delete" />
+                          </button>
+                        </>
+                      )}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </>
+      )}
 
-      {/* Paginación simple: la API no expone `total`, así que no hay números de
-          página. Cuando el backend agregue `total` se puede volver al componente
-          Pagination con numeración. */}
-      {(page > 0 || haySiguiente) && (
-        <div className="pagination-container">
-          <div className="pagination-info">
-            Mostrando {desde} - {hasta}
-          </div>
-          <div className="pagination-controls">
-            <button
-              className="pagination-btn"
-              onClick={() => setPage((p) => Math.max(0, p - 1))}
-              disabled={page === 0 || loading}
-            >
-              ← Anterior
+      {aBorrar && (
+        <Modal
+          onClose={() => !borrando && setABorrar(null)}
+          titleId="borrar-titulo"
+          overlayClassName="tienda-modal-fondo"
+          className="tienda-modal"
+        >
+          <span className="tienda-modal-icono publicaciones-icono-peligro" aria-hidden="true"><Icon name="delete" /></span>
+          <h2 id="borrar-titulo">¿Eliminar “{aBorrar.nombre}”?</h2>
+          <p>Deja de verse en la tienda y no se puede deshacer.</p>
+          <div className="tienda-modal-acciones">
+            <button type="button" className="tienda-btn publicaciones-btn-peligro" onClick={confirmarBorrado} disabled={borrando}>
+              {borrando ? 'Eliminando…' : 'Eliminar'}
             </button>
-            <button
-              className="pagination-btn"
-              onClick={() => setPage((p) => p + 1)}
-              disabled={!haySiguiente || loading}
-            >
-              Siguiente →
+            <button type="button" className="tienda-btn tienda-btn-secundario" onClick={() => setABorrar(null)} disabled={borrando}>
+              Cancelar
             </button>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   );
