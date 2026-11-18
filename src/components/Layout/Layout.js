@@ -4,9 +4,13 @@ import Sidebar from './Sidebar';
 import Footer from '../Footer/Footer';
 import RetomarCompra from '../FichaProducto/RetomarCompra';
 import AvisoVerificarEmail from '../AvisoVerificarEmail/AvisoVerificarEmail';
+import TiendaLayout from '../Tienda/TiendaLayout';
+import { useModoTienda } from '../Tienda/useModoTienda';
 import './Layout.css';
 
 function Layout({ children }) {
+  // El comprador ve la tienda (encabezado con buscador, sin menú lateral)
+  const modoTienda = useModoTienda();
   // Colapso del sidebar en desktop (solo íconos)
   const [collapsed, setCollapsed] = useState(
     () => localStorage.getItem('sidebar_collapsed') === 'true'
@@ -29,6 +33,8 @@ function Layout({ children }) {
   };
 
   const closeMobile = () => setMobileOpen(false);
+
+  if (modoTienda) return <TiendaLayout>{children}</TiendaLayout>;
 
   const layoutClass = [
     'layout',

@@ -29,6 +29,8 @@ code {
  * violeta queda como color de MARCA para fondos y encabezados.
  */
 :root {
+  /* Ancho máximo del contenido de la tienda (encabezado y páginas) */
+  --ancho-sitio: 1440px;
   --color-primario: #4f46e5;
   --color-primario-hover: #4338ca;
   --color-primario-suave: #eef2ff;

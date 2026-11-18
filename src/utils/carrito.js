@@ -9,6 +9,8 @@
 // de que le pidiéramos ingresar, para agregarlo solo después del login.
 
 const PREFIJO_CARRITO = 'libremercado-carrito-';
+/** Evento de window que avisa que el carrito cambió (lo escucha el encabezado). */
+export const EVENTO_CARRITO = 'libremercado-carrito';
 const CLAVE_PENDIENTE = 'libremercado-compra-pendiente';
 const VIGENCIA_PENDIENTE_MS = 2 * 60 * 60 * 1000; // dos horas
 
@@ -69,6 +71,7 @@ export function agregarAlCarrito(usuarioId, producto, cantidad) {
   const nuevo = { producto: resumenDe(producto), cantidad: total };
   const resto = items.filter((i) => i.producto?.id !== producto.id);
   escribir(localStorage, PREFIJO_CARRITO + usuarioId, [...resto, nuevo]);
+  window.dispatchEvent(new Event(EVENTO_CARRITO));
   return total;
 }
 
@@ -90,3 +93,11 @@ export function tomarCompraPendiente() {
   if (Date.now() - pendiente.guardado > VIGENCIA_PENDIENTE_MS) return null;
   return pendiente;
 }
+
+/** Unidades totales en el carrito (para el contador del encabezado). */
+export function contarCarrito(usuarioId) {
+  return leerCarrito(usuarioId).reduce((suma, i) => suma + (Number(i.cantidad) || 0), 0);
+}
+
+/** true si la clave de localStorage es la de un carrito (para escuchar otras pestañas). */
+export const esClaveDeCarrito = (clave) => String(clave || '').startsWith(PREFIJO_CARRITO);

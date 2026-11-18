@@ -1,0 +1,346 @@
+/* Resultados de búsqueda: filtros a la izquierda, grilla a la derecha */
+
+.buscar-columnas {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.buscar-titulo {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--color-texto);
+  overflow-wrap: anywhere;
+}
+
+.buscar-cantidad {
+  margin: 0.25rem 0 1rem;
+  font-size: 0.875rem;
+  color: var(--color-texto-suave);
+}
+
+/* ---------- Filtros ---------- */
+.filtros-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.925rem;
+  color: var(--color-texto);
+  cursor: pointer;
+}
+
+.filtros-check input {
+  width: 1.05rem;
+  height: 1.05rem;
+  accent-color: var(--color-primario);
+}
+
+.filtros-grupo {
+  margin-bottom: 1.4rem;
+}
+
+.filtros-grupo h3 {
+  margin: 0 0 0.45rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+.filtros-grupo ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.filtros-grupo li button,
+.filtros-ver-mas {
+  display: block;
+  width: 100%;
+  padding: 0.25rem 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 0.9rem;
+  color: #4b5563;
+  text-align: left;
+  cursor: pointer;
+}
+
+.filtros-grupo li button:hover {
+  color: var(--color-primario);
+}
+
+.filtros-grupo li button.activo {
+  color: var(--color-primario-texto);
+  font-weight: 700;
+}
+
+.filtros-grupo li button.activo::after {
+  content: ' ✕';
+  font-weight: 400;
+  font-size: 0.75rem;
+}
+
+.filtros-ver-mas {
+  color: var(--color-primario);
+  font-weight: 600;
+}
+
+.filtros-precio {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.filtros-precio input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 0.875rem;
+  background: #fff;
+}
+
+.filtros-precio input:focus {
+  outline: 2px solid var(--color-primario);
+  outline-offset: -1px;
+}
+
+.filtros-precio button {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-primario-suave);
+  color: var(--color-primario);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* ---------- Barra de resultados ---------- */
+.buscar-barra {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.buscar-encabezado-movil,
+.buscar-btn-filtrar {
+  display: none;
+}
+
+.buscar-orden {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.875rem;
+  color: var(--color-texto);
+}
+
+.buscar-orden select {
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-weight: 600;
+  color: var(--color-texto);
+  cursor: pointer;
+}
+
+.buscar-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.buscar-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  background: #fff;
+  font: inherit;
+  font-size: 0.82rem;
+  color: var(--color-texto);
+  cursor: pointer;
+}
+
+.buscar-chip:hover {
+  border-color: var(--color-primario);
+}
+
+.buscar-chip svg {
+  font-size: 0.8rem;
+}
+
+.buscar-limpiar {
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-primario);
+  cursor: pointer;
+}
+
+/* ---------- Estados ---------- */
+.buscar-vacio {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.buscar-vacio > svg {
+  font-size: 2.25rem;
+  color: #94a3b8;
+}
+
+.buscar-vacio h2 {
+  margin: 0.25rem 0;
+  font-size: 1.15rem;
+  color: var(--color-texto);
+  overflow-wrap: anywhere;
+}
+
+.buscar-vacio p,
+.buscar-vacio ul {
+  margin: 0 0 0.5rem;
+  color: var(--color-texto-suave);
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.buscar-mas {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.buscar-vender {
+  margin: 2rem 0 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-texto-suave);
+}
+
+.buscar-vender a {
+  color: var(--color-primario);
+  font-weight: 600;
+}
+
+/* ---------- Panel de filtros en el celular ---------- */
+.buscar-filtros-fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.buscar-filtros-panel {
+  width: min(360px, 90vw);
+  height: 100%;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  animation: filtrosEntrada 0.2s ease-out;
+}
+
+.buscar-filtros-panel:focus {
+  outline: none;
+}
+
+@keyframes filtrosEntrada {
+  from { transform: translateX(30px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+.buscar-filtros-cabecera {
+  position: relative;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.buscar-filtros-cabecera h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.buscar-filtros-cuerpo {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.25rem;
+}
+
+.buscar-filtros-pie {
+  padding: 0.75rem 1.25rem 1rem;
+  border-top: 1px solid var(--color-borde);
+}
+
+.buscar-filtros-pie .tienda-btn {
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .buscar-columnas {
+    grid-template-columns: 1fr;
+  }
+
+  .buscar-lateral {
+    display: none;
+  }
+
+  .buscar-barra {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .buscar-encabezado-movil {
+    display: block;
+    flex-basis: 100%;
+  }
+
+  .buscar-encabezado-movil .buscar-cantidad {
+    margin-bottom: 0.25rem;
+  }
+
+  .buscar-btn-filtrar {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.85rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: #fff;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-texto);
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 640px) {
+  .buscar-titulo {
+    font-size: 1.15rem;
+  }
+}

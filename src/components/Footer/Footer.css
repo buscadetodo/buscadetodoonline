@@ -6,7 +6,7 @@
 }
 
 .site-footer-inner {
-  max-width: 1400px;
+  max-width: var(--ancho-sitio);
   margin: 0 auto;
   padding: 0 1.5rem;
   display: flex;

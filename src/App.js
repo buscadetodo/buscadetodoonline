@@ -59,7 +59,6 @@ import CompradoresList from './pages/Compradores/CompradoresList';
 import CompradorForm from './pages/Compradores/CompradorForm';
 
 // Productos
-import ProductosList from './pages/Productos/ProductosList';
 import ProductoForm from './pages/Productos/ProductoForm';
 
 // Admin
@@ -72,6 +71,11 @@ import AgregarPerfil from './pages/Perfil/AgregarPerfil';
 
 // Legales
 import { Privacidad, Terminos } from './pages/Legal/Legal';
+
+// Tienda
+import Buscar from './pages/Buscar/Buscar';
+import TiendaLayout from './components/Tienda/TiendaLayout';
+import ProductosInicio from './pages/Productos/ProductosInicio';
 
 // 404
 import NotFound from './pages/NotFound/NotFound';
@@ -88,6 +92,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/privacidad" element={<Privacidad />} />
           <Route path="/terminos" element={<Terminos />} />
+          <Route path="/buscar" element={<TiendaLayout><Buscar /></TiendaLayout>} />
           
           {/* Auth - Sistema nuevo (Universal) */}
           <Route path="/login" element={<Login />} />
@@ -236,7 +241,7 @@ function App() {
               <PrivateRoute>
                 <Layout>
                   <Routes>
-                    <Route path="/" element={<ProductosList />} />
+                    <Route path="/" element={<ProductosInicio />} />
                     <Route path="/nuevo" element={<ProductoForm />} />
                     <Route path="/:id/editar" element={<ProductoForm />} />
                   </Routes>
