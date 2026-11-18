@@ -83,6 +83,10 @@ function CompradorHome() {
               <span className="action-title">Buscar productos</span>
             </Link>
           )}
+          <Link to="/carrito" className="action-card" style={{ '--color': 'var(--color-primario)' }}>
+            <span className="action-icon"><Icon name="cart" /></span>
+            <span className="action-title">Mi carrito</span>
+          </Link>
           <Link to="/mayoristas" className="action-card" style={{ '--color': 'var(--color-primario-hover)' }}>
             <span className="action-icon"><Icon name="mayorista" /></span>
             <span className="action-title">Ver mayoristas</span>

@@ -97,9 +97,9 @@ function MiniCarrito() {
               <p className="mini-carrito-total">
                 Total <strong>{formatearPrecio(total)}</strong>
               </p>
-              <p className="mini-carrito-nota">
-                <Icon name="note" /> Muy pronto vas a poder enviarle el pedido a cada comercio desde acá.
-              </p>
+              <Link to="/carrito" className="tienda-btn tienda-btn-primario mini-carrito-ver" onClick={() => setAbierto(false)}>
+                Ver carrito
+              </Link>
             </>
           )}
         </div>
