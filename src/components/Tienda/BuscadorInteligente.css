@@ -1,0 +1,199 @@
+/* ---------- Buscador del encabezado con sugerencias ---------- */
+
+/* El contenedor ocupa el lugar que antes tenía el formulario; el formulario
+   (.encabezado-buscador, en Tienda.css) lo llena. */
+.buscador-inteligente {
+  position: relative;
+  flex: 1;
+  max-width: 780px;
+  min-width: 0;
+}
+
+.buscador-inteligente .encabezado-buscador {
+  max-width: none;
+}
+
+/* Sin la "x" nativa de type=search: no se ve igual en todos los navegadores */
+.buscador-inteligente input[type='search']::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.sugerencias {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 950;
+  margin: 0;
+  padding: 0.35rem 0;
+  list-style: none;
+  background: #fff;
+  color: var(--color-texto);
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(14, 17, 22, 0.18), 0 1px 3px rgba(14, 17, 22, 0.12);
+  max-height: min(70vh, 520px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.sugerencias[hidden] {
+  display: none;
+}
+
+.sugerencias-titulo {
+  padding: 0.6rem 1rem 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-texto-suave);
+}
+
+.sugerencias-titulo:not(:first-child) {
+  margin-top: 0.25rem;
+  border-top: 1px solid var(--color-borde);
+  padding-top: 0.7rem;
+}
+
+.sugerencia {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 44px; /* fácil de tocar en el celular */
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  line-height: 1.3;
+}
+
+.sugerencia.activa {
+  background: var(--color-primario-suave);
+}
+
+.sugerencia strong {
+  font-weight: 700;
+  color: var(--color-texto);
+}
+
+.sugerencia-icono {
+  flex-shrink: 0;
+  width: 20px;
+  display: flex;
+  justify-content: center;
+  color: var(--color-texto-suave);
+  font-size: 1rem;
+}
+
+.sugerencia.activa .sugerencia-icono {
+  color: var(--color-enlace);
+}
+
+.sugerencia-texto {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  color: var(--color-texto);
+}
+
+.sugerencia-nombre {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.sugerencia-detalle {
+  font-size: 0.78rem;
+  color: var(--color-texto-suave);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.sugerencia-miniatura {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 4px;
+  border: 1px solid var(--color-borde);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--color-texto-suave);
+  font-size: 1.1rem;
+}
+
+.sugerencia-miniatura img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.sugerencia-precio {
+  flex-shrink: 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-texto);
+}
+
+.sugerencia-quitar {
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  color: var(--color-texto-suave);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.sugerencia-quitar:hover {
+  background: var(--color-fondo);
+  color: var(--color-peligro);
+}
+
+.sugerencias-cargando {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  color: var(--color-texto-suave);
+}
+
+/* ---------- Celular ---------- */
+@media (max-width: 640px) {
+  .buscador-inteligente {
+    order: 3;
+    flex-basis: 100%;
+    max-width: none;
+  }
+
+  .sugerencias {
+    /* Debajo del campo, hasta casi el final de la pantalla */
+    max-height: calc(100dvh - 160px);
+    border-radius: 4px;
+  }
+
+  .sugerencia {
+    min-height: 48px;
+    padding: 0.45rem 0.85rem;
+  }
+
+  .sugerencias-titulo {
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
+  }
+
+  .sugerencia-producto .sugerencia-precio {
+    font-size: 0.875rem;
+  }
+}

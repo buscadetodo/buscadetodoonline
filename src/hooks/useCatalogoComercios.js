@@ -20,13 +20,17 @@ const TOPE = 100;
  *   opciones: Array<{tipo: string, id: number, label: string}>,
  *   cargando: boolean
  * }}
+ * @param {Object} [opciones]
+ * @param {boolean} [opciones.activo=true] con `false` no pide nada todavía
+ *   (el buscador del encabezado lo carga recién cuando se lo usa)
  */
-export const useCatalogoComercios = () => {
+export const useCatalogoComercios = ({ activo = true } = {}) => {
   const [mapa, setMapa] = useState({});
   const [opciones, setOpciones] = useState([]);
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
+    if (!activo) return undefined;
     let vigente = true;
     const lista = (resp) => {
       const data = resp?.data ?? resp;
@@ -58,7 +62,7 @@ export const useCatalogoComercios = () => {
     return () => {
       vigente = false;
     };
-  }, []);
+  }, [activo]);
 
   /** Nombre del comercio que publica el producto ("" si no se conoce). */
   const nombreDe = useCallback(
