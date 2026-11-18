@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FEATURE_PRODUCTOS } from '../../config/features';
-import { useAuth, useCatalogoComercios, useRubrosAutoload } from '../../hooks';
+import { useAuth, useCatalogoComercios } from '../../hooks';
 import productosService from '../../services/productosService';
 import usersService from '../../services/usersService';
 import Icon from '../../components/Icon/Icon';
 import FichaConCarrito from '../../components/FichaProducto/FichaConCarrito';
-import { formatearNumero, formatearPrecio, primerNombre } from '../../utils/formato';
+import TarjetaProducto, { TarjetaProductoEsqueleto } from '../../components/Tienda/TarjetaProducto';
+import { primerNombre } from '../../utils/formato';
 import '../Dashboard/Dashboard.css';
 import './Paneles.css';
 
@@ -22,7 +23,6 @@ const CANTIDAD = 8;
  */
 function CompradorHome() {
   const { user } = useAuth();
-  const { rubros } = useRubrosAutoload(50, 0);
   const { nombreDe } = useCatalogoComercios();
   const [nombre, setNombre] = useState('');
   const [productos, setProductos] = useState([]);
@@ -67,8 +67,6 @@ function CompradorHome() {
     };
   }, []);
 
-  const nombreRubro = (id) => (rubros || []).find((r) => r.id === id)?.rubro || '';
-
   return (
     <div className="dashboard">
       <header className="panel-encabezado">
@@ -80,7 +78,7 @@ function CompradorHome() {
         <h2>¿Qué querés hacer?</h2>
         <div className="actions-grid">
           {FEATURE_PRODUCTOS && (
-            <Link to="/productos" className="action-card" style={{ '--color': '#667eea' }}>
+            <Link to="/buscar" className="action-card" style={{ '--color': '#667eea' }}>
               <span className="action-icon"><Icon name="search" /></span>
               <span className="action-title">Buscar productos</span>
             </Link>
@@ -101,21 +99,13 @@ function CompradorHome() {
           <div className="panel-seccion-cabecera">
             <h2 id="comprador-ultimos">Últimos productos publicados</h2>
             {productos.length > 0 && (
-              <Link to="/productos" className="panel-link">Ver catálogo completo →</Link>
+              <Link to="/buscar" className="panel-link">Ver todos →</Link>
             )}
           </div>
 
           {cargando ? (
-            <div className="panel-grilla" aria-busy="true" aria-label="Cargando productos">
-              {[0, 1, 2, 3].map((i) => (
-                <div key={i} className="panel-producto">
-                  <div className="panel-producto-imagen esqueleto" />
-                  <div className="panel-producto-cuerpo">
-                    <span className="esqueleto esqueleto-linea" style={{ width: '70%' }} />
-                    <span className="esqueleto esqueleto-linea" style={{ width: '40%' }} />
-                  </div>
-                </div>
-              ))}
+            <div className="grilla-productos" aria-busy="true" aria-label="Cargando productos">
+              {[0, 1, 2, 3].map((i) => <TarjetaProductoEsqueleto key={i} />)}
             </div>
           ) : error ? (
             <div className="panel-tarjeta">
@@ -134,37 +124,10 @@ function CompradorHome() {
               </div>
             </div>
           ) : (
-            <div className="panel-grilla">
-              {productos.map((p) => {
-                const stock = Number(p.stock) || 0;
-                return (
-                  <button
-                    key={p.id}
-                    type="button"
-                    className="panel-producto"
-                    onClick={() => setProductoAbierto(p)}
-                    aria-label={`${p.nombre}, ${formatearPrecio(p.precio)}. Ver detalle`}
-                  >
-                    <div className="panel-producto-imagen">
-                      {p.imagen_url ? <img src={p.imagen_url} alt="" loading="lazy" /> : <Icon name="package" />}
-                    </div>
-                    <div className="panel-producto-cuerpo">
-                      <p className="panel-producto-nombre">{p.nombre}</p>
-                      {(nombreDe(p) || nombreRubro(p.rubro_id)) && (
-                        <p className="panel-producto-rubro">
-                          {[nombreDe(p), nombreRubro(p.rubro_id)].filter(Boolean).join(' · ')}
-                        </p>
-                      )}
-                      <div className="panel-producto-pie">
-                        <span className="panel-item-precio">{formatearPrecio(p.precio)}</span>
-                        <span className={`panel-chip ${stock > 0 ? '' : 'sin-stock'}`}>
-                          {stock > 0 ? `${formatearNumero(stock)} u.` : 'Sin stock'}
-                        </span>
-                      </div>
-                    </div>
-                  </button>
-                );
-              })}
+            <div className="grilla-productos">
+              {productos.map((p) => (
+                <TarjetaProducto key={p.id} producto={p} comercio={nombreDe(p)} onAbrir={setProductoAbierto} />
+              ))}
             </div>
           )}
         </section>
