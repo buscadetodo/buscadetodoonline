@@ -223,7 +223,7 @@
 
 .home-vender p {
   margin: 0;
-  color: var(--color-acento-borde);
+  color: var(--color-tinta-texto);
 }
 
 @media (max-width: 900px) {

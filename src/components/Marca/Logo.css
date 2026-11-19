@@ -1,0 +1,37 @@
+/* Logo de la marca: ícono + nombre en Montserrat (cargada en public/index.html) */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.logo-icono {
+  flex-shrink: 0;
+  display: block;
+}
+
+.logo-nombre {
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+}
+
+.logo-claro .logo-busca {
+  color: var(--color-marino);
+}
+
+.logo-oscuro .logo-busca {
+  color: #ffffff;
+}
+
+.logo-detodo {
+  color: var(--color-azul);
+}
+
+/* Sobre el marino, el azul de la marca pierde contraste: se usa uno más claro */
+.logo-oscuro .logo-detodo {
+  color: var(--color-azul-claro);
+}

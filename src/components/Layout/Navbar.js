@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks';
 import { esAdmin } from '../../config/roles';
 import PerfilSelector from '../PerfilSelector/PerfilSelector';
 import Icon from '../Icon/Icon';
+import Logo from '../Marca/Logo';
 import './Navbar.css';
 
 function Navbar({ onToggleSidebar }) {
@@ -23,10 +24,7 @@ function Navbar({ onToggleSidebar }) {
             <Icon name="menu" />
           </button>
           <Link to="/" className="navbar-logo">
-            <span className="logo-icon">
-              <Icon name="minorista" />
-            </span>
-            <span className="logo-text">BuscaDeTodoOnline</span>
+            <Logo tamano={34} />
           </Link>
         </div>
 

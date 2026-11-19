@@ -68,7 +68,7 @@ function Dashboard() {
       <div className="dashboard-hero">
         <div className="hero-text">
           <span className="hero-badge"><Icon name="rocket" /> ¡Empecemos!</span>
-          <h1>Bienvenido a BuscaDeTodoOnline</h1>
+          <h1>Bienvenido a Buscádetodo</h1>
           <p>
             La plataforma donde compradores y vendedores se encuentran.
             Completá tu perfil para comenzar a publicar productos, realizar

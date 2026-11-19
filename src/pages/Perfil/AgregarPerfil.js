@@ -597,7 +597,7 @@ function AgregarPerfil() {
     <div className="agregar-perfil">
       <div className="ap-header">
         <h1>Agregar perfil</h1>
-        <p>Elegí un tipo de cuenta para ampliar lo que podés hacer en BuscaDeTodoOnline.</p>
+        <p>Elegí un tipo de cuenta para ampliar lo que podés hacer en Buscádetodo.</p>
       </div>
 
       <form onSubmit={handleSubmit}>

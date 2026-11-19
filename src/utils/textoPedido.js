@@ -23,7 +23,7 @@ export const armarTextoPedido = ({ comercio, items, total, urlTienda, email, fec
   });
 
   return [
-    `Hola, ${comercio}. Quiero hacerles este pedido que armé en BuscaDeTodoOnline:`,
+    `Hola, ${comercio}. Quiero hacerles este pedido que armé en Buscádetodo:`,
     '',
     ...lineas,
     '',

@@ -4,7 +4,7 @@
 // los definitivos. El dominio .example está reservado y no recibe correo, así
 // que no se confunde con una dirección real. Se puede sobrescribir en el build
 // con REACT_APP_CONTACTO_EMAIL.
-export const NOMBRE_SITIO = 'BuscaDeTodoOnline';
+export const NOMBRE_SITIO = 'Buscádetodo';
 export const CONTACTO_EMAIL =
   process.env.REACT_APP_CONTACTO_EMAIL || 'contacto@buscadetodo.example';
 export const LEGALES_ACTUALIZADO = 'octubre de 2026';

@@ -74,7 +74,7 @@
 
 .encabezado-marca svg {
   font-size: 1.6rem;
-  color: var(--color-acento);
+  color: var(--color-acento-sobre-oscuro);
 }
 
 .encabezado-buscador {
@@ -159,7 +159,7 @@
 
 .encabezado-zona small {
   font-size: 0.72rem;
-  color: var(--color-acento);
+  color: var(--color-acento-sobre-oscuro);
 }
 
 .encabezado-zona strong {
@@ -694,7 +694,7 @@
   }
 }
 
-/* Grafito y lima: el encabezado es grafito con acentos en lima */
+/* Marino y azul: el encabezado es marino con acentos en azul claro */
 .encabezado-tienda {
   background: var(--color-tinta);
   border-bottom: 1px solid var(--color-tinta-borde);
@@ -707,7 +707,7 @@
 
 .encabezado-rubros a:hover,
 .encabezado-cuenta > a:hover {
-  color: var(--color-acento);
+  color: var(--color-acento-sobre-oscuro);
   text-decoration: none;
 }
 
@@ -717,7 +717,7 @@
 }
 
 .encabezado-icono-btn:hover {
-  color: var(--color-acento);
+  color: var(--color-acento-sobre-oscuro);
 }
 
 .encabezado-cuenta .perfil-selector-btn {

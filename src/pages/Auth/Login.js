@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks';
 import { useToast } from '../../components/Toast/Toast';
 import Icon from '../../components/Icon/Icon';
+import Logo, { LogoIcono } from '../../components/Marca/Logo';
 import usuarioPerfilesService from '../../services/usuarioPerfilesService';
 import usersService from '../../services/usersService';
 import authService from '../../services/authService';
@@ -128,10 +129,10 @@ function Login() {
         {/* Header con logo mejorado */}
         <div className="login-header">
           <Link to="/" className="login-logo-wrapper" style={{ textDecoration: 'none', cursor: 'pointer' }}>
-            <span className="login-logo-icon"><Icon name="minorista" /></span>
+            <span className="login-logo-icon"><LogoIcono tamano={60} /></span>
             <div className="login-brand">
-              <h1 className="brand-name">BuscaDeTodoOnline</h1>
-              <p className="brand-tagline">Tu marketplace de confianza</p>
+              <h1 className="brand-logo"><Logo soloNombre /></h1>
+              <p className="brand-tagline">Encontrá todo, en un solo lugar</p>
             </div>
           </Link>
           <p className="login-subtitle">Ingresá a tu cuenta</p>

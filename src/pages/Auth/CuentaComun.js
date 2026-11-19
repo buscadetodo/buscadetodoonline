@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Icon from '../../components/Icon/Icon';
+import Logo, { LogoIcono } from '../../components/Marca/Logo';
 import './AuthMejorado.css';
 import './RegisterMejorado.css';
 import './Cuenta.css';
@@ -21,10 +22,10 @@ export function TarjetaCuenta({ subtitulo, children }) {
         </Link>
         <div className="login-header">
           <Link to="/" className="login-logo-wrapper" style={{ textDecoration: 'none' }}>
-            <span className="login-logo-icon"><Icon name="minorista" /></span>
+            <span className="login-logo-icon"><LogoIcono tamano={60} /></span>
             <div className="login-brand">
-              <p className="brand-name">BuscaDeTodoOnline</p>
-              <p className="brand-tagline">Tu marketplace de confianza</p>
+              <p className="brand-logo"><Logo soloNombre /></p>
+              <p className="brand-tagline">Encontrá todo, en un solo lugar</p>
             </div>
           </Link>
           <h1 className="login-subtitle">{subtitulo}</h1>
