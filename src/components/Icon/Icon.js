@@ -37,6 +37,7 @@ import {
   CalendarDays,
   Receipt,
   RefreshCw,
+  Share2,
   Rocket,
   Save,
   Search,
@@ -120,6 +121,7 @@ const ICONOS = {
   // Datos de contacto y ubicación
   location: MapPin,
   mail: Mail,
+  share: Share2,
   phone: Phone,
   lock: Lock,
 
