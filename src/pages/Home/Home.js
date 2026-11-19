@@ -10,6 +10,7 @@ import Icon from '../../components/Icon/Icon';
 import TiendaLayout from '../../components/Tienda/TiendaLayout';
 import TarjetaProducto, { TarjetaProductoEsqueleto } from '../../components/Tienda/TarjetaProducto';
 import FichaSegunSesion from '../../components/Tienda/FichaSegunSesion';
+import VistosRecientemente from '../../components/Tienda/VistosRecientemente';
 import './Home.css';
 
 // Primera página del catálogo: se guarda en el navegador para mostrarla al
@@ -139,6 +140,10 @@ function Home() {
             ))}
           </ul>
         </section>
+      )}
+
+      {FEATURE_PRODUCTOS && (
+        <VistosRecientemente onAbrir={setAbierto} className="home-seccion" claseTitulo="home-seccion-titulo" />
       )}
 
       {FEATURE_PRODUCTOS && disponible && (

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from '../Modal/Modal';
 import Icon from '../Icon/Icon';
 import { formatearNumero, formatearPrecio } from '../../utils/formato';
+import { guardarVisto } from '../../utils/vistos';
 import './FichaProducto.css';
 
 /**
@@ -59,6 +60,12 @@ function FichaProducto({
   const todoEnCarrito = !sinStock && disponible === 0;
   const puedeAgregar = !sinStock && !todoEnCarrito;
   const titulo = `ficha-producto-titulo-${producto.id}`;
+
+  // Para la fila "Vistos recientemente"
+  useEffect(() => {
+    guardarVisto(producto);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [producto.id]);
 
   const agregar = (e) => {
     e.preventDefault();

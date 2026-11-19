@@ -6,6 +6,7 @@ import productosService from '../../services/productosService';
 import usersService from '../../services/usersService';
 import Icon from '../../components/Icon/Icon';
 import FichaConCarrito from '../../components/FichaProducto/FichaConCarrito';
+import VistosRecientemente from '../../components/Tienda/VistosRecientemente';
 import TarjetaProducto, { TarjetaProductoEsqueleto } from '../../components/Tienda/TarjetaProducto';
 import { primerNombre } from '../../utils/formato';
 import '../Dashboard/Dashboard.css';
@@ -97,6 +98,8 @@ function CompradorHome() {
           </Link>
         </div>
       </section>
+
+      {FEATURE_PRODUCTOS && <VistosRecientemente onAbrir={setProductoAbierto} className="dashboard-section" />}
 
       {FEATURE_PRODUCTOS && (
         <section className="dashboard-section" aria-labelledby="comprador-ultimos">
