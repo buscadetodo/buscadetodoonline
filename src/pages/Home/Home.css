@@ -188,6 +188,99 @@
   color: var(--color-tinta-texto);
 }
 
+/* Cómo se compra: pago, entrega y confianza (al final, antes del pie) */
+.home-comprar {
+  margin-top: 2rem;
+}
+
+.home-comprar-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.home-comprar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1.75rem 1.75rem;
+}
+
+.home-comprar-item + .home-comprar-item {
+  border-left: 1px solid var(--color-borde);
+}
+
+.home-comprar-icono {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--color-primario-suave);
+  color: var(--color-acento);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+
+.home-comprar-item h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  color: var(--color-texto);
+}
+
+.home-comprar-item p {
+  flex: 1;
+  margin: 0 0 1rem;
+  max-width: 340px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--color-texto-suave);
+}
+
+.home-comprar-enlace {
+  color: var(--color-enlace);
+  font-weight: 600;
+  font-size: 0.92rem;
+  text-decoration: none;
+}
+
+.home-comprar-enlace:hover {
+  text-decoration: underline;
+}
+
+/* "Cómo comprar" baja hasta acá: que el encabezado fijo no tape el título */
+#como-funciona {
+  scroll-margin-top: 7.5rem;
+}
+
+@media (max-width: 640px) {
+  #como-funciona {
+    scroll-margin-top: 10.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .home-comprar-lista {
+    grid-template-columns: 1fr;
+  }
+
+  .home-comprar-item + .home-comprar-item {
+    border-left: none;
+    border-top: 1px solid var(--color-borde);
+  }
+
+  .home-comprar-item {
+    padding: 1.5rem 1.25rem;
+  }
+}
+
 @media (max-width: 900px) {
   .home-banner,
   .home-vender {
