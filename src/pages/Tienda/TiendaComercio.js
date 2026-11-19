@@ -6,7 +6,10 @@ import { useMisComercios } from '../../hooks';
 import { useRubrosPublicos } from '../../hooks/useRubrosPublicos';
 import { cargarCatalogosAtencion, textoDias, textoHorario } from '../../utils/atencion';
 import { formatearPrecio } from '../../utils/formato';
+import { compartirLink } from '../../utils/compartir';
 import Icon from '../../components/Icon/Icon';
+import Modal from '../../components/Modal/Modal';
+import { useToast } from '../../components/Toast/Toast';
 import TiendaLayout from '../../components/Tienda/TiendaLayout';
 import RepetirPedido from '../../components/Tienda/RepetirPedido';
 import { ListadoProductos } from '../Buscar/Buscar';
@@ -45,6 +48,8 @@ function TiendaComercio() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState('');
   const [catalogos, setCatalogos] = useState(null);
+  const [linkManual, setLinkManual] = useState(''); // si el navegador no deja compartir ni copiar
+  const toast = useToast();
 
   useEffect(() => {
     if (!config) return undefined;
@@ -111,6 +116,19 @@ function TiendaComercio() {
   const dias = textoDias(comercio, catalogos);
   const retiro = comercio.retiro_en_local === 'y';
 
+  const compartir = async () => {
+    const url = `${window.location.origin}/tienda/${tipo}/${comercio.id}`;
+    const resultado = await compartirLink({
+      titulo: comercio.razon_social,
+      texto: puedeEditar
+        ? `Mirá mis productos en BuscaDeTodoOnline: ${comercio.razon_social}`
+        : `Mirá los productos de ${comercio.razon_social} en BuscaDeTodoOnline`,
+      url,
+    });
+    if (resultado === 'copiado') toast.success('Copiamos el link de la tienda. Pegalo donde quieras compartirlo.');
+    else if (resultado === 'fallo') setLinkManual(url);
+  };
+
   const datos = [
     { icono: 'money', titulo: 'Pedido mínimo', valor: minimo > 0 ? formatearPrecio(minimo) : 'Sin mínimo' },
     { icono: 'local', titulo: 'Retiro en el local', valor: retiro ? 'Sí' : 'No' },
@@ -131,11 +149,17 @@ function TiendaComercio() {
               {rubro && <span className="tienda-rubro">{rubro}</span>}
             </p>
           </div>
-          {puedeEditar && (
-            <Link to={`${config.editar}/${comercio.id}/editar`} className="tienda-btn tienda-btn-secundario tienda-editar">
-              <Icon name="edit" /> Editar datos
-            </Link>
-          )}
+          <div className="tienda-acciones">
+            <button type="button" className="tienda-btn tienda-btn-secundario" onClick={compartir}>
+              <Icon name="share" /> Compartir
+              {puedeEditar && <span className="tienda-compartir-extra">&nbsp;mi tienda</span>}
+            </button>
+            {puedeEditar && (
+              <Link to={`${config.editar}/${comercio.id}/editar`} className="tienda-btn tienda-btn-secundario">
+                <Icon name="edit" /> Editar datos
+              </Link>
+            )}
+          </div>
         </div>
 
         <ul className="tienda-datos">
@@ -158,6 +182,30 @@ function TiendaComercio() {
       <div className="tienda-productos">
         <ListadoProductos comercioFijo={`${tipo}:${comercio.id}`} titulo={`Productos de ${comercio.razon_social}`} />
       </div>
+
+      {linkManual && (
+        <Modal
+          onClose={() => setLinkManual('')}
+          titleId="link-manual-titulo"
+          overlayClassName="tienda-modal-fondo"
+          className="tienda-modal tienda-modal-izq"
+        >
+          <h2 id="link-manual-titulo">Link de {comercio.razon_social}</h2>
+          <p>Tu navegador no nos dejó copiarlo solo. Seleccioná el link y copialo.</p>
+          <input
+            className="tienda-link-manual"
+            value={linkManual}
+            readOnly
+            aria-label="Link de la tienda"
+            onFocus={(e) => e.target.select()}
+          />
+          <div className="tienda-modal-acciones">
+            <button type="button" className="tienda-btn tienda-btn-secundario" onClick={() => setLinkManual('')}>
+              Cerrar
+            </button>
+          </div>
+        </Modal>
+      )}
     </TiendaLayout>
   );
 }
