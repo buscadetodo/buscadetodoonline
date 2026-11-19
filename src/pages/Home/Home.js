@@ -3,7 +3,6 @@ import { Link, Navigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import { usePerfilActivo } from '../../context/PerfilContext';
 import { useCatalogoComercios } from '../../hooks';
-import { useRubrosPublicos } from '../../hooks/useRubrosPublicos';
 import productosService from '../../services/productosService';
 import { FEATURE_PRODUCTOS } from '../../config/features';
 import Icon from '../../components/Icon/Icon';
@@ -42,15 +41,6 @@ function guardarCatalogo(productos) {
   }
 }
 
-const ICONOS_RUBRO = {
-  alimentos: 'alimentos',
-  bebidas: 'bebidas',
-  limpieza: 'limpieza',
-  mascotas: 'mascotas',
-  electronica: 'electronica',
-  electrónica: 'electronica',
-};
-
 const PASOS = [
   { icon: 'search', titulo: 'Buscá sin registrarte', texto: 'Recorré productos por mayor con precio y stock actualizados.' },
   { icon: 'cart', titulo: 'Armá tu carrito', texto: 'Elegí cantidades con el + y el −. Te pedimos cuenta recién ahí.' },
@@ -60,13 +50,13 @@ const PASOS = [
 /**
  * Home pública, con estructura de marketplace: encabezado con buscador (en
  * TiendaLayout), carrusel de banners a todo el ancho (o el banner fijo si no
- * hay ninguno activo), tarjetas de accesos, accesos por rubro y los últimos productos. Con
+ * hay ninguno activo), tarjetas de accesos y los últimos productos (los rubros
+ * están en el encabezado, debajo del buscador). Con
  * sesión, "/" lleva al panel del usuario.
  */
 function Home() {
   const { isAuthenticated } = useAuth();
   const { panelUrl, loading: cargandoPerfiles } = usePerfilActivo();
-  const { rubros } = useRubrosPublicos();
   const { nombreDe } = useCatalogoComercios();
   const { banners, cargando: cargandoBanners } = useBanners();
 
@@ -143,24 +133,6 @@ function Home() {
       )}
 
       <AccesosRapidos sobreBanner={hayPortada} />
-
-      {rubros.length > 0 && (
-        <section className="home-seccion" aria-labelledby="home-rubros-titulo">
-          <h2 id="home-rubros-titulo" className="home-seccion-titulo">Rubros</h2>
-          <ul className="home-rubros">
-            {rubros.map((r) => (
-              <li key={r.id}>
-                <Link to={`/buscar?rubro=${r.id}`} className="home-rubro">
-                  <span className="home-rubro-icono" aria-hidden="true">
-                    <Icon name={ICONOS_RUBRO[String(r.nombre || '').toLowerCase()] || 'folder'} />
-                  </span>
-                  <span>{r.nombre}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
 
       {FEATURE_PRODUCTOS && (
         <VistosRecientemente onAbrir={setAbierto} className="home-seccion" claseTitulo="home-seccion-titulo" />
