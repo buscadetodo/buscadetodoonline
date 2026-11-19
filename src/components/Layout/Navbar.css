@@ -33,7 +33,7 @@
 }
 
 .navbar-hamburger:hover {
-  background: rgba(77, 124, 15, 0.08);
+  background: rgba(20, 124, 255, 0.08);
 }
 
 .navbar-container {
@@ -85,7 +85,7 @@
 }
 
 .navbar-link:hover {
-  background: rgba(77, 124, 15, 0.08);
+  background: rgba(20, 124, 255, 0.08);
   color: var(--color-enlace);
   transform: translateY(-2px);
 }
@@ -104,7 +104,7 @@
 }
 
 .navbar-login {
-  background: rgba(77, 124, 15, 0.08);
+  background: rgba(20, 124, 255, 0.08);
   color: var(--color-enlace);
   border: 2px solid var(--color-primario);
 }
@@ -125,7 +125,7 @@
 }
 
 .navbar-logout {
-  background: rgba(77, 124, 15, 0.08);
+  background: rgba(20, 124, 255, 0.08);
   color: var(--color-enlace);
   border: 2px solid transparent;
 }

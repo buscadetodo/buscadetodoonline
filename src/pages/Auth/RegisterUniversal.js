@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useToast } from '../../components/Toast/Toast';
 import Icon from '../../components/Icon/Icon';
+import Logo, { LogoIcono } from '../../components/Marca/Logo';
 import { esEmailValido, tieneCaracteresHtml, TEXTO_SIN_HTML_AYUDA } from '../../utils/validaciones';
 import { useAuth } from '../../hooks';
 import authService from '../../services/authService';
@@ -117,7 +118,7 @@ function RegisterUniversal() {
       // Login automático (vía contexto, para que la sesión quede sincronizada)
       await login(formData.email, formData.password);
 
-      toast.success('¡Bienvenido a BuscaDeTodoOnline!');
+      toast.success('¡Bienvenido a Buscádetodo!');
 
       // Onboarding: elegir y asignar el tipo de perfil
       setTimeout(() => {
@@ -149,10 +150,10 @@ function RegisterUniversal() {
         {/* Header */}
         <div className="login-header">
           <Link to="/" className="login-logo-wrapper" style={{ textDecoration: 'none', cursor: 'pointer' }}>
-            <span className="login-logo-icon"><Icon name="minorista" /></span>
+            <span className="login-logo-icon"><LogoIcono tamano={60} /></span>
             <div className="login-brand">
-              <h1 className="brand-name">BuscaDeTodoOnline</h1>
-              <p className="brand-tagline">Tu marketplace de confianza</p>
+              <h1 className="brand-logo"><Logo soloNombre /></h1>
+              <p className="brand-tagline">Encontrá todo, en un solo lugar</p>
             </div>
           </Link>
           <p className="login-subtitle">Creá tu cuenta gratis</p>

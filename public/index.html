@@ -3,21 +3,25 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#667eea" />
+    <meta name="theme-color" content="#0b2346" />
     <meta
       name="description"
-      content="BuscaDeTodoOnline: marketplace mayorista. Encontrá mayoristas, minoristas y fleteros cerca de tu zona."
+      content="Buscádetodo: marketplace mayorista. Encontrá mayoristas, minoristas y fleteros cerca de tu zona."
     />
-    <title>BuscaDeTodoOnline | Marketplace mayorista</title>
+    <title>Buscádetodo | Marketplace mayorista</title>
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" sizes="any" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/apple-touch-icon.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!-- Tipografía del logo (solo el peso que usa el nombre de la marca) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet" />
     <!-- Vista previa al compartir el enlace en redes y mensajería -->
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_AR" />
-    <meta property="og:site_name" content="BuscaDeTodoOnline" />
-    <meta property="og:title" content="BuscaDeTodoOnline | Marketplace mayorista" />
+    <meta property="og:site_name" content="Buscádetodo" />
+    <meta property="og:title" content="Buscádetodo | Marketplace mayorista" />
     <meta
       property="og:description"
       content="Encontrá mayoristas, minoristas y fleteros cerca de tu zona."
@@ -35,8 +39,8 @@
         gap: 16px;
         margin: 0;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        color: #374151;
-        background: #f9fafb;
+        color: #0b2346;
+        background: #ffffff;
         text-align: center;
         padding: 0 16px;
       }
@@ -44,14 +48,23 @@
         width: 40px;
         height: 40px;
         border: 4px solid #e5e7eb;
-        border-top-color: #667eea;
+        border-top-color: #147cff;
         border-radius: 50%;
         animation: boot-spin 0.9s linear infinite;
       }
+      .boot-logo {
+        width: 72px;
+        height: 72px;
+      }
       .boot-title {
         margin: 0;
-        font-size: 1.25rem;
-        font-weight: 700;
+        font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-size: 1.6rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      .boot-title span {
+        color: #147cff;
       }
       .boot-text {
         margin: 0;
@@ -67,8 +80,9 @@
     <noscript>Necesitas habilitar JavaScript para ejecutar esta aplicación.</noscript>
     <div id="root">
       <div class="boot-screen" role="status" aria-live="polite">
+        <img class="boot-logo" src="%PUBLIC_URL%/favicon.svg" alt="" />
+        <p class="boot-title">Buscá<span>detodo</span></p>
         <div class="boot-spinner" aria-hidden="true"></div>
-        <p class="boot-title">BuscaDeTodoOnline</p>
         <p class="boot-text">Estamos iniciando, puede tardar unos segundos…</p>
       </div>
     </div>

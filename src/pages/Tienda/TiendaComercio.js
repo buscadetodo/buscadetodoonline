@@ -121,8 +121,8 @@ function TiendaComercio() {
     const resultado = await compartirLink({
       titulo: comercio.razon_social,
       texto: puedeEditar
-        ? `Mirá mis productos en BuscaDeTodoOnline: ${comercio.razon_social}`
-        : `Mirá los productos de ${comercio.razon_social} en BuscaDeTodoOnline`,
+        ? `Mirá mis productos en Buscádetodo: ${comercio.razon_social}`
+        : `Mirá los productos de ${comercio.razon_social} en Buscádetodo`,
       url,
     });
     if (resultado === 'copiado') toast.success('Copiamos el link de la tienda. Pegalo donde quieras compartirlo.');

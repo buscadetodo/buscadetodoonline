@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { NOMBRE_SITIO } from '../config/sitio';
 
 // Título de la pestaña según la sección (informe QA 30/09: era siempre
-// "BuscaDeTodoOnline"). Se evalúa en orden y gana el primer prefijo que coincide.
+// "Buscádetodo"). Se evalúa en orden y gana el primer prefijo que coincide.
 const TITULOS = [
   ['/login', 'Iniciar sesión'],
   ['/registro', 'Crear cuenta'],

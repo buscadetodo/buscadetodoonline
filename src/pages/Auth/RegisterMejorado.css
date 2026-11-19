@@ -677,8 +677,14 @@
     font-size: 40px;
   }
 
-  .register-universal-card .brand-name {
+  .register-universal-card .brand-name,
+  .register-universal-card .brand-logo .logo-nombre {
     font-size: 24px;
+  }
+
+  .register-universal-card .login-logo-icon .logo-icono {
+    width: 40px;
+    height: 40px;
   }
 
   .register-universal-card .login-subtitle {

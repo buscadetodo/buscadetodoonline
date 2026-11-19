@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from '../Icon/Icon';
+import Logo from '../Marca/Logo';
+import { NOMBRE_SITIO } from '../../config/sitio';
 import useAuth from '../../hooks/useAuth';
 import { useRubrosPublicos } from '../../hooks/useRubrosPublicos';
 import { usePerfilActivo } from '../../context/PerfilContext';
@@ -40,9 +42,8 @@ function EncabezadoTienda() {
   return (
     <header className="encabezado-tienda">
       <div className="encabezado-fila encabezado-fila-1">
-        <Link to={inicio} className="encabezado-marca" aria-label="BuscaDeTodoOnline, inicio">
-          <Icon name="minorista" />
-          <span>BuscaDeTodoOnline</span>
+        <Link to={inicio} className="encabezado-marca" aria-label={`${NOMBRE_SITIO}, inicio`}>
+          <Logo fondo="oscuro" tamano={34} />
         </Link>
 
         <BuscadorInteligente />

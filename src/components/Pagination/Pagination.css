@@ -41,7 +41,7 @@
   color: white;
   border-color: var(--color-primario);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(77, 124, 15, 0.3);
+  box-shadow: 0 4px 12px rgba(20, 124, 255, 0.3);
 }
 
 .pagination-btn:disabled {
@@ -81,7 +81,7 @@
   background: var(--marca-degrade);
   color: white;
   border-color: transparent;
-  box-shadow: 0 4px 12px rgba(77, 124, 15, 0.4);
+  box-shadow: 0 4px 12px rgba(20, 124, 255, 0.4);
 }
 
 .pagination-ellipsis {

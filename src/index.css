@@ -21,40 +21,46 @@ code {
 }
 
 /*
- * Paleta "grafito y lima" (2026-11-18).
- *  - Tinta/grafito: encabezado, menú lateral y botones principales (texto blanco).
- *  - Lima: el acento eléctrico. Solo como RELLENO con texto oscuro encima
- *    (CTA principal, contador del carrito, marca, foco). Nunca texto lima
- *    sobre blanco: no se lee.
- *  - Oliva: la versión legible del lima para texto y enlaces sobre blanco
- *    (contraste ~6:1).
+ * Paleta "marino y azul" (2026-11-19), la del logo de Buscádetodo.
+ *  - Marino (#0b2346): encabezado, menú lateral y botones principales (texto blanco).
+ *  - Azul de la marca (#147cff): el del logo. Para botones con texto blanco se
+ *    usa uno apenas más oscuro (#0b6cf0), porque con el del logo el blanco no
+ *    llega al contraste mínimo para texto chico (3,9:1; con #0b6cf0, 4,6:1).
+ *  - Sobre el marino, el azul se cambia por uno claro (--color-acento-sobre-oscuro)
+ *    para que se lea.
  * Toda la app toma los colores de acá: no escribir hex sueltos en los CSS.
  */
 :root {
   /* Ancho máximo del contenido de la tienda (encabezado y páginas) */
   --ancho-sitio: 1440px;
 
-  /* Grafito */
-  --color-tinta: #0e1116;
-  --color-tinta-2: #1c2128;
-  --color-tinta-borde: #2d333b;
-  --color-tinta-texto: #c9d1d9; /* texto secundario sobre grafito */
+  /* Marca (los del logo, para dibujos y textos grandes) */
+  --color-marino: #0b2346;
+  --color-azul: #147cff;
+  --color-azul-claro: #6cb2ff;
 
-  /* Lima (acento) */
-  --color-acento: #c8f53a;
-  --color-acento-hover: #b6e62a;
-  --color-sobre-acento: #0e1116; /* texto sobre lima */
-  --color-acento-borde: #c2e35c;
+  /* Marino (antes "tinta"/grafito: mismos nombres para no tocar cada pantalla) */
+  --color-tinta: #0b2346;
+  --color-tinta-2: #13305a;
+  --color-tinta-borde: #24426e;
+  --color-tinta-texto: #c7d3e6; /* texto secundario sobre marino */
+
+  /* Azul (acento): relleno con texto blanco */
+  --color-acento: #0b6cf0;
+  --color-acento-hover: #0a5bd0;
+  --color-sobre-acento: #ffffff; /* texto sobre el azul */
+  --color-acento-borde: #8fc0ff;
+  --color-acento-sobre-oscuro: #6cb2ff; /* texto y detalles azules sobre el marino */
 
   /* Roles que usa toda la app */
-  --color-primario: #0e1116;          /* botones principales, fondos de marca */
-  --color-primario-hover: #2a313b;
-  --color-primario-suave: #f2fbd9;    /* fondos de íconos, estados activos */
-  --color-primario-suave-2: #e4f6ae;  /* hover de lo anterior */
-  --color-primario-texto: #3f6212;    /* texto sobre el fondo suave */
-  --color-enlace: #4d7c0f;            /* enlaces y textos de acción sobre blanco */
-  --color-foco: rgba(77, 124, 15, 0.28);
-  --marca-degrade: linear-gradient(135deg, #0e1116 0%, #1c2128 55%, #2b3a12 100%);
+  --color-primario: #0b2346;          /* botones principales, fondos de marca */
+  --color-primario-hover: #163a6b;
+  --color-primario-suave: #eaf3ff;    /* fondos de íconos, estados activos */
+  --color-primario-suave-2: #d6e8ff;  /* hover de lo anterior */
+  --color-primario-texto: #0b4fae;    /* texto sobre el fondo suave */
+  --color-enlace: #0b5ed7;            /* enlaces y textos de acción sobre blanco */
+  --color-foco: rgba(20, 124, 255, 0.3);
+  --marca-degrade: linear-gradient(135deg, #0b2346 0%, #13305a 55%, #0b4fae 100%);
 
   --color-texto: #14181f;
   --color-texto-suave: #5f6b7a;
@@ -66,12 +72,12 @@ code {
   --color-exito-suave: #ecfdf3;
 
   /* Un color por tipo de cuenta (registro, alta de perfil) */
-  --color-perfil-mayorista: #0e1116;
-  --color-perfil-mayorista-oscuro: #2a313b;
-  --color-perfil-minorista: #4d7c0f;
-  --color-perfil-minorista-oscuro: #3f6212;
-  --color-perfil-comprador: #0369a1;
-  --color-perfil-comprador-oscuro: #075985;
+  --color-perfil-mayorista: #0b2346;
+  --color-perfil-mayorista-oscuro: #163a6b;
+  --color-perfil-minorista: #0b6cf0;
+  --color-perfil-minorista-oscuro: #0a54bd;
+  --color-perfil-comprador: #b45309; /* ámbar: que no se confunda con los dos azules */
+  --color-perfil-comprador-oscuro: #92400e;
   --color-perfil-transportista: #0f766e;
   --color-perfil-transportista-oscuro: #115e59;
 

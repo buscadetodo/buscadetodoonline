@@ -1,6 +1,6 @@
 {
-  "short_name": "BuscaDeTodo",
-  "name": "BuscaDeTodoOnline | Marketplace mayorista",
+  "short_name": "Buscádetodo",
+  "name": "Buscádetodo | Marketplace mayorista",
   "description": "Encontrá mayoristas, minoristas y fleteros cerca de tu zona.",
   "lang": "es-AR",
   "icons": [
@@ -11,6 +11,6 @@
   ],
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#667eea",
-  "background_color": "#f9fafb"
+  "theme_color": "#0b2346",
+  "background_color": "#ffffff"
 }

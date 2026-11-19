@@ -376,6 +376,15 @@
   line-height: 1.2;
 }
 
+.brand-logo {
+  margin: 0;
+  line-height: 1.1;
+}
+
+.brand-logo .logo-nombre {
+  font-size: 30px;
+}
+
 .brand-tagline {
   font-size: 13px;
   color: #718096;
@@ -846,6 +855,15 @@
   /* Logo en mobile */
   .login-logo-icon {
     font-size: 48px;
+  }
+
+  .login-logo-icon .logo-icono {
+    width: 48px;
+    height: 48px;
+  }
+
+  .brand-logo .logo-nombre {
+    font-size: 24px;
   }
 
   .brand-name {

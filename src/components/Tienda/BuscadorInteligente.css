@@ -31,7 +31,7 @@
   background: #fff;
   color: var(--color-texto);
   border-radius: 6px;
-  box-shadow: 0 8px 24px rgba(14, 17, 22, 0.18), 0 1px 3px rgba(14, 17, 22, 0.12);
+  box-shadow: 0 8px 24px rgba(11, 35, 70, 0.18), 0 1px 3px rgba(11, 35, 70, 0.12);
   max-height: min(70vh, 520px);
   overflow-y: auto;
   overscroll-behavior: contain;
