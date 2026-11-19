@@ -8,8 +8,8 @@
 export const FEATURE_PRODUCTOS = true;
 
 // FEATURE_CUENTA_EMAIL: verificación de email y recuperación/cambio de
-// contraseña (docs/README_verificacion_email_y_recupero.md). Las pantallas ya
-// están hechas contra ese contrato, pero la API todavía no tiene los
-// endpoints: queda apagado hasta que estén en dev. Se prende por ambiente con
-// REACT_APP_FEATURE_CUENTA_EMAIL=true (sin tocar código).
+// contraseña (R-004 del backend). Los endpoints están en la API de dev, así
+// que el flag está prendido en .env.development; en producción queda apagado
+// hasta que haya API de producción con el envío de mails andando. Se prende
+// por ambiente con REACT_APP_FEATURE_CUENTA_EMAIL=true (sin tocar código).
 export const FEATURE_CUENTA_EMAIL = process.env.REACT_APP_FEATURE_CUENTA_EMAIL === 'true';

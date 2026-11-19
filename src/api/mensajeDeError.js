@@ -50,6 +50,16 @@ export const segundosDeEspera = (err) => {
   return Number.isFinite(valor) && valor > 0 ? Math.ceil(valor) : 60;
 };
 
+/**
+ * Espera legible para mostrar ("45 s", "3 min", "2 h"). El reenvío del mail
+ * de verificación tiene tope diario, así que un 429 puede pedir horas.
+ */
+export const textoEspera = (segundos) => {
+  if (segundos < 60) return `${segundos} s`;
+  if (segundos < 3600) return `${Math.ceil(segundos / 60)} min`;
+  return `${Math.ceil(segundos / 3600)} h`;
+};
+
 const MENSAJE_EMAIL_NO_VERIFICADO =
   'Verificá tu email para continuar. Te enviamos un enlace; si no te llegó, podés reenviarlo desde el aviso de arriba.';
 
