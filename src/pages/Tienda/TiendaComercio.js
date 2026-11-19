@@ -8,6 +8,7 @@ import { cargarCatalogosAtencion, textoDias, textoHorario } from '../../utils/at
 import { formatearPrecio } from '../../utils/formato';
 import Icon from '../../components/Icon/Icon';
 import TiendaLayout from '../../components/Tienda/TiendaLayout';
+import RepetirPedido from '../../components/Tienda/RepetirPedido';
 import { ListadoProductos } from '../Buscar/Buscar';
 import mensajeDeError from '../../api/mensajeDeError';
 import './TiendaComercio.css';
@@ -151,6 +152,8 @@ function TiendaComercio() {
 
         {comercio.descripcion && <p className="tienda-descripcion">{comercio.descripcion}</p>}
       </section>
+
+      <RepetirPedido key={`${tipo}:${comercio.id}`} comercio={`${tipo}:${comercio.id}`} nombre={comercio.razon_social} />
 
       <div className="tienda-productos">
         <ListadoProductos comercioFijo={`${tipo}:${comercio.id}`} titulo={`Productos de ${comercio.razon_social}`} />

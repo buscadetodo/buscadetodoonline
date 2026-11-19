@@ -15,6 +15,7 @@ import {
 } from '../../utils/carrito';
 import { formatearNumero, formatearPrecio } from '../../utils/formato';
 import { armarTextoPedido, copiarAlPortapapeles } from '../../utils/textoPedido';
+import { guardarUltimoPedido } from '../../utils/ultimosPedidos';
 import Icon from '../../components/Icon/Icon';
 import Modal from '../../components/Modal/Modal';
 import { useToast } from '../../components/Toast/Toast';
@@ -172,9 +173,12 @@ function Carrito() {
 
   const copiarPedido = async (g, nombre) => {
     const [tipo, id] = g.clave.split(':');
+    const disponibles = g.lista.filter((i) => !noDisponible(i.producto.id));
+    // Para ofrecer "Repetir tu último pedido" en la tienda de este comercio
+    guardarUltimoPedido(usuarioId, g.clave, disponibles);
     const texto = armarTextoPedido({
       comercio: nombre,
-      items: g.lista.filter((i) => !noDisponible(i.producto.id)),
+      items: disponibles,
       total: g.subtotal,
       urlTienda: `${window.location.origin}/tienda/${tipo}/${id}`,
       email: user?.email,
