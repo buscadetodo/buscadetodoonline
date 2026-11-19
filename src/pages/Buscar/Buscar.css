@@ -302,7 +302,7 @@
 
 @media (max-width: 900px) {
   .buscar-columnas {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr); /* que nada ensanche la columna más que la pantalla */
   }
 
   .buscar-lateral {

@@ -7,6 +7,7 @@ import Icon from '../../components/Icon/Icon';
 import Modal from '../../components/Modal/Modal';
 import TarjetaProducto, { TarjetaProductoEsqueleto } from '../../components/Tienda/TarjetaProducto';
 import FichaSegunSesion from '../../components/Tienda/FichaSegunSesion';
+import VistosRecientemente from '../../components/Tienda/VistosRecientemente';
 import mensajeDeError from '../../api/mensajeDeError';
 import { formatearPrecio } from '../../utils/formato';
 import './Buscar.css';
@@ -208,6 +209,11 @@ export function ListadoProductos({ comercioFijo = '', titulo: tituloFijo = '' })
                 <button type="button" className="buscar-limpiar" onClick={limpiarTodo}>Limpiar filtros</button>
               )}
             </div>
+          )}
+
+          {/* Sin búsqueda ni filtros: retomar lo que se estaba mirando */}
+          {!comercioFijo && activos.length === 0 && (
+            <VistosRecientemente onAbrir={setAbierto} className="vistos-en-buscar" />
           )}
 
           {cargando ? (
