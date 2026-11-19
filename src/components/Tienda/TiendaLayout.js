@@ -2,6 +2,7 @@ import React from 'react';
 import Footer from '../Footer/Footer';
 import RetomarCompra from '../FichaProducto/RetomarCompra';
 import AvisoVerificarEmail from '../AvisoVerificarEmail/AvisoVerificarEmail';
+import InvitarInstalar from '../InvitarInstalar/InvitarInstalar';
 import EncabezadoTienda from './EncabezadoTienda';
 import './Tienda.css';
 
@@ -17,6 +18,7 @@ function TiendaLayout({ children, ancho = 'normal' }) {
       <EncabezadoTienda />
       <main className={`tienda-main tienda-main-${ancho}`}>
         <AvisoVerificarEmail />
+        <InvitarInstalar />
         {children}
       </main>
       <Footer />
