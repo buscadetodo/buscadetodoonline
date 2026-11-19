@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import { usePerfilActivo } from '../../context/PerfilContext';
 import cuentaService from '../../services/cuentaService';
-import mensajeDeError, { codigoDeError, segundosDeEspera } from '../../api/mensajeDeError';
+import mensajeDeError, { codigoDeError, segundosDeEspera, textoEspera } from '../../api/mensajeDeError';
 import { EstadoCuenta, MENSAJES_TOKEN, TarjetaCuenta, useCuentaRegresiva, useTokenDelLink } from './CuentaComun';
 
 /**
@@ -65,7 +65,7 @@ function VerificarEmail() {
       if (segundos) setEspera(segundos);
       setErrorReenvio(
         segundos
-          ? `Ya pediste un enlace hace poco. Probá de nuevo en ${segundos} segundos.`
+          ? `Ya pediste un enlace hace poco. Probá de nuevo en ${textoEspera(segundos)}.`
           : mensajeDeError(err, 'No se pudo reenviar el mail.')
       );
     }
@@ -111,7 +111,7 @@ function VerificarEmail() {
                 {reenvio === 'enviando'
                   ? 'Enviando…'
                   : espera > 0
-                    ? `Reenviar en ${espera} s`
+                    ? `Reenviar en ${textoEspera(espera)}`
                     : 'Enviarme un enlace nuevo'}
               </button>
               <Link to={panelUrl} className="cuenta-btn-secundario">Ir a mi panel</Link>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import usersService from '../../services/usersService';
 import cuentaService from '../../services/cuentaService';
-import mensajeDeError, { codigoDeError, segundosDeEspera } from '../../api/mensajeDeError';
+import mensajeDeError, { codigoDeError, segundosDeEspera, textoEspera } from '../../api/mensajeDeError';
 import { FEATURE_CUENTA_EMAIL } from '../../config/features';
 import Icon from '../Icon/Icon';
 import './AvisoVerificarEmail.css';
@@ -19,7 +19,7 @@ const leerOculto = () => {
 
 /**
  * Aviso arriba de la app mientras la cuenta no tenga el email confirmado
- * (§2.4 del pedido al backend): dice a qué email se mandó el enlace y deja
+ * (R-004 del backend): dice a qué email se mandó el enlace y deja
  * reenviarlo, con cuenta regresiva si la API pide esperar.
  *
  * También cubre el "después del registro": al terminar de registrarse la
@@ -77,7 +77,7 @@ function AvisoVerificarEmail() {
       const segundos = segundosDeEspera(err);
       if (segundos) {
         setEspera(segundos);
-        setError(`Esperá ${segundos} s para pedir otro.`);
+        setError(`Esperá ${textoEspera(segundos)} para pedir otro.`);
       } else {
         setError(mensajeDeError(err, 'No se pudo reenviar el mail.'));
       }
@@ -109,7 +109,7 @@ function AvisoVerificarEmail() {
         onClick={reenviar}
         disabled={estado === 'enviando' || espera > 0}
       >
-        {estado === 'enviando' ? 'Enviando…' : espera > 0 ? `Reenviar en ${espera} s` : 'Reenviar'}
+        {estado === 'enviando' ? 'Enviando…' : espera > 0 ? `Reenviar en ${textoEspera(espera)}` : 'Reenviar'}
       </button>
       <button type="button" className="aviso-verificar-cerrar" onClick={ocultar} aria-label="Ocultar aviso">
         <Icon name="close" />
