@@ -1,0 +1,58 @@
+/* "Repetir tu último pedido" en la tienda de un comercio */
+.repetir-pedido {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--color-primario-suave);
+  border: 1px solid var(--color-acento-borde, var(--color-borde));
+  border-radius: 10px;
+}
+
+.repetir-pedido > svg {
+  flex-shrink: 0;
+  font-size: 1.5rem;
+  color: var(--color-primario-texto);
+}
+
+.repetir-pedido-texto {
+  flex: 1;
+  min-width: 0;
+}
+
+.repetir-pedido-texto p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-texto);
+}
+
+.repetir-pedido-texto p + p {
+  margin-top: 0.25rem;
+  color: var(--color-texto-suave);
+}
+
+.repetir-pedido-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.repetir-pedido-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+@media (max-width: 640px) {
+  .repetir-pedido {
+    flex-wrap: wrap;
+    padding: 0.9rem 1rem;
+  }
+
+  .repetir-pedido-texto {
+    flex-basis: calc(100% - 2.5rem);
+  }
+
+  .repetir-pedido-btn {
+    width: 100%;
+  }
+}
