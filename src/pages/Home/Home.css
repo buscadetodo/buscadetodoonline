@@ -119,49 +119,6 @@
   color: var(--color-texto-suave);
 }
 
-/* Accesos por rubro: círculos con ícono, como los atajos de categorías */
-.home-rubros {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-  gap: 0.75rem;
-}
-
-.home-rubro {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.25rem;
-  border-radius: 8px;
-  color: var(--color-texto);
-  font-size: 0.875rem;
-  text-align: center;
-  text-decoration: none;
-}
-
-.home-rubro:hover .home-rubro-icono,
-.home-rubro:focus-visible .home-rubro-icono {
-  box-shadow: 0 0 0 2px var(--color-primario);
-  color: var(--color-enlace);
-}
-
-.home-rubro-icono {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.75rem;
-  color: #4b5563;
-  transition: box-shadow 0.15s ease, color 0.15s ease;
-}
-
 /* Cómo funciona */
 .home-pasos {
   list-style: none;
@@ -259,23 +216,6 @@
 
   .home-seccion-blanca {
     padding: 0.75rem;
-  }
-
-  .home-rubros {
-    display: flex;
-    overflow-x: auto;
-    gap: 0.25rem;
-    padding-bottom: 0.25rem;
-  }
-
-  .home-rubros li {
-    flex: 0 0 92px;
-  }
-
-  .home-rubro-icono {
-    width: 60px;
-    height: 60px;
-    font-size: 1.5rem;
   }
 
   .home-vender {

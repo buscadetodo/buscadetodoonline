@@ -238,6 +238,20 @@
   background: rgba(11, 35, 70, 0.85);
 }
 
+/* No se muestra: con el mouse el carrusel ya se frena al pasar por encima.
+   Sigue en el orden del teclado y aparece al llegar con Tab, porque quien
+   navega con teclado o lector de pantalla necesita poder frenar lo que se
+   mueve solo (WCAG 2.2.2). */
+.carrusel-pausa {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.carrusel-pausa:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .carrusel-flecha:focus-visible,
 .carrusel-punto:focus-visible,
 .carrusel-pausa:focus-visible,
