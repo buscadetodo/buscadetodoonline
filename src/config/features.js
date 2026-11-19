@@ -8,8 +8,8 @@
 export const FEATURE_PRODUCTOS = true;
 
 // FEATURE_CUENTA_EMAIL: verificación de email y recuperación/cambio de
-// contraseña (R-004 del backend). Los endpoints están en la API de dev, así
-// que el flag está prendido en .env.development; en producción queda apagado
-// hasta que haya API de producción con el envío de mails andando. Se prende
-// por ambiente con REACT_APP_FEATURE_CUENTA_EMAIL=true (sin tocar código).
+// contraseña (R-004 del backend). Prendido en .env.development y en
+// .env.production (el build de Render, que hoy usa la API de dev y es adonde
+// llevan los links de los mails). Se apaga por ambiente con
+// REACT_APP_FEATURE_CUENTA_EMAIL=false (sin tocar código).
 export const FEATURE_CUENTA_EMAIL = process.env.REACT_APP_FEATURE_CUENTA_EMAIL === 'true';
