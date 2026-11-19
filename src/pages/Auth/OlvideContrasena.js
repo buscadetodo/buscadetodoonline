@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Icon from '../../components/Icon/Icon';
 import cuentaService from '../../services/cuentaService';
-import mensajeDeError, { segundosDeEspera } from '../../api/mensajeDeError';
+import mensajeDeError, { segundosDeEspera, textoEspera } from '../../api/mensajeDeError';
 import { esEmailValido } from '../../utils/validaciones';
 import { EstadoCuenta, TarjetaCuenta, useCuentaRegresiva } from './CuentaComun';
 
 const ESPERA_REENVIO = 60; // segundos entre envíos
 
 /**
- * "¿Olvidaste tu contraseña?" (§3.1 del pedido al backend).
+ * "¿Olvidaste tu contraseña?" (R-004 del backend). Límite: 3 pedidos por hora,
+ * así que un 429 puede pedir esperar hasta una hora.
  *
  * La API responde lo mismo exista o no el email (para que no se pueda
  * averiguar quién tiene cuenta), así que el mensaje de éxito tampoco lo
@@ -42,7 +43,7 @@ function OlvideContrasena() {
       const segundos = segundosDeEspera(err);
       if (segundos) {
         setEspera(segundos);
-        setError(`Hiciste varios pedidos seguidos. Esperá ${segundos} segundos y probá de nuevo.`);
+        setError(`Hiciste varios pedidos seguidos. Esperá ${textoEspera(segundos)} y probá de nuevo.`);
       } else {
         setError(mensajeDeError(err, 'No se pudo enviar el enlace. Probá de nuevo en unos minutos.'));
       }
@@ -61,7 +62,7 @@ function OlvideContrasena() {
             <>
               <Link to="/login" className="btn-submit-login">Volver a iniciar sesión</Link>
               <button type="button" className="cuenta-btn-secundario" onClick={enviar} disabled={enviando || espera > 0}>
-                {espera > 0 ? `Reenviar en ${espera} s` : enviando ? 'Enviando…' : 'Reenviar el enlace'}
+                {espera > 0 ? `Reenviar en ${textoEspera(espera)}` : enviando ? 'Enviando…' : 'Reenviar el enlace'}
               </button>
             </>
           }
@@ -117,7 +118,7 @@ function OlvideContrasena() {
           </div>
 
           <button type="submit" className="btn-submit-login" disabled={enviando || espera > 0}>
-            {enviando ? 'Enviando…' : espera > 0 ? `Esperá ${espera} s` : 'Enviarme el enlace'}
+            {enviando ? 'Enviando…' : espera > 0 ? `Esperá ${textoEspera(espera)}` : 'Enviarme el enlace'}
           </button>
         </div>
       </form>
