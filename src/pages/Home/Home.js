@@ -11,6 +11,8 @@ import TiendaLayout from '../../components/Tienda/TiendaLayout';
 import TarjetaProducto, { TarjetaProductoEsqueleto } from '../../components/Tienda/TarjetaProducto';
 import FichaSegunSesion from '../../components/Tienda/FichaSegunSesion';
 import VistosRecientemente from '../../components/Tienda/VistosRecientemente';
+import CarruselBanners from '../../components/CarruselBanners/CarruselBanners';
+import { useBanners } from '../../hooks/useBanners';
 import './Home.css';
 
 // Primera página del catálogo: se guarda en el navegador para mostrarla al
@@ -56,7 +58,8 @@ const PASOS = [
 
 /**
  * Home pública, con estructura de marketplace: encabezado con buscador (en
- * TiendaLayout), banner, accesos por rubro y los últimos productos. Con
+ * TiendaLayout), carrusel de banners (o el banner fijo si no hay ninguno
+ * activo), accesos por rubro y los últimos productos. Con
  * sesión, "/" lleva al panel del usuario.
  */
 function Home() {
@@ -64,6 +67,7 @@ function Home() {
   const { panelUrl, loading: cargandoPerfiles } = usePerfilActivo();
   const { rubros } = useRubrosPublicos();
   const { nombreDe } = useCatalogoComercios();
+  const { banners } = useBanners();
 
   const [guardados] = useState(leerCatalogoGuardado);
   const [productos, setProductos] = useState(guardados || []);
@@ -113,16 +117,23 @@ function Home() {
 
   return (
     <TiendaLayout>
-      <section className="home-banner" aria-labelledby="home-banner-titulo">
-        <div className="home-banner-texto">
-          <h1 id="home-banner-titulo">Comprá por mayor a comercios de tu zona</h1>
-          <p>Mayoristas y minoristas con precio y stock al día. Mirá todo sin registrarte.</p>
-        </div>
-        <div className="home-banner-acciones">
-          <Link to="/buscar" className="home-banner-btn">Ver productos</Link>
-          <Link to="/registro/mayorista" className="home-banner-btn home-banner-btn-sec">Quiero vender</Link>
-        </div>
-      </section>
+      {banners.length > 0 ? (
+        <>
+          <h1 className="solo-lectores">Buscádetodo: comprá por mayor a comercios de tu zona</h1>
+          <CarruselBanners banners={banners} />
+        </>
+      ) : (
+        <section className="home-banner" aria-labelledby="home-banner-titulo">
+          <div className="home-banner-texto">
+            <h1 id="home-banner-titulo">Comprá por mayor a comercios de tu zona</h1>
+            <p>Mayoristas y minoristas con precio y stock al día. Mirá todo sin registrarte.</p>
+          </div>
+          <div className="home-banner-acciones">
+            <Link to="/buscar" className="home-banner-btn">Ver productos</Link>
+            <Link to="/registro/mayorista" className="home-banner-btn home-banner-btn-sec">Quiero vender</Link>
+          </div>
+        </section>
+      )}
 
       {rubros.length > 0 && (
         <section className="home-seccion" aria-labelledby="home-rubros-titulo">
