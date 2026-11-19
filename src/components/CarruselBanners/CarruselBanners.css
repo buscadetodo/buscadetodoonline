@@ -306,3 +306,22 @@
     opacity: 0.35;
   }
 }
+
+/* Lugar reservado mientras llegan los banners de la API (primera visita) */
+.carrusel-esqueleto {
+  aspect-ratio: 1440 / 340;
+  min-height: 260px;
+  background: var(--marca-degrade);
+}
+
+@media (max-width: 640px) {
+  .carrusel-esqueleto {
+    aspect-ratio: 8 / 5;
+    min-height: 230px;
+  }
+}
+
+/* Vista previa en el panel del administrador: no se puede hacer clic */
+.carrusel-vista-previa {
+  pointer-events: none;
+}

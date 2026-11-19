@@ -26,6 +26,7 @@ const TITULOS = [
   ['/compradores', 'Compradores'],
   ['/productos', 'Mis publicaciones'],
   ['/rubros', 'Rubros'],
+  ['/banners', 'Banners de la home'],
   ['/usuarios', 'Usuarios'],
   ['/perfil', 'Mi perfil'],
   ['/agregar-perfil', 'Elegir perfil'],

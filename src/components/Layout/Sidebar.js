@@ -33,6 +33,7 @@ function Sidebar({ onNavigate }) {
     { path: '/compradores', icon: 'comprador', label: 'Compradores' },
     { path: '/productos', icon: 'package', label: 'Productos', feature: FEATURE_PRODUCTOS },
     { path: '/rubros', icon: 'folder', label: 'Rubros' },
+    { path: '/banners', icon: 'imagen', label: 'Banners' },
     { path: '/usuarios', icon: 'users', label: 'Usuarios' },
     { path: '/perfil', icon: 'settings', label: 'Mi Perfil' },
   ];

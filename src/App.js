@@ -62,6 +62,7 @@ import ProductoForm from './pages/Productos/ProductoForm';
 
 // Admin
 import RubrosList from './pages/Admin/RubrosList';
+import BannersAdmin from './pages/Admin/BannersAdmin';
 import UsuariosList from './pages/Admin/UsuariosList';
 
 // Perfil
@@ -262,6 +263,19 @@ function App() {
               <Layout>
                 <Routes>
                   <Route path="/" element={<RubrosList />} />
+                </Routes>
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/banners/*"
+          element={
+            <PrivateRoute adminOnly>
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<BannersAdmin />} />
                 </Routes>
               </Layout>
             </PrivateRoute>

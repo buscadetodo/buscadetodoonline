@@ -67,7 +67,7 @@ function Home() {
   const { panelUrl, loading: cargandoPerfiles } = usePerfilActivo();
   const { rubros } = useRubrosPublicos();
   const { nombreDe } = useCatalogoComercios();
-  const { banners } = useBanners();
+  const { banners, cargando: cargandoBanners } = useBanners();
 
   const [guardados] = useState(leerCatalogoGuardado);
   const [productos, setProductos] = useState(guardados || []);
@@ -117,7 +117,12 @@ function Home() {
 
   return (
     <TiendaLayout>
-      {banners.length > 0 ? (
+      {cargandoBanners ? (
+        <>
+          <h1 className="solo-lectores">Buscádetodo: comprá por mayor a comercios de tu zona</h1>
+          <div className="carrusel carrusel-esqueleto" aria-hidden="true" />
+        </>
+      ) : banners.length > 0 ? (
         <>
           <h1 className="solo-lectores">Buscádetodo: comprá por mayor a comercios de tu zona</h1>
           <CarruselBanners banners={banners} />

@@ -13,3 +13,11 @@ export const FEATURE_PRODUCTOS = true;
 // llevan los links de los mails). Se apaga por ambiente con
 // REACT_APP_FEATURE_CUENTA_EMAIL=false (sin tocar código).
 export const FEATURE_CUENTA_EMAIL = process.env.REACT_APP_FEATURE_CUENTA_EMAIL === 'true';
+
+// FEATURE_BANNERS_API: banners del carrusel de la home desde el backend
+// (GET/POST/PUT/DELETE /banners/, contrato en services/bannersService.js).
+// Apagado: la home usa config/banners.js y la pantalla de banners del
+// administrador funciona en modo prueba (los cambios quedan solo en ese
+// navegador). Se prende con REACT_APP_FEATURE_BANNERS_API=true cuando la API
+// tenga el recurso.
+export const FEATURE_BANNERS_API = process.env.REACT_APP_FEATURE_BANNERS_API === 'true';
