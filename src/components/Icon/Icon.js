@@ -1,6 +1,8 @@
 import React from 'react';
 import {
   Apple,
+  ArrowDown,
+  ArrowUp,
   Candy,
   Car,
   ChartColumn,
@@ -21,6 +23,7 @@ import {
   Folders,
   Heart,
   House,
+  Image,
   Laptop,
   LayoutDashboard,
   LoaderCircle,
@@ -95,6 +98,9 @@ const ICONOS = {
   anterior: ChevronLeft,
   siguiente: ChevronRight,
   pausa: Pause,
+  subir: ArrowUp,
+  bajar: ArrowDown,
+  imagen: Image,
   reproducir: Play,
   refresh: RefreshCw,
   logout: LogOut,

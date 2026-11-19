@@ -59,6 +59,7 @@ function Dashboard() {
     { title: 'Nuevo Mayorista', icon: 'add', link: '/mayoristas/nuevo', color: 'var(--color-primario)' },
     { title: 'Nuevo Minorista', icon: 'add', link: '/minoristas/nuevo', color: 'var(--color-primario-hover)' },
     { title: 'Ver Rubros', icon: 'folder', link: '/rubros', color: 'var(--color-enlace)' },
+    { title: 'Banners de la home', icon: 'imagen', link: '/banners', color: 'var(--color-primario-hover)' },
     { title: 'Gestionar Usuarios', icon: 'users', link: '/usuarios', color: 'var(--color-primario)' },
   ];
 
