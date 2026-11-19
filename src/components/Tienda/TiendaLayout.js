@@ -11,12 +11,16 @@ import './Tienda.css';
  * ancho, sin menú lateral. Lo usan la home pública, la búsqueda y las
  * pantallas del comprador. Los paneles de gestión (vendedor, transportista,
  * administrador) siguen con el Layout con menú lateral.
+ *
+ * @param portada  contenido a todo el ancho de la pantalla, entre el
+ *                 encabezado y el contenido (el carrusel de la home)
  */
-function TiendaLayout({ children, ancho = 'normal' }) {
+function TiendaLayout({ children, ancho = 'normal', portada = null }) {
   return (
     <div className="tienda">
       <EncabezadoTienda />
-      <main className={`tienda-main tienda-main-${ancho}`}>
+      {portada}
+      <main className={`tienda-main tienda-main-${ancho}${portada ? ' tienda-main-con-portada' : ''}`}>
         <AvisoVerificarEmail />
         <InvitarInstalar />
         {children}

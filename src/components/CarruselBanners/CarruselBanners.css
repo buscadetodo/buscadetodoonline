@@ -325,3 +325,97 @@
 .carrusel-vista-previa {
   pointer-events: none;
 }
+
+/* ================================================================
+   Variante "completo": a todo el ancho de la pantalla, como portada.
+   La parte de abajo se funde en el fondo de la tienda y ahí se montan
+   las tarjetas de accesos (AccesosRapidos, con margen negativo).
+   Solo desde 641px: en el celular queda como el carrusel común.
+   ================================================================ */
+@media (min-width: 641px) {
+  .carrusel-completo {
+    --portada-alto: 400px;
+    --portada-solapa: 120px; /* lo que tapan las tarjetas */
+    /* margen para alinear el texto con el contenido de la página */
+    --portada-margen: max(4.5rem, calc((100% - var(--ancho-sitio)) / 2 + 4.5rem));
+    border-radius: 0;
+    background: var(--color-fondo-tienda);
+  }
+
+  /* El difuminado va en cada banner (no encima del carrusel) para que el
+     texto quede por arriba: sombra de la foto < difuminado < texto */
+  .carrusel-completo .carrusel-banner::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* empieza debajo del botón: el texto queda siempre sobre el color */
+    height: calc(var(--portada-solapa) + 30px);
+    background: linear-gradient(
+      180deg,
+      rgba(243, 244, 246, 0) 0%,
+      rgba(243, 244, 246, 0.9) 55%,
+      var(--color-fondo-tienda) 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .carrusel-completo .carrusel-texto {
+    z-index: 2;
+  }
+
+  .carrusel-completo .carrusel-banner {
+    aspect-ratio: auto;
+    height: var(--portada-alto);
+    min-height: 0;
+    align-items: flex-start;
+    padding: 2.75rem var(--portada-margen) 0;
+  }
+
+  .carrusel-completo .carrusel-banner-enlace {
+    padding: 0;
+  }
+
+  .carrusel-completo .carrusel-dibujo {
+    top: 1.75rem;
+    right: max(7%, calc((100% - var(--ancho-sitio)) / 2 + 7rem));
+    transform: none;
+  }
+
+  /* Flechas centradas en la parte que se ve (sin contar lo tapado) */
+  .carrusel-completo .carrusel-flecha {
+    top: calc((var(--portada-alto) - var(--portada-solapa)) / 2);
+  }
+
+  .carrusel-completo .carrusel-controles {
+    bottom: calc(var(--portada-solapa) + 0.5rem);
+  }
+
+  /* Los puntos caen sobre el difuminado (claro): van en marino */
+  .carrusel-completo .carrusel-punto::before {
+    background: rgba(11, 35, 70, 0.3);
+  }
+
+  .carrusel-completo .carrusel-punto.activo::before {
+    background: var(--color-tinta);
+  }
+
+  .carrusel-completo .carrusel-pausa {
+    right: max(0.75rem, calc((100% - var(--ancho-sitio)) / 2 + 1rem));
+  }
+
+  .carrusel-esqueleto.carrusel-completo {
+    aspect-ratio: auto;
+    height: var(--portada-alto);
+    min-height: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  /* En el celular la portada también va de borde a borde, sin esquinas */
+  .carrusel-completo {
+    border-radius: 0;
+  }
+}

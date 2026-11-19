@@ -89,8 +89,10 @@ function Banner({ banner, primero }) {
  *
  * @param banners    lista ya filtrada y ordenada (ver useBanners)
  * @param intervalo  milisegundos entre banner y banner
+ * @param completo   a todo el ancho de la pantalla, con la parte de abajo
+ *                   fundida en el fondo (para montar tarjetas encima)
  */
-function CarruselBanners({ banners, intervalo = 6000, className = '' }) {
+function CarruselBanners({ banners, intervalo = 6000, completo = false, className = '' }) {
   const total = banners.length;
   const [actual, setActual] = useState(0);
   const [pausado, setPausado] = useState(prefiereMenosMovimiento);
@@ -153,7 +155,7 @@ function CarruselBanners({ banners, intervalo = 6000, className = '' }) {
 
   return (
     <section
-      className={`carrusel ${className}`.trim()}
+      className={`carrusel${completo ? ' carrusel-completo' : ''} ${className}`.trim()}
       aria-roledescription="carrusel"
       aria-label="Novedades"
       onMouseEnter={() => setRetenido(true)}

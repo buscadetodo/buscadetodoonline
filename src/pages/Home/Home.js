@@ -12,6 +12,7 @@ import TarjetaProducto, { TarjetaProductoEsqueleto } from '../../components/Tien
 import FichaSegunSesion from '../../components/Tienda/FichaSegunSesion';
 import VistosRecientemente from '../../components/Tienda/VistosRecientemente';
 import CarruselBanners from '../../components/CarruselBanners/CarruselBanners';
+import AccesosRapidos from '../../components/AccesosRapidos/AccesosRapidos';
 import { useBanners } from '../../hooks/useBanners';
 import './Home.css';
 
@@ -58,8 +59,8 @@ const PASOS = [
 
 /**
  * Home pública, con estructura de marketplace: encabezado con buscador (en
- * TiendaLayout), carrusel de banners (o el banner fijo si no hay ninguno
- * activo), accesos por rubro y los últimos productos. Con
+ * TiendaLayout), carrusel de banners a todo el ancho (o el banner fijo si no
+ * hay ninguno activo), tarjetas de accesos, accesos por rubro y los últimos productos. Con
  * sesión, "/" lleva al panel del usuario.
  */
 function Home() {
@@ -115,18 +116,19 @@ function Home() {
     return <Navigate to={panelUrl} replace />;
   }
 
+  // Carrusel a todo el ancho (o su lugar reservado mientras llega la primera
+  // vez). Sin banners activos, queda el banner fijo dentro del contenido.
+  const hayPortada = cargandoBanners || banners.length > 0;
+  const portada = !hayPortada ? null : cargandoBanners ? (
+    <div className="carrusel carrusel-completo carrusel-esqueleto" aria-hidden="true" />
+  ) : (
+    <CarruselBanners banners={banners} completo />
+  );
+
   return (
-    <TiendaLayout>
-      {cargandoBanners ? (
-        <>
-          <h1 className="solo-lectores">Buscádetodo: comprá por mayor a comercios de tu zona</h1>
-          <div className="carrusel carrusel-esqueleto" aria-hidden="true" />
-        </>
-      ) : banners.length > 0 ? (
-        <>
-          <h1 className="solo-lectores">Buscádetodo: comprá por mayor a comercios de tu zona</h1>
-          <CarruselBanners banners={banners} />
-        </>
+    <TiendaLayout portada={portada}>
+      {hayPortada ? (
+        <h1 className="solo-lectores">Buscádetodo: comprá por mayor a comercios de tu zona</h1>
       ) : (
         <section className="home-banner" aria-labelledby="home-banner-titulo">
           <div className="home-banner-texto">
@@ -139,6 +141,8 @@ function Home() {
           </div>
         </section>
       )}
+
+      <AccesosRapidos sobreBanner={hayPortada} />
 
       {rubros.length > 0 && (
         <section className="home-seccion" aria-labelledby="home-rubros-titulo">
