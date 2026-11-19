@@ -241,6 +241,33 @@
   color: var(--color-texto);
 }
 
+/* Subtotal + "Copiar pedido" */
+.carrito-grupo-cierre {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.6rem;
+  margin-left: auto; /* a la derecha aunque el comercio no tenga pedido mínimo */
+}
+
+.carrito-copiar:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.carrito-copia-texto {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0.75rem 0 1rem;
+  padding: 0.75rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  resize: vertical;
+}
+
 /* Resumen */
 .carrito-resumen {
   position: sticky;
@@ -366,6 +393,14 @@
     flex-direction: column;
     align-items: flex-start;
     padding: 0.75rem 1rem;
+  }
+
+  .carrito-grupo-cierre {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
   }
 
   .carrito-item {
