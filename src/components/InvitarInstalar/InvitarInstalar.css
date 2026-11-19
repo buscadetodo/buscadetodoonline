@@ -1,0 +1,83 @@
+/* Aviso "Instalá la app" (mismo formato que el de verificar email, en azul) */
+.invitar-instalar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding: 0.75rem 2.75rem 0.75rem 0.75rem;
+  border: 1px solid var(--color-acento-borde);
+  border-radius: 10px;
+  background: var(--color-primario-suave);
+  color: var(--color-marino);
+  font-size: 0.925rem;
+}
+
+.invitar-instalar-icono {
+  flex-shrink: 0;
+  background: #fff;
+  border-radius: 10px;
+  padding: 3px;
+}
+
+.invitar-instalar-texto {
+  flex: 1;
+  margin: 0;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.invitar-instalar-texto svg {
+  vertical-align: -0.15em;
+}
+
+.invitar-instalar-btn {
+  flex-shrink: 0;
+  padding: 0.55rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-acento);
+  color: var(--color-sobre-acento);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.invitar-instalar-btn:hover {
+  background: var(--color-acento-hover);
+}
+
+.invitar-instalar-cerrar {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: var(--color-marino);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.invitar-instalar-cerrar:hover {
+  background: var(--color-primario-suave-2);
+}
+
+@media (max-width: 600px) {
+  .invitar-instalar {
+    flex-wrap: wrap;
+  }
+
+  /* Ícono y texto en la misma fila; el botón abajo, alineado con el texto */
+  .invitar-instalar-texto {
+    flex: 1 1 calc(100% - 40px - 0.75rem);
+  }
+
+  .invitar-instalar-btn {
+    margin-left: calc(40px + 0.75rem);
+  }
+}

@@ -4,6 +4,7 @@ import Sidebar from './Sidebar';
 import Footer from '../Footer/Footer';
 import RetomarCompra from '../FichaProducto/RetomarCompra';
 import AvisoVerificarEmail from '../AvisoVerificarEmail/AvisoVerificarEmail';
+import InvitarInstalar from '../InvitarInstalar/InvitarInstalar';
 import TiendaLayout from '../Tienda/TiendaLayout';
 import { useModoTienda } from '../Tienda/useModoTienda';
 import './Layout.css';
@@ -57,6 +58,7 @@ function Layout({ children }) {
         <main className="main-content">
           <div className="main-body">
             <AvisoVerificarEmail />
+            <InvitarInstalar />
             {children}
           </div>
           <Footer variant="compact" />

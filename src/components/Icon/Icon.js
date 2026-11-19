@@ -37,6 +37,7 @@ import {
   CalendarDays,
   Receipt,
   RefreshCw,
+  Share,
   Share2,
   Rocket,
   Save,
@@ -122,6 +123,7 @@ const ICONOS = {
   location: MapPin,
   mail: Mail,
   share: Share2,
+  'share-ios': Share, // el botón Compartir de iPhone (cuadrado con flecha)
   phone: Phone,
   lock: Lock,
 
