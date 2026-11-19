@@ -47,6 +47,35 @@ const PASOS = [
   { icon: 'mayorista', titulo: 'Comprale al comercio', texto: 'Cada comercio tiene su pedido mínimo y opción de retiro en el local.' },
 ];
 
+// Franja final, al estilo "pago / envío / seguridad" de los marketplaces,
+// contada como funciona Buscádetodo hoy: no se cobra en el sitio (el pago se
+// arregla con cada comercio), no hay envío propio (retiro o flete) y cada
+// comercio responde por lo que publica (Términos). Cuando la API tenga
+// pedidos y pagos, el primer bloque se actualiza.
+const COMO_COMPRAR = [
+  {
+    icon: 'money',
+    titulo: 'Pagale directo al comercio',
+    texto: 'Acordás cómo pagar con cada comercio cuando le mandás tu pedido. Buscádetodo no cobra ni retiene tu plata.',
+    enlace: 'Cómo comprar',
+    ancla: '#como-funciona',
+  },
+  {
+    icon: 'transportista',
+    titulo: 'Retirá o coordiná el flete',
+    texto: 'Muchos comercios te dejan retirar en el local. Si no, coordinás la entrega con el comercio o con un transportista.',
+    enlace: 'Ver comercios',
+    link: '/buscar',
+  },
+  {
+    icon: 'proteccion',
+    titulo: 'Todo claro antes de pedir',
+    texto: 'Precio, stock y pedido mínimo de cada comercio a la vista. Cada comercio responde por lo que publica.',
+    enlace: 'Términos y condiciones',
+    link: '/terminos',
+  },
+];
+
 /**
  * Home pública, con estructura de marketplace: encabezado con buscador (en
  * TiendaLayout), carrusel de banners a todo el ancho (o el banner fijo si no
@@ -160,7 +189,7 @@ function Home() {
         </section>
       )}
 
-      <section className="home-seccion" aria-labelledby="home-como-titulo">
+      <section id="como-funciona" className="home-seccion" aria-labelledby="home-como-titulo">
         <h2 id="home-como-titulo" className="home-seccion-titulo">Cómo funciona</h2>
         <ol className="home-pasos">
           {PASOS.map((paso, i) => (
@@ -188,6 +217,24 @@ function Home() {
             <Icon name="transportista" /> Soy transportista
           </Link>
         </div>
+      </section>
+
+      <section className="home-comprar" aria-labelledby="home-comprar-titulo">
+        <h2 id="home-comprar-titulo" className="solo-lectores">Cómo se compra en Buscádetodo</h2>
+        <ul className="home-comprar-lista">
+          {COMO_COMPRAR.map((b) => (
+            <li key={b.titulo} className="home-comprar-item">
+              <span className="home-comprar-icono" aria-hidden="true"><Icon name={b.icon} /></span>
+              <h3>{b.titulo}</h3>
+              <p>{b.texto}</p>
+              {b.ancla ? (
+                <a href={b.ancla} className="home-comprar-enlace">{b.enlace}</a>
+              ) : (
+                <Link to={b.link} className="home-comprar-enlace">{b.enlace}</Link>
+              )}
+            </li>
+          ))}
+        </ul>
       </section>
 
       {abierto && <FichaSegunSesion producto={abierto} onClose={() => setAbierto(null)} />}
