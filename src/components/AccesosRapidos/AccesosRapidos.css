@@ -1,0 +1,130 @@
+/* Tarjetas de accesos de la home */
+
+.accesos {
+  position: relative;
+  z-index: 2;
+}
+
+/* Montadas sobre la parte difuminada del carrusel a todo el ancho.
+   El valor sale de --portada-solapa del carrusel (120px). */
+.accesos-sobre-banner {
+  margin-top: calc(-120px - 1.25rem); /* lo tapado + el padding de arriba del main */
+}
+
+.accesos-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.acceso {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 250px;
+  padding: 1.1rem 1rem 1rem;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.15s ease;
+}
+
+.acceso:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.acceso h3 {
+  margin: 0 0 0.85rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+.acceso-icono {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-primario-suave);
+  color: var(--color-acento);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin-bottom: 0.85rem;
+}
+
+.acceso p {
+  flex: 1;
+  margin: 0 0 0.85rem;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--color-texto-suave);
+}
+
+.acceso-boton {
+  width: 100%;
+  padding: 0.6rem 0.5rem;
+  border: none;
+  border-radius: 6px;
+  background: var(--color-acento);
+  color: var(--color-sobre-acento);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.acceso-boton:hover {
+  background: var(--color-acento-hover);
+}
+
+.acceso-boton:focus-visible {
+  outline: 3px solid var(--color-foco);
+  outline-offset: 2px;
+}
+
+/* Menos de 6 columnas no se leen bien: pasan a una fila que se desliza */
+@media (max-width: 1100px) {
+  .accesos-lista {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 0.25rem 0.25rem 0.75rem;
+    margin: -0.25rem -0.25rem 0;
+  }
+
+  .acceso {
+    flex: 0 0 190px;
+    scroll-snap-align: start;
+  }
+}
+
+/* En el celular el carrusel no es de borde a borde: las tarjetas van debajo */
+@media (max-width: 640px) {
+  .accesos {
+    margin-top: 1rem;
+  }
+
+  .accesos-sobre-banner {
+    margin-top: 1rem;
+  }
+
+  .acceso {
+    flex-basis: 160px;
+    min-height: 220px;
+    padding: 0.9rem 0.75rem 0.75rem;
+  }
+
+  .acceso-icono {
+    width: 56px;
+    height: 56px;
+    font-size: 1.6rem;
+  }
+}

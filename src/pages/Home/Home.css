@@ -22,6 +22,11 @@
   opacity: 0.92;
 }
 
+/* Sin carrusel, las tarjetas de accesos van debajo del banner fijo */
+.home-banner + .accesos {
+  margin-top: 1.5rem;
+}
+
 .home-banner-acciones,
 .home-vender-acciones {
   display: flex;

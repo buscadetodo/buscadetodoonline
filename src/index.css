@@ -66,6 +66,7 @@ code {
   --color-texto-suave: #5f6b7a;
   --color-borde: #e4e7eb;
   --color-fondo: #f4f5f7;
+  --color-fondo-tienda: #f3f4f6; /* fondo de la tienda; el banner de la home se funde en él */
   --color-peligro: #b91c1c;
   --color-peligro-suave: #fef2f2;
   --color-exito: #15803d;
