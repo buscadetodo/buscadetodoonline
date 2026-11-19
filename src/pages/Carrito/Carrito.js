@@ -14,8 +14,10 @@ import {
   vaciarCarrito,
 } from '../../utils/carrito';
 import { formatearNumero, formatearPrecio } from '../../utils/formato';
+import { armarTextoPedido, copiarAlPortapapeles } from '../../utils/textoPedido';
 import Icon from '../../components/Icon/Icon';
 import Modal from '../../components/Modal/Modal';
+import { useToast } from '../../components/Toast/Toast';
 import TiendaLayout from '../../components/Tienda/TiendaLayout';
 import { urlTiendaDe } from '../../components/Tienda/urlTienda';
 import '../../components/FichaProducto/FichaProducto.css'; // selector − / +
@@ -63,9 +65,10 @@ function SelectorCantidad({ cantidad, max, onCambiar, nombre }) {
  * ve el subtotal y cuánto falta para llegar al mínimo. Al abrir, se traen
  * precio y stock actuales de cada producto y se avisa si algo cambió.
  *
- * Todavía no hay botón para enviar el pedido: la API no tiene pedidos
- * (pedido al backend, punto 5). La pantalla lo dice en lugar de mostrar un
- * botón que no hace nada.
+ * La API todavía no tiene pedidos (pedido al backend, punto 5), así que no se
+ * pueden enviar desde acá. Mientras tanto, cada comercio tiene "Copiar pedido":
+ * arma el texto con los productos disponibles para mandarlo por WhatsApp o
+ * mail. Cuando exista la API, ese botón pasa a ser "Enviar pedido".
  */
 function Carrito() {
   const { isAuthenticated, user } = useAuth();
@@ -76,7 +79,9 @@ function Carrito() {
   const [avisos, setAvisos] = useState({}); // { [productoId]: { tipo, texto } }
   const [actualizando, setActualizando] = useState(true);
   const [confirmarVaciar, setConfirmarVaciar] = useState(false);
+  const [copiaManual, setCopiaManual] = useState(null); // { comercio, texto } si el navegador no deja copiar
   const revisado = useRef(false);
+  const toast = useToast();
 
   // Mantener la lista al día si cambia (en esta pestaña o en otra)
   useEffect(() => {
@@ -164,6 +169,22 @@ function Carrito() {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items, comercios, avisos]);
+
+  const copiarPedido = async (g, nombre) => {
+    const [tipo, id] = g.clave.split(':');
+    const texto = armarTextoPedido({
+      comercio: nombre,
+      items: g.lista.filter((i) => !noDisponible(i.producto.id)),
+      total: g.subtotal,
+      urlTienda: `${window.location.origin}/tienda/${tipo}/${id}`,
+      email: user?.email,
+    });
+    if (await copiarAlPortapapeles(texto)) {
+      toast.success(`Copiamos el pedido. Pegalo en WhatsApp o en un mail para ${nombre}.`);
+    } else {
+      setCopiaManual({ comercio: nombre, texto });
+    }
+  };
 
   const unidades = items.filter((i) => !noDisponible(i.producto.id)).reduce((s, i) => s + i.cantidad, 0);
   const total = grupos.reduce((s, g) => s + g.subtotal, 0);
@@ -289,9 +310,20 @@ function Carrito() {
                       )}
                     </div>
                   )}
-                  <p className="carrito-grupo-subtotal">
-                    Subtotal <strong>{formatearPrecio(g.subtotal)}</strong>
-                  </p>
+                  <div className="carrito-grupo-cierre">
+                    <p className="carrito-grupo-subtotal">
+                      Subtotal <strong>{formatearPrecio(g.subtotal)}</strong>
+                    </p>
+                    <button
+                      type="button"
+                      className="tienda-btn tienda-btn-primario carrito-copiar"
+                      onClick={() => copiarPedido(g, nombre)}
+                      disabled={actualizando || g.subtotal === 0}
+                      title={actualizando ? 'Esperá a que revisemos precios y stock' : undefined}
+                    >
+                      <Icon name="receipt" /> Copiar pedido
+                    </button>
+                  </div>
                 </footer>
               </section>
             );
@@ -311,8 +343,8 @@ function Carrito() {
           <p className="carrito-resumen-nota">
             <Icon name="note" />
             <span>
-              Muy pronto vas a poder enviarle el pedido a cada comercio desde acá. Mientras tanto, tu carrito queda
-              guardado en este dispositivo.
+              Muy pronto vas a poder enviarle el pedido a cada comercio desde acá. Mientras tanto, tocá “Copiar
+              pedido” y mandáselo por WhatsApp o mail. Tu carrito queda guardado en este dispositivo.
             </span>
           </p>
           <Link to="/buscar" className="tienda-btn tienda-btn-secundario carrito-seguir">Seguir comprando</Link>
@@ -321,6 +353,31 @@ function Carrito() {
           </button>
         </aside>
       </div>
+
+      {copiaManual && (
+        <Modal
+          onClose={() => setCopiaManual(null)}
+          titleId="copia-manual-titulo"
+          overlayClassName="tienda-modal-fondo"
+          className="tienda-modal tienda-modal-izq"
+        >
+          <h2 id="copia-manual-titulo">Pedido para {copiaManual.comercio}</h2>
+          <p>Tu navegador no nos dejó copiarlo solo. Seleccioná el texto, copialo y pegalo en WhatsApp o en un mail.</p>
+          <textarea
+            className="carrito-copia-texto"
+            value={copiaManual.texto}
+            readOnly
+            rows={10}
+            aria-label="Texto del pedido"
+            onFocus={(e) => e.target.select()}
+          />
+          <div className="tienda-modal-acciones">
+            <button type="button" className="tienda-btn tienda-btn-secundario" onClick={() => setCopiaManual(null)}>
+              Cerrar
+            </button>
+          </div>
+        </Modal>
+      )}
 
       {confirmarVaciar && (
         <Modal
